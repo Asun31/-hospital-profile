@@ -88,11 +88,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==== Pencarian ==== 
-    document.getElementById('searchInput').addEventListener('input', function () {
-        const keyword = this.value.toLowerCase();
-        document.querySelectorAll('.searchable').forEach(card => {
-            const text = card.innerText.toLowerCase();
-            card.style.display = text.includes(keyword) ? 'block' : 'none';
-        });
+    const searchInput = document.getElementById('searchInput');
+    const cardsContainer = document.getElementById('profile-cards');
+    const cards = cardsContainer.getElementsByClassName('card');
+
+    // Fungsi untuk mencari berdasarkan input
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        // Loop untuk setiap kartu
+        for (let card of cards) {
+            const title = card.querySelector('h3').innerText.toLowerCase();
+            if (title.includes(searchTerm)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        }
     });
 });
