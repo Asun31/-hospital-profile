@@ -27,12 +27,36 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* Welcome admin */
+    .welcome-message {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        flex: 0 0 0%; /* 20% lebar header */
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        text-align: left;              
+    }
+
+    .welcome-message span {
+        opacity: 0;
+        display: inline-block;
+        animation: appear 0.3s forwards;
+    }
+
+    @keyframes appear {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
     /* ===== Logo ===== */
     .logo-container {
         display: flex;
         align-items: center;
         gap: 10px;
-        flex: 0 0 20%; /* 20% lebar header */
+        flex: 0 0 15%; /* 20% lebar header */
     }
 
     .logo-container img {
@@ -148,7 +172,7 @@
     /* ===== Slider Konten ===== */
     main { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
     section { margin-bottom: 60px; scroll-margin-top: 80px; }
-    h2.section-title { color: #81cd8d; font-size: 12px; margin-bottom: 20px; font-weight: 600; border-left: 6px solid #81cd8d; padding-left: 10px; }
+    h2.section-title { color: #81cd8d; font-size: 14px; margin-bottom: 20px; font-weight: 600; border-left: 6px solid #81cd8d; padding-left: 10px; }
 
     /* ===== Kartu Konten ===== */
     .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
@@ -191,6 +215,154 @@
         color: #ffe066;
     }
 
+    /* Profil Section */
+main {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#profile-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Modal Style */
+.modal {
+  display: none; /* Default to hidden */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Background dimming */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+}
+
+.modal input, .modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
+}
+
+/* Close button style */
+.close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Jarak antara tombol dan card */
+#addCardBtn {
+    background-color: #81cd8d;  
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px; 
+    border: none;
+    border-radius: 8px;  
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;  
+    margin-bottom: 20px;  
+}
+
+#addCardBtn:hover {
+    background-color: #66b370; 
+    transform: scale(1.05);  
+}
+
+#addCardBtn:focus {
+    outline: none;  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+}
+
+#addCardBtn:active {
+    background-color: #56a55b; 
+}
+
+/* Menambahkan jarak antara card */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 25px;
+    margin-top: 10px;  
+}
+
+
   </style>
 </head>
 <body>
@@ -203,7 +375,6 @@
     <nav>
       <div class="menu">
         <a href="#beranda">Beranda</a>
-
         <div class="dropdown">
           <a href="#profile" class="dropbtn">Profile &#9662;</a>
           <div class="dropdown-content">
@@ -250,6 +421,9 @@
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Cari...">
     </div>
+    <div class="welcome-message">
+        Admin
+    </div>
   </header>
 
   <!-- Slider -->
@@ -268,7 +442,27 @@
 
   <!-- Konten -->
   <main>
-    <section id="profile"><h2 class="section-title">Profil</h2><div class="cards" id="profile-cards"></div></section>
+    <h2 class="section-title">Profil</h2>
+    <button id="addCardBtn">+ Tambah Kartu</button>
+    <div class="cards" id="profile-cards"></div>
+    <div id="addCardModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeModalBtn">&times;</span>
+        <h3>Tambah Kartu Baru</h3>
+        <form id="addCardForm" enctype="multipart/form-data">
+          <label for="img">Unggah Gambar:</label>
+          <input type="file" id="img" name="img" accept="image/*" required>
+          
+          <label for="title">Judul Kartu:</label>
+          <input type="text" id="title" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="content">Konten Kartu:</label>
+          <textarea id="content" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
   </main>
 
   <footer id="contact">
@@ -283,6 +477,6 @@
   </footer>
 
   <!-- JS eksternal -->
-  <script src="home.js"></script>
+  <script src="homeAdmin.js"></script>
 </body>
 </html>

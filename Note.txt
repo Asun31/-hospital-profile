@@ -1,0 +1,16 @@
+cd backend
+php artisan serve --host=localhost --port=2299
+
+
+port bawaan default:
+php artisan serve
+
+
+
+cd frontend
+npm start
+
+
+port bawaan default:
+npx vite 
+npx vite --port 2299 --open home.html

@@ -18,6 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error fetching profile data:', error));
 
+
+  // ==== selamat datang ====
+  const message = document.querySelector('.welcome-message');
+    message.innerHTML = message.textContent
+      .split('')
+      .map((char, i) => {
+          if(char === ' ') char = '&nbsp;'; // spasi tetap terlihat
+          return `<span style="animation-delay:${i*0.05}s">${char}</span>`;
+      })
+      .join('');
+
   // ==== Slider ====
   let currentIndex = 0;
   const slides = document.getElementById('slides');
