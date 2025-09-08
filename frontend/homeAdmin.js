@@ -1,109 +1,147 @@
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("homeAdmin.js loaded!");
+  console.log("homeAdmin.js loaded!");
 
-    // ==== Mengambil Data Profil dari API Backend ==== 
-    fetch('http://localhost:8000/api/profile')
-        .then(response => response.json())
-        .then(data => {
-            const profileContainer = document.getElementById('profile-cards');
-            data.forEach(p => profileContainer.innerHTML += `
-                <div class="card searchable">
-                    <img src="/storage/${p.img}" alt="${p.title}">
-                    <div class="card-content">
-                        <h3>${p.title}</h3>
-                        <p>${p.content}</p>
-                    </div>
-                </div>
-            `);
-        })
-        .catch(error => console.error('Error fetching profile data:', error));
+  const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
+  const searchInput = document.getElementById('searchInput');
 
-    // ==== Tombol Tambah Kartu dan Modal ==== 
-    const addCardBtn = document.getElementById('addCardBtn');
-    const addCardModal = document.getElementById('addCardModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const addCardForm = document.getElementById('addCardForm');
+  /**
+   * Inisialisasi section (reusable untuk profil, publikasi, dst.)
+   */
+  function initSection({ apiEndpoint, containerId, addBtnId, modalId, closeBtnId, formId }) {
+    const container = document.getElementById(containerId);
+    const addBtn = document.getElementById(addBtnId);
+    const modal = document.getElementById(modalId);
+    const closeBtn = document.getElementById(closeBtnId);
+    const form = document.getElementById(formId);
 
-    // Tampilkan modal saat tombol "Tambah Kartu" diklik
-    addCardBtn.addEventListener('click', () => {
-        addCardModal.style.display = 'block';
-    });
-
-    // Tutup modal saat tombol "X" diklik
-    closeModalBtn.addEventListener('click', () => {
-        addCardModal.style.display = 'none';
-    });
-
-    // Tutup modal jika klik di luar modal content
-    window.addEventListener('click', (event) => {
-        if (event.target === addCardModal) {
-            addCardModal.style.display = 'none';
-        }
-    });
-
-    // ==== Pengiriman Data Form ke API (Tambah Kartu) ==== 
-    addCardForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Mencegah form untuk refresh halaman
-
-        const img = document.getElementById('img').files[0];  // Ambil gambar yang di-upload
-        const title = document.getElementById('title').value;
-        const content = document.getElementById('content').value;
-
-        if (!img) {
-            alert("Harap pilih gambar untuk kartu.");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('img', img);  // Gambar
-        formData.append('title', title);  // Judul Kartu
-        formData.append('content', content);  // Konten Kartu
-
-        // Kirim data ke API untuk ditambahkan ke database
-        fetch('http://localhost:8000/api/profile', {  // Perhatikan URL API yang benar (sesuai route di Laravel)
-            method: 'POST',
-            body: formData,  // Mengirim data menggunakan FormData
-        })
-        .then(response => response.json())
-        .then(newCard => {
-            // Menambahkan kartu baru di dalam container
-            const profileContainer = document.getElementById('profile-cards');
-            profileContainer.innerHTML += `
-                <div class="card searchable">
-                    <img src="/storage/${newCard.img}" alt="${newCard.title}">
-                    <div class="card-content">
-                        <h3>${newCard.title}</h3>
-                        <p>${newCard.content}</p>
-                    </div>
-                </div>
-            `;
-            
-            // Menutup modal setelah berhasil menambahkan kartu
-            addCardModal.style.display = 'none';
-        })
-        .catch(error => {
-            console.error('Error adding new card:', error);
-            alert('Gagal menambahkan kartu. Silakan coba lagi.');
+    // ==== Ambil data awal dari API ====
+    fetch(`${LARAVEL_URL}/api/${apiEndpoint}`)
+      .then(res => res.json())
+      .then(data => {
+        container.innerHTML = "";
+        data.forEach(item => {
+          container.innerHTML += `
+            <div class="card searchable">
+              <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}">
+              <div class="card-content">
+                <h3>${item.title}</h3>
+                <p>${item.content}</p>
+              </div>
+            </div>
+          `;
         });
+      })
+      .catch(err => console.error(`Error fetching ${apiEndpoint}:`, err));
+
+    // ==== Modal open/close ====
+    addBtn.addEventListener('click', () => modal.style.display = 'block');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
     });
 
-    // ==== Pencarian ==== 
-    const searchInput = document.getElementById('searchInput');
-    const cardsContainer = document.getElementById('profile-cards');
-    const cards = cardsContainer.getElementsByClassName('card');
+    // ==== Form submit (tambah kartu) ====
+    form.addEventListener('submit', e => {
+      e.preventDefault();
 
-    // Fungsi untuk mencari berdasarkan input
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+      const img = form.querySelector('input[type="file"]').files[0];
+      const title = form.querySelector('input[name="title"]').value;
+      const content = form.querySelector('textarea[name="content"]').value;
 
-        // Loop untuk setiap kartu
-        for (let card of cards) {
-            const title = card.querySelector('h3').innerText.toLowerCase();
-            if (title.includes(searchTerm)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
+      if (!img) return alert("Harap pilih gambar!");
+
+      const validImageTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
+      if (!validImageTypes.includes(img.type)) return alert("File bukan gambar valid.");
+
+      const formData = new FormData();
+      formData.append('img', img);
+      formData.append('title', title);
+      formData.append('content', content);
+
+      fetch(`${LARAVEL_URL}/api/${apiEndpoint}`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(newCard => {
+        container.innerHTML += `
+          <div class="card searchable">
+            <img src="${LARAVEL_URL}/storage/${newCard.img}" alt="${newCard.title}">
+            <div class="card-content">
+              <h3>${newCard.title}</h3>
+              <p>${newCard.content}</p>
+            </div>
+          </div>
+        `;
+        modal.style.display = 'none';
+        form.reset();
+      })
+      .catch(err => {
+        console.error(`Error adding ${apiEndpoint}:`, err);
+        alert(`Gagal menambahkan data ${apiEndpoint}.`);
+      });
+    });
+  }
+
+  // ==== Inisialisasi Section Profil ====
+  initSection({
+    apiEndpoint: 'profile',
+    containerId: 'profile-profiles',
+    addBtnId: 'addProfileBtn',
+    modalId: 'profileModal',
+    closeBtnId: 'closeProfileModal',
+    formId: 'profileForm'
+  });
+
+  // ==== Inisialisasi Section Publikasi ====
+  initSection({
+    apiEndpoint: 'publikasi',
+    containerId: 'publikasi-publikasis',
+    addBtnId: 'addPublikasiBtn',
+    modalId: 'publikasiModal',
+    closeBtnId: 'closePublikasiModal',
+    formId: 'publikasiForm'
+  });
+
+  // ==== Pencarian Global ====
+    searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const sections = document.querySelectorAll('main section');
+
+    sections.forEach(section => {
+        const sectionTitle = section.querySelector('h2.section-title')?.innerText.toLowerCase() || '';
+        const cards = section.getElementsByClassName('card');
+        let cardMatches = false;
+
+        if (sectionTitle.includes(searchTerm) && searchTerm !== '') {
+        section.style.display = '';
+        Array.from(cards).forEach(card => {
+            card.style.display = '';
+        });
+        return; 
         }
+
+        Array.from(cards).forEach(card => {
+        const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+        const content = card.querySelector('p')?.innerText.toLowerCase() || '';
+        const matches = title.includes(searchTerm) || content.includes(searchTerm);
+
+        card.style.display = matches || searchTerm === '' ? '' : 'none';
+        if (matches) cardMatches = true;
+        });
+
+        if (sectionTitle.includes(searchTerm) || cardMatches || searchTerm === '') {
+        section.style.display = '';
+        } else {
+        section.style.display = 'none';
+        }
+    });
     });
 });

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Card;
+use App\Models\Publikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class CardController extends Controller
+class PublikasiController extends Controller
 {
     // Method untuk mengambil data kartu
     public function index()
     {
-        $cards = Card::all();  
-        return response()->json($cards);  
+        $publikasis = Publikasi::all();  
+        return response()->json($publikasis);  
     }
 
     // Method untuk menambah kartu baru
@@ -33,13 +33,13 @@ class CardController extends Controller
         // Meng-upload gambar dan menyimpan path-nya
         $imagePath = $request->file('img')->store('images', 'public');  
         // Menyimpan data kartu ke dalam database
-        $card = Card::create([
+        $publikasis = Publikasi::create([
             'img' => $imagePath, 
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
         // Mengembalikan response dengan data kartu yang baru disimpan
-        return response()->json($card, 201); 
+        return response()->json($publikasis, 201); 
     }
 }
