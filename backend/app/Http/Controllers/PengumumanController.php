@@ -1,18 +1,25 @@
 <?php
 
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */
+
 namespace App\Http\Controllers;
 
-use App\Models\Profile;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProfileController extends Controller
+class PengumumanController extends Controller
 {
     // Method untuk mengambil data kartu
     public function index()
     {
-        $profiles = Profile::all();  
-        return response()->json($profiles);  
+        $pengumuman_m = Pengumuman::all();  
+        return response()->json($pengumuman_m);  
     }
 
     // Method untuk menambah kartu baru
@@ -33,13 +40,13 @@ class ProfileController extends Controller
         // Meng-upload gambar dan menyimpan path-nya
         $imagePath = $request->file('img')->store('images', 'public');  
         // Menyimpan data kartu ke dalam database
-        $profiles = Profile::create([
+        $pengumuman_m = Pengumuman::create([
             'img' => $imagePath, 
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
         // Mengembalikan response dengan data kartu yang baru disimpan
-        return response()->json($profiles, 201); 
+        return response()->json($pengumuman_m, 201); 
     }
 }

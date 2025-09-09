@@ -1,14 +1,24 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PublikasiController;
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */
+
+use App\Http\Controllers\SejarahController;
+use App\Http\Controllers\StrukturController;
+use App\Http\Controllers\VisisMisiController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\PengumumanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Route untuk mengambil data kartu dari database
-Route::get('/profile', [ProfileController::class, 'index']);  
+Route::get('/sejarah', [SejarahController::class, 'index']);  
 // Route untuk menambah data kartu baru
-Route::post('/profile', [ProfileController::class, 'store']); 
+Route::post('/sejarah', [SejarahController::class, 'store']); 
 // Route untuk mengambil data user (dengan autentikasi)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -16,9 +26,37 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // Route untuk mengambil data kartu dari database
-Route::get('/publikasi', [PublikasiController::class, 'index']);  
+Route::get('/struktur', [StrukturController::class, 'index']);  
 // Route untuk menambah data kartu baru
-Route::post('/publikasi', [PublikasiController::class, 'store']); 
+Route::post('/struktur', [StrukturController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route untuk mengambil data kartu dari database
+Route::get('/visimisi', [VisisMisiController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/visimisi', [VisisMisiController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+// Route untuk mengambil data kartu dari database
+Route::get('/berita', [BeritaController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/berita', [BeritaController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route untuk mengambil data kartu dari database
+Route::get('/pengumuman', [PengumumanController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/pengumuman', [PengumumanController::class, 'store']); 
 // Route untuk mengambil data user (dengan autentikasi)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

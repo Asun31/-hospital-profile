@@ -90,24 +90,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==== Inisialisasi Section Profil ====
+  // ==== Inisialisasi Section sejarah ====
   initSection({
-    apiEndpoint: 'profile',
-    containerId: 'profile-profiles',
-    addBtnId: 'addProfileBtn',
-    modalId: 'profileModal',
-    closeBtnId: 'closeProfileModal',
-    formId: 'profileForm'
+    apiEndpoint: 'sejarah',
+    containerId: 'sejarah-sejarah_m',
+    addBtnId: 'addSejarahBtn',
+    modalId: 'sejarahModal',
+    closeBtnId: 'closeSejarahModal',
+    formId: 'sejarahForm'
   });
 
-  // ==== Inisialisasi Section Publikasi ====
+  // ==== Inisialisasi Section struktur ====
   initSection({
-    apiEndpoint: 'publikasi',
-    containerId: 'publikasi-publikasis',
-    addBtnId: 'addPublikasiBtn',
-    modalId: 'publikasiModal',
-    closeBtnId: 'closePublikasiModal',
-    formId: 'publikasiForm'
+    apiEndpoint: 'struktur',
+    containerId: 'struktur-struktur_m',
+    addBtnId: 'addStrukturBtn',
+    modalId: 'strukturModal',
+    closeBtnId: 'closestrukturModal',
+    formId: 'strukturForm'
+  });
+
+  // ==== Inisialisasi Section visimisi ====
+  initSection({
+    apiEndpoint: 'visimisi',
+    containerId: 'visimisi-visimisi_m',
+    addBtnId: 'addvisimisiBtn',
+    modalId: 'visimisiModal',
+    closeBtnId: 'closevisimisiModal',
+    formId: 'visimisiForm'
+  });
+
+  // ==== Inisialisasi Section berita ====
+  initSection({
+    apiEndpoint: 'berita',
+    containerId: 'berita-berita_m',
+    addBtnId: 'addberitaBtn',
+    modalId: 'beritaModal',
+    closeBtnId: 'closeberitaModal',
+    formId: 'beritaForm'
+  });
+
+  // ==== Inisialisasi Section pengumuman ====
+  initSection({
+    apiEndpoint: 'pengumuman',
+    containerId: 'pengumuman-pengumuman_m',
+    addBtnId: 'addpengumumanBtn',
+    modalId: 'pengumumanModal',
+    closeBtnId: 'closepengumumanModal',
+    formId: 'pengumumanForm'
   });
 
   // ==== Pencarian Global ====
