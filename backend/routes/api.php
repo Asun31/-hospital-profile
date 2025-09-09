@@ -12,6 +12,9 @@ use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\VisisMisiController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\DaftarDokterController;
+use App\Http\Controllers\JadwalDokterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +60,34 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/pengumuman', [PengumumanController::class, 'index']);  
 // Route untuk menambah data kartu baru
 Route::post('/pengumuman', [PengumumanController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route untuk mengambil data kartu dari database
+Route::get('/penghargaan', [PenghargaanController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/penghargaan', [PenghargaanController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+// Route untuk mengambil data kartu dari database
+Route::get('/daftardokter', [DaftarDokterController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/daftardokter', [DaftarDokterController::class, 'store']); 
+// Route untuk mengambil data user (dengan autentikasi)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route untuk mengambil data kartu dari database
+Route::get('/jadwaldokter', [JadwalDokterController::class, 'index']);  
+// Route untuk menambah data kartu baru
+Route::post('/jadwaldokter', [JadwalDokterController::class, 'store']); 
 // Route untuk mengambil data user (dengan autentikasi)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
