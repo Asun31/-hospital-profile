@@ -130,6 +130,46 @@ document.addEventListener('DOMContentLoaded', () => {
     formId: 'beritaForm'
   });
 
+  // ==== Inisialisasi Section pengumuman ====
+  initSection({
+    apiEndpoint: 'pengumuman',
+    containerId: 'pengumuman-pengumuman_m',
+    addBtnId: 'addpengumumanBtn',
+    modalId: 'pengumumanModal',
+    closeBtnId: 'closepengumumanModal',
+    formId: 'pengumumanForm'
+  });
+
+  // ==== Inisialisasi Section penghargaan ====
+  initSection({
+    apiEndpoint: 'penghargaan',
+    containerId: 'penghargaan-penghargaan_m',
+    addBtnId: 'addpenghargaanBtn',
+    modalId: 'penghargaanModal',
+    closeBtnId: 'closepenghargaanModal',
+    formId: 'penghargaanForm'
+  });
+
+  // ==== Inisialisasi Section daftar dokter ====
+  initSection({
+    apiEndpoint: 'daftardokter',
+    containerId: 'daftardokter-daftardokter_m',
+    addBtnId: 'adddaftardokterBtn',
+    modalId: 'daftardokterModal',
+    closeBtnId: 'closedaftardokterModal',
+    formId: 'daftardokterForm'
+  });
+
+  // ==== Inisialisasi Section daftar dokter ====
+  initSection({
+    apiEndpoint: 'jadwaldokter',
+    containerId: 'jadwaldokter-jadwaldokter_m',
+    addBtnId: 'addjadwaldokterBtn',
+    modalId: 'jadwaldokterModal',
+    closeBtnId: 'closejadwaldokterModal',
+    formId: 'jadwaldokterForm'
+  });
+
   // ==== Pencarian Global ====
     searchInput.addEventListener('input', () => {
     const searchTerm = searchInput.value.trim().toLowerCase();
