@@ -6,15 +6,15 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("home.js loaded!");
+  console.log("index.js loaded!");
 
   const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
   const searchInput = document.getElementById('searchInput');
 
   /**
-   * Inisialisasi section (reusable untuk profil, publikasi, dst.)
+   * Inisialisasi kartu (reusable untuk profil, publikasi, dst.)
    */
-  function initSection({ apiEndpoint, containerId, addBtnId, modalId, closeBtnId, formId }) {
+  function initKartu({ apiEndpoint, containerId, addBtnId, modalId, closeBtnId, formId }) {
     const container = document.getElementById(containerId);
     const addBtn = document.getElementById(addBtnId);
     const modal = document.getElementById(modalId);
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==== Inisialisasi Section sejarah ====
-  initSection({
+  initKartu({
     apiEndpoint: 'sejarah',
     containerId: 'sejarah-sejarah_m',
     addBtnId: 'addSejarahBtn',
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section struktur ====
-  initSection({
+  initKartu({
     apiEndpoint: 'struktur',
     containerId: 'struktur-struktur_m',
     addBtnId: 'addStrukturBtn',
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section visimisi ====
-  initSection({
+  initKartu({
     apiEndpoint: 'visimisi',
     containerId: 'visimisi-visimisi_m',
     addBtnId: 'addvisimisiBtn',
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section berita ====
-  initSection({
+  initKartu({
     apiEndpoint: 'berita',
     containerId: 'berita-berita_m',
     addBtnId: 'addberitaBtn',
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section pengumuman ====
-  initSection({
+  initKartu({
     apiEndpoint: 'pengumuman',
     containerId: 'pengumuman-pengumuman_m',
     addBtnId: 'addpengumumanBtn',
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section penghargaan ====
-  initSection({
+  initKartu({
     apiEndpoint: 'penghargaan',
     containerId: 'penghargaan-penghargaan_m',
     addBtnId: 'addpenghargaanBtn',
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section daftar dokter ====
-  initSection({
+  initKartu({
     apiEndpoint: 'daftardokter',
     containerId: 'daftardokter-daftardokter_m',
     addBtnId: 'adddaftardokterBtn',
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==== Inisialisasi Section daftar dokter ====
-  initSection({
+  initKartu({
     apiEndpoint: 'jadwaldokter',
     containerId: 'jadwaldokter-jadwaldokter_m',
     addBtnId: 'addjadwaldokterBtn',
