@@ -6,7 +6,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("homeAdmin.js loaded!");
+  console.log("home.js loaded!");
 
   const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
   const searchInput = document.getElementById('searchInput');
