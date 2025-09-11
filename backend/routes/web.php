@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/storage/{path}', function ($path) {
     $file = storage_path('app/public/' . $path);
@@ -11,22 +12,6 @@ Route::get('/storage/{path}', function ($path) {
     }
 
     return Response::file($file, [
-        'Access-Control-Allow-Origin' => '*', // izinkan semua origin
+        'Access-Control-Allow-Origin' => '*', // Izinkan semua origin
     ]);
 })->where('path', '.*');
-
-Route::get('/{page?}', function ($page = 'home') {
-    $pages = [
-        // nama file asli bisa disamarkan
-        'beranda'     => 'index.html',
-        'sejarah'  => 'sejarah.html',    
-    ];
-
-    if (isset($pages[$page])) {
-        $file = public_path("frontend/" . $pages[$page]);
-        return response()->file($file);
-    }
-
-    abort(404);
-})->where('page', '.*');
-

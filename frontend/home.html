@@ -45,12 +45,12 @@
       font-family: Arial, sans-serif;
     }
 
-    kartu{
+    section {
       margin-bottom: 60px;
       scroll-margin-top: 80px;
     }
 
-   h2.kartu-title {
+   h2.section-title {
       color: #81cd8d;
       font-size: 25px;
       margin-bottom: 20px;
@@ -63,7 +63,7 @@
       transition: all 0.3s ease; 
     }
 
-    h2.kartu-title:hover {
+    h2.section-title:hover {
       color: #ffe066;               
       border-left-color: #ffe066;    
       border-bottom-color: #ffe066;
@@ -363,22 +363,22 @@
     </div>
     <nav>
       <div class="menu">
-        <a href="/beranda">Beranda</a>
+        <a href="#beranda">Beranda</a>
         <div class="dropdown">
-          <a class="dropbtn">Profile &#9662;</a>
+          <a href="#profile" class="dropbtn">Profile &#9662;</a>
           <div class="dropdown-content">
-            <a href="/sejarah">Sejarah</a>
-            <a href="/struktur">Struktur</a>
-            <a href="/visimisi">Visi & Misi</a>
+            <a href="#sejarah">Sejarah</a>
+            <a href="#struktur">Struktur</a>
+            <a href="#visimisi">Visi & Misi</a>
           </div>
         </div>
 
         <div class="dropdown">
-          <a class="dropbtn">Publikasi &#9662;</a>
+          <a href="#publications" class="dropbtn">Publikasi &#9662;</a>
           <div class="dropdown-content">
-            <a href="/news">Berita</a>
-            <a href="/announcements">Pengumuman</a>
-            <a href="/penghargaan">Penghargaan</a>
+            <a href="#news">Berita</a>
+            <a href="#announcements">Pengumuman</a>
+            <a href="#penghargaan">Penghargaan</a>
           </div>
         </div>
 
@@ -431,7 +431,217 @@
     </div>
   </div>
 
-  
+  <!-- Konten -->
+  <main>
+  <!-- SECTION Sejarah -->
+  <section id="sejarah">
+    <h2 class="section-title">Sejarah</h2>
+    <button id="addSejarahBtn">+ Tambah Kartu</button>
+    <div class="cards" id="sejarah-sejarah_m"></div>
+
+    <div id="sejarahModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeSejarahModal">&times;</span>
+        <h3>Tambah Kartu Baru (Sejarah)</h3>
+        <form id="sejarahForm" enctype="multipart/form-data">
+          <label for="sejarahImg">Unggah Gambar:</label>
+          <input type="file" id="sejarahImg" name="img" accept="image/*" required>
+          
+          <label for="sejarahTitle">Judul Kartu:</label>
+          <input type="text" id="sejarahTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="sejarahContent">Konten Kartu:</label>
+          <textarea id="sejarahContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION struktur -->
+  <section id="struktur">
+    <h2 class="section-title">Struktur</h2>
+    <button id="addStrukturBtn">+ Tambah Kartu</button>
+    <div class="cards" id="struktur-struktur_m"></div>
+
+    <div id="strukturModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closestrukturModal">&times;</span>
+        <h3>Tambah Kartu Baru (Struktur)</h3>
+        <form id="strukturForm" enctype="multipart/form-data">
+          <label for="strukturImg">Unggah Gambar:</label>
+          <input type="file" id="strukturImg" name="img" accept="image/*" required>
+          
+          <label for="strukturTitle">Judul Kartu:</label>
+          <input type="text" id="strukturTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="strukturContent">Konten Kartu:</label>
+          <textarea id="strukturContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION visi & misi -->
+  <section id="visimisi">
+    <h2 class="section-title">Visi & Misi</h2>
+    <button id="addvisimisiBtn">+ Tambah Kartu</button>
+    <div class="cards" id="visimisi-visimisi_m"></div>
+
+    <div id="visimisiModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closevisimisiModal">&times;</span>
+        <h3>Tambah Kartu Baru (Visi & Misi)</h3>
+        <form id="visimisiForm" enctype="multipart/form-data">
+          <label for="visimisiImg">Unggah Gambar:</label>
+          <input type="file" id="visimisiImg" name="img" accept="image/*" required>
+          
+          <label for="visimisiTitle">Judul Kartu:</label>
+          <input type="text" id="visimisiTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="visimisiContent">Konten Kartu:</label>
+          <textarea id="visimisiContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION berita -->
+  <section id="berita">
+    <h2 class="section-title">Berita</h2>
+    <button id="addberitaBtn">+ Tambah Kartu</button>
+    <div class="cards" id="berita-berita_m"></div>
+
+    <div id="beritaModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeberitaModal">&times;</span>
+        <h3>Tambah Kartu Baru (Berita)</h3>
+        <form id="beritaForm" enctype="multipart/form-data">
+          <label for="beritaImg">Unggah Gambar:</label>
+          <input type="file" id="beritaImg" name="img" accept="image/*" required>
+          
+          <label for="beritaTitle">Judul Kartu:</label>
+          <input type="text" id="beritaTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="beritaContent">Konten Kartu:</label>
+          <textarea id="beritaContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION pengumuman -->
+ <section id="pengumuman">
+    <h2 class="section-title">Pengumuman</h2>
+    <button id="addpengumumanBtn">+ Tambah Kartu</button>
+    <div class="cards" id="pengumuman-pengumuman_m"></div>
+
+    <div id="pengumumanModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closepengumumanModal">&times;</span>
+        <h3>Tambah Kartu Baru (Pengumuman)</h3>
+        <form id="pengumumanForm" enctype="multipart/form-data">
+          <label for="pengumumanImg">Unggah Gambar:</label>
+          <input type="file" id="pengumumanImg" name="img" accept="image/*" required>
+          
+          <label for="pengumumanTitle">Judul Kartu:</label>
+          <input type="text" id="pengumumanTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="pengumumanContent">Konten Kartu:</label>
+          <textarea id="pengumumanContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION penghargaan -->
+  <section id="penghargaan">
+    <h2 class="section-title">Penghargaan</h2>
+    <button id="addpenghargaanBtn">+ Tambah Kartu</button>
+    <div class="cards" id="penghargaan-penghargaan_m"></div>
+
+    <div id="penghargaanModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closepenghargaanModal">&times;</span>
+        <h3>Tambah Kartu Baru (Penghargaan)</h3>
+        <form id="penghargaanForm" enctype="multipart/form-data">
+          <label for="penghargaanImg">Unggah Gambar:</label>
+          <input type="file" id="penghargaanImg" name="img" accept="image/*" required>
+          
+          <label for="penghargaanTitle">Judul Kartu:</label>
+          <input type="text" id="penghargaanTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="penghargaanContent">Konten Kartu:</label>
+          <textarea id="penghargaanContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION daftar dokter -->
+  <section id="daftardokter">
+    <h2 class="section-title">Daftar Dokter</h2>
+    <button id="adddaftardokterBtn">+ Tambah Kartu</button>
+    <div class="cards" id="daftardokter-daftardokter_m"></div>
+
+    <div id="daftardokterModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closedaftardokterModal">&times;</span>
+        <h3>Tambah Kartu Baru (Daftar Dokter)</h3>
+        <form id="daftardokterForm" enctype="multipart/form-data">
+          <label for="daftardokterImg">Unggah Gambar:</label>
+          <input type="file" id="daftardokterImg" name="img" accept="image/*" required>
+          
+          <label for="daftardokterTitle">Judul Kartu:</label>
+          <input type="text" id="daftardokterTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="daftardokterContent">Konten Kartu:</label>
+          <textarea id="daftardokterContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION jadwal dokter -->
+   <section id="jadwaldokter">
+    <h2 class="section-title">Jadwal Dokter</h2>
+    <button id="addjadwaldokterBtn">+ Tambah Kartu</button>
+    <div class="cards" id="jadwaldokter-jadwaldokter_m"></div>
+
+    <div id="jadwaldokterModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closejadwaldokterModal">&times;</span>
+        <h3>Tambah Kartu Baru (Jadwal Dokter)</h3>
+        <form id="jadwaldokterForm" enctype="multipart/form-data">
+          <label for="jadwaldokterImg">Unggah Gambar:</label>
+          <input type="file" id="jadwaldokterImg" name="img" accept="image/*" required>
+          
+          <label for="jadwaldokterTitle">Judul Kartu:</label>
+          <input type="text" id="jadwaldokterTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="jadwaldokterContent">Konten Kartu:</label>
+          <textarea id="jadwaldokterContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
 
   <footer id="contact">
     <p></p>
@@ -445,8 +655,6 @@
   </footer>
 
   <!-- JS eksternal -->
-  <script src="sejarah.js"></script>
-
-
+  <script src="home.js"></script>
 </body>
 </html>
