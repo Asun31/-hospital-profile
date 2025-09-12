@@ -9,7 +9,7 @@
 
 use App\Http\Controllers\SejarahController;
 use App\Http\Controllers\StrukturController;
-use App\Http\Controllers\VisisMisiController;
+use App\Http\Controllers\VisiMisiController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PenghargaanController;
@@ -38,9 +38,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Route untuk mengambil data kartu dari database
-Route::get('/visimisi', [VisisMisiController::class, 'index']);  
+Route::get('/visimisi', [VisiMisiController::class, 'index']);  
 // Route untuk menambah data kartu baru
-Route::post('/visimisi', [VisisMisiController::class, 'store']); 
+Route::post('/visimisi', [VisiMisiController::class, 'store']); 
 // Route untuk mengambil data user (dengan autentikasi)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
