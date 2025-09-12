@@ -363,27 +363,27 @@
     </div>
     <nav>
       <div class="menu">
-          <a href="/home">Beranda</a>
-          <div class="dropdown">
-            <a href="#" class="dropbtn">Profile ▾</a>
-            <div class="dropdown-content">
-              <a href="/sejarah">Sejarah</a>
-              <a href="/struktur">Struktur</a>
-              <a href="/visimisi">Visi & Misi</a>
-            </div>
+         <a href="/home">Beranda</a>
+        <div class="dropdown">
+          <a  class="dropbtn">Profile ▾</a>
+          <div class="dropdown-content">
+            <a href="/sejarah">Sejarah</a>
+            <a href="/struktur">Struktur</a>
+            <a href="/visimisi">Visi & Misi</a>
           </div>
+        </div>
 
         <div class="dropdown">
-          <a href="#publications" class="dropbtn">Publikasi &#9662;</a>
+          <a  class="dropbtn">Publikasi &#9662;</a>
           <div class="dropdown-content">
-            <a href="#news">Berita</a>
+            <a href="/berita">Berita</a>
             <a href="#announcements">Pengumuman</a>
             <a href="#penghargaan">Penghargaan</a>
           </div>
         </div>
 
         <div class="dropdown">
-          <a href="#doctors" class="dropbtn">Dokter &#9662;</a>
+          <a class="dropbtn">Dokter &#9662;</a>
           <div class="dropdown-content">
             <a href="#daftardokter">Daftar Dokter</a>
             <a href="#jadwaldokter">Jadwal Dokter</a>
@@ -391,7 +391,7 @@
         </div>
 
         <div class="dropdown">
-          <a href="#facilities" class="dropbtn">Fasilitas &#9662;</a>
+          <a class="dropbtn">Fasilitas &#9662;</a>
           <div class="dropdown-content">
             <a href="#rawatjalan">Rawat Jalan</a>
             <a href="#rawatinap">Rawat Inap</a>
@@ -401,7 +401,7 @@
         </div>
 
         <div class="dropdown">
-          <a href="#contact" class="dropbtn">Kontak &#9662;</a>
+          <a class="dropbtn">Kontak &#9662;</a>
           <div class="dropdown-content">
             <a href="#telphone">Telphone</a>
             <a href="#whatsapp">Whatsapp</a>
@@ -432,11 +432,32 @@
   </div>
 
   <!-- Konten -->
-  <main>
-    <main>
-    <div>anda masuk halaman satu</div>
-  </main>
+<main>
+<!-- SECTION berita -->
+  <section id="berita">
+    <h2 class="section-title">Berita</h2>
+    <button id="addberitaBtn">+ Tambah Kartu</button>
+    <div class="cards" id="berita-berita_m"></div>
 
+    <div id="beritaModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeberitaModal">&times;</span>
+        <h3>Tambah Kartu Baru (Berita)</h3>
+        <form id="beritaForm" enctype="multipart/form-data">
+          <label for="beritaImg">Unggah Gambar:</label>
+          <input type="file" id="beritaImg" name="img" accept="image/*" required>
+          
+          <label for="beritaTitle">Judul Kartu:</label>
+          <input type="text" id="beritaTitle" name="title" required placeholder="Masukkan judul kartu">
+          
+          <label for="beritaContent">Konten Kartu:</label>
+          <textarea id="beritaContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+          <button type="submit">Tambah Kartu</button>
+        </form>
+      </div>
+    </div>
+  </section>
 </main>
 
   <footer id="contact">
@@ -451,7 +472,6 @@
   </footer>
 
   <!-- JS eksternal -->
-   <script src="/frontend/visimisi.js"></script>
-  <!-- <script src="sejarah.js"></script> -->
+  <script src="berita.js"></script>
 </body>
 </html>

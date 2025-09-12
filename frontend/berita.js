@@ -6,7 +6,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("visimisi.js loaded!");
+  console.log("berita.js loaded!");
 
   const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
   const searchInput = document.getElementById('searchInput');
@@ -90,36 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==== Inisialisasi Section sejarah ====
-  initSection({
-    apiEndpoint: 'sejarah',
-    containerId: 'sejarah-sejarah_m',
-    addBtnId: 'addSejarahBtn',
-    modalId: 'sejarahModal',
-    closeBtnId: 'closeSejarahModal',
-    formId: 'sejarahForm'
-  });
-
-  // ==== Inisialisasi Section struktur ====
-  initSection({
-    apiEndpoint: 'struktur',
-    containerId: 'struktur-struktur_m',
-    addBtnId: 'addStrukturBtn',
-    modalId: 'strukturModal',
-    closeBtnId: 'closestrukturModal',
-    formId: 'strukturForm'
-  });
-
-  // ==== Inisialisasi Section visimisi ====
-  initSection({
-    apiEndpoint: 'visimisi',
-    containerId: 'visimisi-visimisi_m',
-    addBtnId: 'addvisimisiBtn',
-    modalId: 'visimisiModal',
-    closeBtnId: 'closevisimisiModal',
-    formId: 'visimisiForm'
-  });
-
   // ==== Inisialisasi Section berita ====
   initSection({
     apiEndpoint: 'berita',
@@ -128,46 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modalId: 'beritaModal',
     closeBtnId: 'closeberitaModal',
     formId: 'beritaForm'
-  });
-
-  // ==== Inisialisasi Section pengumuman ====
-  initSection({
-    apiEndpoint: 'pengumuman',
-    containerId: 'pengumuman-pengumuman_m',
-    addBtnId: 'addpengumumanBtn',
-    modalId: 'pengumumanModal',
-    closeBtnId: 'closepengumumanModal',
-    formId: 'pengumumanForm'
-  });
-
-  // ==== Inisialisasi Section penghargaan ====
-  initSection({
-    apiEndpoint: 'penghargaan',
-    containerId: 'penghargaan-penghargaan_m',
-    addBtnId: 'addpenghargaanBtn',
-    modalId: 'penghargaanModal',
-    closeBtnId: 'closepenghargaanModal',
-    formId: 'penghargaanForm'
-  });
-
-  // ==== Inisialisasi Section daftar dokter ====
-  initSection({
-    apiEndpoint: 'daftardokter',
-    containerId: 'daftardokter-daftardokter_m',
-    addBtnId: 'adddaftardokterBtn',
-    modalId: 'daftardokterModal',
-    closeBtnId: 'closedaftardokterModal',
-    formId: 'daftardokterForm'
-  });
-
-  // ==== Inisialisasi Section daftar dokter ====
-  initSection({
-    apiEndpoint: 'jadwaldokter',
-    containerId: 'jadwaldokter-jadwaldokter_m',
-    addBtnId: 'addjadwaldokterBtn',
-    modalId: 'jadwaldokterModal',
-    closeBtnId: 'closejadwaldokterModal',
-    formId: 'jadwaldokterForm'
   });
 
   // ==== Pencarian Global ====
