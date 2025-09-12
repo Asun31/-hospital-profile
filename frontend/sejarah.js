@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error(`Error adding ${apiEndpoint}:`, err);
-        alert(`Gagal menambahkan data ${apiEndpoint}.`);
+        alert(`Gagal menambahkan data, periksa koneksi backend ${apiEndpoint}.`);
       });
     });
   }

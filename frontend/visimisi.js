@@ -6,7 +6,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("home.js loaded!");
+  console.log("visimisi.js loaded!");
 
   const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
   const searchInput = document.getElementById('searchInput');
