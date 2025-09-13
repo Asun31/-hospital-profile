@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<!--
+<!-- /**
  * Created by PhpStorm.
  * User: asun fadrianto
  * Date: 07/09/2025
  * Time: 10.05
--->
+ */ -->
 
 <html lang="id">
 <head>
@@ -13,11 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RSUD Talang Ubi</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Reset Global ===== */
     * {
       margin: 0;
       padding: 0;
@@ -38,10 +36,11 @@
     }
 
     main {
-      flex: 1;
+      flex: 1; 
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
+      font-family: Arial, sans-serif;
     }
 
     section {
@@ -49,7 +48,7 @@
       scroll-margin-top: 80px;
     }
 
-    h2.section-title {
+   h2.section-title {
       color: #81cd8d;
       font-size: 25px;
       margin-bottom: 20px;
@@ -68,56 +67,76 @@
       border-bottom-color: #048a16;
     }
 
-    /* ===== Header ===== */
     header {
       background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);
       color: #fff;
       padding: 10px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 100%;
+    }
+
+    .welcome-message {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      text-align: left;
+    }
+    .welcome-message span {
+      opacity: 0;
+      display: inline-block;
+      animation: appear 0.3s forwards;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .logo-container {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 0 0 auto;
     }
-
     .logo-container img {
       width: 50%;
       height: auto;
       object-fit: contain;
     }
+    .logo-container h1 {
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0;
+      white-space: nowrap;
+    }
 
     .menu {
       display: flex;
       justify-content: flex-end;
-      gap: 20px;
+      gap: 15px;
       flex-wrap: wrap;
     }
-
     .menu a {
       color: #fff;
       text-decoration: none;
       font-weight: 600;
       transition: 0.3s;
     }
-
     .menu a:hover {
       color: #048a16;
     }
 
-    /* Dropdown Menu */
     .dropdown {
       position: relative;
     }
-
     .dropdown-content {
       display: none;
       position: absolute;
@@ -126,22 +145,18 @@
       box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
       z-index: 1;
     }
-
     .dropdown-content a {
       color: #000;
       padding: 8px 12px;
       text-decoration: none;
       display: block;
     }
-
     .dropdown-content a:hover {
       background-color: #f1f1f1;
     }
-
     .dropdown:hover .dropdown-content {
       display: block;
     }
-
     .dropdown:hover .dropbtn {
       color: #048a16;
     }
@@ -150,51 +165,144 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 0 0 auto;
     }
-
     .search-box input {
+      flex: 0 0 120px;
       padding: 6px 10px;
       border-radius: 20px;
       border: none;
       outline: none;
       font-size: 12px;
     }
-
-    /* ===== Cards ===== */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 25px;
-      margin-top: 20px;
+    .search-box input::placeholder {
+      color: #666;
+      font-size: 12px;
     }
 
-    @media (max-width: 992px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-top: 20px;
+      padding: 10px;
+    }
 
     .card {
       background: #fff;
-      border-radius: 15px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
     }
 
-   .card img {
-      width: 100%;              
-      height: auto;           
-      object-fit: cover;       
-      background-color: #f0f0f0;
-      display: block;          
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background-color: #f5f5f5;
+      display: block;
     }
 
     .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       padding: 15px;
-      text-align: justify;
     }
 
-    /* ===== Modal ===== */
+    .card-content h3 {
+      width: 100%;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+    }
+
+    .card-content p {
+      width: 100%;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #555;
+      text-align: justify;
+      text-justify: inter-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-content .meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 8px;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+      width: 100%;
+    }
+
+    .card-content .read-more {
+      margin-top: 12px;
+      align-self: flex-start;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: white;
+      background: #81cd8d;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .card-content .read-more:hover {
+      background: #048a16;
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #addCardBtn {
+      background-color: #81cd8d;
+      color: white;
+      font-size: 16px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      margin-bottom: 20px;
+    }
+    #addCardBtn:hover { background-color: #66b370; transform: scale(1.05); }
+    #addCardBtn:focus { outline: none; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+    #addCardBtn:active { background-color: #56a55b; }
+
     .modal {
       display: none;
       position: fixed;
@@ -254,66 +362,42 @@
     }
     .close-btn:hover { color: #000; transform: scale(1.2); }
 
-    /* ===== Struktur Layout - Kiri dan Kanan ===== */
-    .struktur-layout {
-      display: grid;
-      grid-template-columns: 3fr 1fr; /* Kiri lebih besar */
-      gap: 30px;
-    }
-
-    .struktur-kiri {
-      background-color: transparent;
-    }
-
-    .struktur-kanan {
-      margin-top: 14%;
-      background-color: transparent;
-    }
-
-    @media (max-width: 768px) {
-      .struktur-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* ===== Footer ===== */
     footer {
       background: #81cd8d;
       color: #fff;
       text-align: center;
       padding: 10px 0;
       width: 100%;
-      flex-shrink: 0;
+      flex-shrink: 0; 
     }
-
-    footer p {
-      font-size: 12px;
-      margin: 5px 0;
-    }
-
+    footer p { font-size: 12px; margin: 5px 0; }
     .social a {
       margin: 0 8px;
       color: #fff;
       font-weight: bold;
       text-decoration: none;
     }
-
     .social a:hover { color: #048a16; }
 
     .powered-by {
-      user-select: none;
+      user-select: none;     
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       cursor: default;
+    }
+
+    .powered-by::selection {
+      background: none;
     }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header>
-    <div class="logo-container">
-      <img src="../asset/logo-rsud.png" alt="Logo RSUD">
-    </div>
-     <nav>
+    <header>
+      <div class="logo-container">
+        <img src="../asset/logo-rsud.png" alt="Logo RSUD">
+      </div>
+      <nav>
         <div class="menu">
           <a href="/home">Beranda</a>
           <div class="dropdown">
@@ -361,66 +445,51 @@
           </div>
         </div>
       </nav>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Cari...">
-    </div>
-    <div class="welcome-message">
-      Admin
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    <!-- SECTION Struktur -->
-    <section id="struktur">
-      <h2 class="section-title">Struktur</h2>
-
-      <div class="struktur-layout">
-        <!-- Kiri -->
-        <div class="struktur-kiri">
-          <button id="addStrukturBtn">+ Tambah Kartu</button>
-          <div class="cards" id="struktur-struktur_m"></div>
-        </div>
-
-        <!-- Kanan -->
-        <div class="struktur-kanan">
-          <p><b>Berita Terkini</b></p>
-        </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Cari...">
       </div>
-
-      <div id="strukturModal" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" id="closestrukturModal">&times;</span>
-          <h3>Tambah Kartu Baru (Struktur)</h3>
-          <form id="strukturForm" enctype="multipart/form-data">
-            <label for="strukturImg">Unggah Gambar:</label>
-            <input type="file" id="strukturImg" name="img" accept="image/*" required>
-            
-            <label for="strukturTitle">Judul Kartu:</label>
-            <input type="text" id="strukturTitle" name="title" required placeholder="Masukkan judul kartu">
-            
-            <label for="strukturContent">Konten Kartu:</label>
-            <textarea id="strukturContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
-
-            <button type="submit">Tambah Kartu</button>
-          </form>
-        </div>
+      <div class="welcome-message">
+          Admin
       </div>
-    </section>
-  </main>
+    </header>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; <span class="powered-by">Powered by asunfadrianto | All rights reserved.</span></p>
-    <p class="social">
-      <a href="#">Facebook</a> | 
-      <a href="#">Instagram</a> | 
-      <a href="#">X</a> | 
-      <a href="#">Youtube</a>
-    </p>
-  </footer>
+    <main>
+      <section id="pengumuman">
+        <h2 class="section-title">Pengumuman</h2>
+        <button id="addpengumumanBtn">+ Tambah Kartu</button>
+        <div class="cards" id="pengumuman-pengumuman_m"></div>
 
-  <!-- JS eksternal -->
-  <script src="struktur.js"></script>
-</body>
+        <div id="pengumumanModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closepengumumanModal">&times;</span>
+            <h3>Tambah Kartu Baru (Pengumuman)</h3>
+            <form id="pengumumanForm" enctype="multipart/form-data">
+              <label for="pengumumanImg">Unggah Gambar:</label>
+              <input type="file" id="pengumumanImg" name="img" accept="image/*" required>
+              
+              <label for="pengumumanTitle">Judul Kartu:</label>
+              <input type="text" id="pengumumanTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="pengumumanContent">Konten Kartu:</label>
+              <textarea id="pengumumanContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <p></p>
+      <p>&copy; <span class="powered-by">Powered by asunfadrianto | All rights reserved.</span></p>
+      <p class="social">
+        <a href="#">Facebook</a> | 
+        <a href="#">Instagram</a> | 
+        <a href="#">X</a> | 
+        <a href="#">Youtube</a>
+      </p>
+    </footer>
+    <script src="pengumuman.js"></script>
+  </body>
 </html>

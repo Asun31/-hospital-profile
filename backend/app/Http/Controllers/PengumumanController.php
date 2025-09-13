@@ -15,38 +15,49 @@ use Illuminate\Support\Facades\Storage;
 
 class PengumumanController extends Controller
 {
-    // Method untuk mengambil data kartu
     public function index()
     {
-        $pengumuman_m = Pengumuman::all();  
-        return response()->json($pengumuman_m);  
+        $pengumuman_m = Pengumuman::all();
+        return response()->json($pengumuman_m);
     }
 
-    // Method untuk menambah kartu baru
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
-            'title' => 'required|string',  
-            'content' => 'required|string', 
+            'title' => 'required|string',
+            'content' => 'required|string',
         ]);
 
-        // Cek apakah gambar ada dan valid
         if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
             return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
         }
 
-        // Meng-upload gambar dan menyimpan path-nya
-        $imagePath = $request->file('img')->store('images', 'public');  
-        // Menyimpan data kartu ke dalam database
+        $imagePath = $request->file('img')->store('images', 'public');
+
         $pengumuman_m = Pengumuman::create([
-            'img' => $imagePath, 
+            'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        // Mengembalikan response dengan data kartu yang baru disimpan
-        return response()->json($pengumuman_m, 201); 
+        return response()->json($pengumuman_m, 201);
+    }
+
+    public function destroy($id)
+    {
+        $pengumuman = Pengumuman::find($id);
+
+        if (!$pengumuman) {
+            return response()->json(['message' => 'Pengumuman tidak ditemukan'], 404);
+        }
+
+        if ($pengumuman->img && Storage::disk('public')->exists($pengumuman->img)) {
+            Storage::disk('public')->delete($pengumuman->img);
+        }
+
+        $pengumuman->delete();
+
+        return response()->json(['message' => 'Pengumuman berhasil dihapus'], 200);
     }
 }

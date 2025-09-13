@@ -15,38 +15,82 @@ use Illuminate\Support\Facades\Storage;
 
 class PenghargaanController extends Controller
 {
-    // Method untuk mengambil data kartu
     public function index()
     {
-        $penghargaan_m = Penghargaan::all();  
-        return response()->json($penghargaan_m);  
+        $penghargaan_m = Penghargaan::all();
+        return response()->json($penghargaan_m);
     }
 
-    // Method untuk menambah kartu baru
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
-            'title' => 'required|string',  
-            'content' => 'required|string', 
+            'title' => 'required|string',
+            'content' => 'required|string',
         ]);
 
-        // Cek apakah gambar ada dan valid
         if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
             return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
         }
 
-        // Meng-upload gambar dan menyimpan path-nya
-        $imagePath = $request->file('img')->store('images', 'public');  
-        // Menyimpan data kartu ke dalam database
+        $imagePath = $request->file('img')->store('images', 'public');
+
         $penghargaan_m = Penghargaan::create([
-            'img' => $imagePath, 
+            'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        // Mengembalikan response dengan data kartu yang baru disimpan
-        return response()->json($penghargaan_m, 201); 
+        return response()->json($penghargaan_m, 201);
+    }
+
+    public function destroy($id)
+    {
+        $penghargaan = Penghargaan::find($id);
+
+        if (!$penghargaan) {
+            return response()->json(['message' => 'penghargaan tidak ditemukan'], 404);
+        }
+
+        if ($penghargaan->img && Storage::disk('public')->exists($penghargaan->img)) {
+            Storage::disk('public')->delete($penghargaan->img);
+        }
+
+        $penghargaan->delete();
+
+        return response()->json(['message' => 'penghargaan berhasil dihapus'], 200);
+    }
+
+    /**
+     * Tambahan: Update/Edit Penghargaan
+     */
+    public function update(Request $request, $id)
+    {
+        $penghargaan = Penghargaan::find($id);
+
+        if (!$penghargaan) {
+            return response()->json(['message' => 'penghargaan tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        // Jika ada gambar baru, hapus yang lama dan upload baru
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            if ($penghargaan->img && Storage::disk('public')->exists($penghargaan->img)) {
+                Storage::disk('public')->delete($penghargaan->img);
+            }
+            $imagePath = $request->file('img')->store('images', 'public');
+            $penghargaan->img = $imagePath;
+        }
+
+        $penghargaan->title = $request->title;
+        $penghargaan->content = $request->content;
+        $penghargaan->save();
+
+        return response()->json($penghargaan, 200);
     }
 }
