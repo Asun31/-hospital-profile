@@ -40,6 +40,47 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => console.error(`Error fetching ${apiEndpoint}:`, err));
 
+    // ===== Tambahkan di bawah kode fetch untuk render kartu =====
+      container.addEventListener('click', (e) => {
+          if (e.target.tagName === 'IMG') {
+              const src = e.target.src;
+
+              let modal = document.getElementById('imgModal');
+              if (!modal) {
+                  modal = document.createElement('div');
+                  modal.id = 'imgModal';
+                  modal.style.position = 'fixed';
+                  modal.style.top = '0';
+                  modal.style.left = '0';
+                  modal.style.width = '100%';
+                  modal.style.height = '100%';
+                  modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+                  modal.style.display = 'flex';
+                  modal.style.alignItems = 'center';
+                  modal.style.justifyContent = 'center';
+                  modal.style.zIndex = '2000';
+                  modal.style.cursor = 'pointer';
+
+                  const img = document.createElement('img');
+                  img.id = 'imgModalContent';
+                  img.style.maxWidth = '90%';
+                  img.style.maxHeight = '90%';
+                  img.style.boxShadow = '0 0 20px rgba(255,255,255,0.5)';
+                  modal.appendChild(img);
+
+                  document.body.appendChild(modal);
+
+                  modal.addEventListener('click', () => {
+                      modal.style.display = 'none';
+                  });
+              }
+
+              const modalImg = document.getElementById('imgModalContent');
+              modalImg.src = src;
+              modal.style.display = 'flex';
+          }
+      });
+
     // ==== Modal open/close ====
     addBtn.addEventListener('click', () => modal.style.display = 'block');
     closeBtn.addEventListener('click', () => modal.style.display = 'none');
