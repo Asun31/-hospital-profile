@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: asun fadrianto
- * Date: 07/09/2025
- * Time: 10.05
- */
-
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
@@ -15,38 +8,54 @@ use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
-    // Method untuk mengambil data kartu
+    // Ambil semua data kartu
     public function index()
     {
-        $berita_m = Berita::all();  
-        return response()->json($berita_m);  
+        $berita_m = Berita::all();
+        return response()->json($berita_m);
     }
 
-    // Method untuk menambah kartu baru
+    // Tambah kartu baru
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
-            'title' => 'required|string',  
-            'content' => 'required|string', 
+            'title' => 'required|string',
+            'content' => 'required|string',
         ]);
 
-        // Cek apakah gambar ada dan valid
         if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
             return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
         }
 
-        // Meng-upload gambar dan menyimpan path-nya
-        $imagePath = $request->file('img')->store('images', 'public');  
-        // Menyimpan data kartu ke dalam database
+        $imagePath = $request->file('img')->store('images', 'public');
+
         $berita_m = Berita::create([
-            'img' => $imagePath, 
+            'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        // Mengembalikan response dengan data kartu yang baru disimpan
-        return response()->json($berita_m, 201); 
+        return response()->json($berita_m, 201);
+    }
+
+    // Hapus kartu berita
+    public function destroy($id)
+    {
+        $berita = Berita::find($id);
+
+        if (!$berita) {
+            return response()->json(['message' => 'Berita tidak ditemukan'], 404);
+        }
+
+        // Hapus gambar dari storage jika ada
+        if ($berita->img && Storage::disk('public')->exists($berita->img)) {
+            Storage::disk('public')->delete($berita->img);
+        }
+
+        // Hapus data dari database
+        $berita->delete();
+
+        return response()->json(['message' => 'Berita berhasil dihapus'], 200);
     }
 }

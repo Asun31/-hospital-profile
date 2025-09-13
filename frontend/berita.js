@@ -1,7 +1,14 @@
+// /**
+//  * Created by PhpStorm.
+//  * User: asun fadrianto
+//  * Date: 07/09/2025
+//  * Time: 10.05
+//  */ 
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log("berita.js loaded!");
 
-  const LARAVEL_URL = "http://localhost:8000"; // URL backend Laravel
+  const LARAVEL_URL = "http://localhost:8000"; 
   const searchInput = document.getElementById('searchInput');
   const container = document.getElementById('berita-berita_m');
 
@@ -16,18 +23,52 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error(`Error fetching berita:`, err));
   }
 
-  // Render kartu berita ke container
   function renderCards() {
     container.innerHTML = '';
     beritaData.forEach((item, index) => {
       container.innerHTML += `
-        <div class="card searchable" data-index="${index}">
-          <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}">
-          <div class="card-content">
+        <div class="card searchable" data-index="${index}" style="cursor: pointer; position: relative; margin-top: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          
+          <!-- Tombol Hapus di atas -->
+          <button class="delete-card" data-index="${index}" style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            z-index: 10;
+          ">Hapus</button>
+
+          <!-- Gambar -->
+          <div style="
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+          ">
+            <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
+              max-width: 100%;
+              max-height: 100%;
+              object-fit: contain;
+              display: block;
+            ">
+          </div>
+
+          <!-- Konten Card -->
+          <div class="card-content" style="padding: 15px;">
             <h3>${item.title}</h3>
             <p>${item.content.substring(0, 100)}...</p>
-             <p style="font-size: 12px; color: #777; margin-bottom: 10px; margin-top: 10px;">
-              <strong>Upload pada tanggal</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br> 
+            <p style="font-size: 10px; color: #777; margin-bottom: 10px; margin-top: 10px;">
+              <strong>Upload pada tanggal</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'},<br> 
               <strong>oleh</strong> ${item.author || 'Admin'}
             </p>
             <button class="read-more" data-index="${index}">Selengkapnya</button>
@@ -35,9 +76,42 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
     });
+
+    container.querySelectorAll('.delete-card').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = '#c0392b';
+        btn.style.transform = 'scale(1.05)';
+        btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = '#e74c3c';
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+      });
+    });
+
+    container.querySelectorAll('.delete-card').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = btn.getAttribute('data-index');
+        const item = beritaData[idx];
+        if (confirm('Apakah yakin ingin menghapus berita ini?')) {
+          fetch(`${LARAVEL_URL}/api/berita/${item.id}`, { method: 'DELETE' })
+            .then(res => {
+              if (res.ok) {
+                beritaData.splice(idx, 1);
+                renderCards();
+                alert('Berita berhasil dihapus!');
+              } else {
+                alert('Gagal menghapus berita.');
+              }
+            })
+            .catch(err => console.error(err));
+        }
+      });
+    });
   }
 
-  // Modal detail berita (buat sekali)
   let detailModal = document.getElementById('detailModal');
   if (!detailModal) {
     detailModal = document.createElement('div');
@@ -56,41 +130,106 @@ document.addEventListener('DOMContentLoaded', () => {
     detailModal.style.fontFamily = 'Arial, sans-serif';
 
     detailModal.innerHTML = `
-      <div style="
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 8px;
+      <div id="detailModalContent" style="
+        position: relative;
+        max-width: 900px;
+        width: 90%;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        transform: translateY(-50px);
+        opacity: 0;
+        transition: all 0.3s ease;
       ">
         <button id="closeDetailModal" style="
-          float: right;
-          font-size: 28px;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          font-size: 12px;
           font-weight: bold;
           border: none;
-          background: transparent;
+          background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+          color: white;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
           cursor: pointer;
-          padding: 10px 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
         ">&times;</button>
-        <img id="detailImage" src="" alt="Gambar Berita" style="
+
+        <div style="
           width: 100%;
-          height: auto;
-          display: block;
+          height: 400px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #f8f8f8;
+          overflow: hidden;
         ">
-        <div style="padding: 20px;">
-          <h2 id="detailTitle" style="margin-top: 0; margin-bottom: 10px;"></h2>
-          <p id="detailDate" style="font-size: 14px; color: #007bff; margin-top: 0; margin-bottom: 20px; font-weight: bold;"></p>
-          <p id="detailContent" style="font-size: 16px; line-height: 1.5; white-space: pre-line; color: #333;"></p>
+          <img id="detailImage" src="" alt="Gambar Berita" style="
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+          ">
+        </div>
+
+        <div style="
+          padding: 25px 30px;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        ">
+          <h2 id="detailTitle" style="
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #048a16;
+          "></h2>
+          <p id="detailDate" style="
+            font-size: 10px;
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+          "></p>
+          <p id="detailContent" style="
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
+            color: #444;
+            text-align: justify;
+          "></p>
         </div>
       </div>
     `;
 
     document.body.appendChild(detailModal);
 
-    // Close modal event
-    document.getElementById('closeDetailModal').addEventListener('click', () => {
+    setTimeout(() => {
+      const modalContent = document.getElementById('detailModalContent');
+      modalContent.style.transform = 'translateY(0)';
+      modalContent.style.opacity = '1';
+    }, 10);
+
+    const closeBtnDetail = document.getElementById('closeDetailModal');
+    closeBtnDetail.addEventListener('click', () => {
       detailModal.style.display = 'none';
+    });
+    closeBtnDetail.addEventListener('mouseenter', () => {
+      closeBtnDetail.style.transform = 'scale(1.2)';
+      closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5))';
+      closeBtnDetail.style.boxShadow = '0 6px 18px rgba(0,0,0,0.6)';
+    });
+    closeBtnDetail.addEventListener('mouseleave', () => {
+      closeBtnDetail.style.transform = 'scale(1)';
+      closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3))';
+      closeBtnDetail.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
     });
 
     detailModal.addEventListener('click', (e) => {
@@ -98,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fungsi tampilkan modal detail berita
   function showDetailModal(index) {
     const item = beritaData[index];
     if (!item) return;
@@ -116,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
     detailModal.scrollTop = 0;
   }
 
-  // Event delegation untuk tombol Selengkapnya
   container.addEventListener('click', (e) => {
     if (e.target.classList.contains('read-more')) {
       const idx = e.target.getAttribute('data-index');
@@ -124,7 +261,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // === Bagian modal buka/tutup modal add baru (kode kamu sebelumnya) ===
+  container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('read-more')) {
+      const idx = e.target.getAttribute('data-index');
+      showDetailModal(idx);
+    }
+
+    const card = e.target.closest('.card');
+    if (card && !e.target.classList.contains('read-more')) {
+      const idx = card.getAttribute('data-index');
+      showDetailModal(idx);
+    }
+  });
+
+  
   const addBtn = document.getElementById('addberitaBtn');
   const modal = document.getElementById('beritaModal');
   const closeBtn = document.getElementById('closeberitaModal');
@@ -170,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ==== Pencarian Global ====
+
   searchInput?.addEventListener('input', () => {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const sections = document.querySelectorAll('main section');
