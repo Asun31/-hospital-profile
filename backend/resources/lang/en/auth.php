@@ -1,17 +1,14 @@
 <?php
 
-return [
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
+
+return [
 
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',

@@ -1,17 +1,14 @@
 <?php
 
-return [
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
+
+return [
 
     'accepted' => 'The :attribute must be accepted.',
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
