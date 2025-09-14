@@ -1,9 +1,9 @@
-// /**
-//  * Created by PhpStorm.
-//  * User: asun fadrianto
-//  * Date: 07/09/2025
-//  * Time: 10.05
-//  */ 
+/**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */ 
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("penghargaan.js loaded!");
@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('penghargaan-penghargaan_m');
 
   let penghargaanData = [];
+
   function initSection() {
     fetch(`${LARAVEL_URL}/api/penghargaan`)
       .then(res => res.json())
@@ -24,159 +25,155 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderCards() {
-  container.innerHTML = '';
+    container.innerHTML = '';
 
-  // ✅ Urutkan penghargaan dari terbaru ke terlama (tidak dipotong)
-  const itemsToRender = [...penghargaanData].sort(
-    (a, b) => new Date(b.created_at) - new Date(a.created_at)
-  );
+    const itemsToRender = [...penghargaanData].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
-  itemsToRender.forEach((item, index) => {
-    container.innerHTML += `
-      <div class="card searchable" data-index="${index}" style="
-        cursor: pointer;
-        position: relative;
-        margin-top: 10px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
-      ">
-        <!-- Tombol Edit -->
-        <button class="edit-card" data-index="${index}" style="
-          position: absolute;
-          top: 10px;
-          right: 100px;
-          background: #3498db;
-          color: white;
-          border: none;
-          padding: 6px 12px;
-          border-radius: 6px;
+    itemsToRender.forEach((item) => {
+      container.innerHTML += `
+        <div class="card searchable" data-id="${item.id}" style="
           cursor: pointer;
-          font-weight: bold;
-          font-size: 13px;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-          transition: all 0.2s ease;
-          z-index: 10;
-        ">✏️ Edit</button>
-
-        <!-- Tombol Hapus -->
-        <button class="delete-card" data-index="${index}" style="
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: #e74c3c;
-          color: white;
-          border: none;
-          padding: 6px 12px;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: bold;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-          transition: all 0.2s ease;
-          z-index: 10;
-        ">🗑️ Hapus</button>
-
-        <!-- Gambar -->
-        <div style="
-          width: 100%;
-          height: 120px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: #f0f0f0;
+          position: relative;
+          margin-top: 10px;
+          border-radius: 8px;
           overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          transition: transform 0.2s ease, box-shadow 0.3s ease;
         ">
-          <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          ">
-        </div>
-
-        <!-- Konten Card -->
-        <div class="card-content" style="padding: 10px 12px;">
-          <h3 style="font-size: 14px; margin: 5px 0;">${item.title}</h3>
-          <p style="
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 12px;
-            margin: 0 0 6px;
-          ">
-            ${item.content}
-          </p>
-          <p style="font-size: 10px; color: #777; margin: 0 0 8px;">
-            <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
-            <strong>Oleh:</strong> ${item.author || 'Admin'}
-          </p>
-          <button class="read-more" data-index="${index}" style="
-            background: transparent;
-            border: 1px solid #3498db;
-            color: #3498db;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+          <button class="edit-card" data-id="${item.id}" style="
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
-          ">Selengkapnya</button>
+            z-index: 10;
+          ">✏️ Edit</button>
+
+          <button class="delete-card" data-id="${item.id}" style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            z-index: 10;
+          ">🗑️ Hapus</button>
+
+          <div style="
+            width: 100%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+          ">
+            <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            ">
+          </div>
+
+          <div class="card-content" style="padding: 10px 12px;">
+            <h3 style="font-size: 14px; margin: 5px 0;">${item.title}</h3>
+            <p style="
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 3;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-size: 12px;
+              margin: 0 0 6px;
+            ">
+              ${item.content}
+            </p>
+            <p style="font-size: 10px; color: #777; margin: 0 0 8px;">
+              <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+              <strong>Oleh:</strong> ${item.author || 'Admin'}
+            </p>
+            <button class="read-more" data-id="${item.id}" style="
+              background: transparent;
+              border: 1px solid #3498db;
+              color: #3498db;
+              padding: 4px 8px;
+              border-radius: 4px;
+              font-size: 12px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+            ">Selengkapnya</button>
+          </div>
         </div>
-      </div>
-    `;
-  });
-
-  // Hover + click Delete
-  container.querySelectorAll('.delete-card').forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = '#c0392b';
-      btn.style.transform = 'scale(1.05)';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background = '#e74c3c';
-      btn.style.transform = 'scale(1)';
+      `;
     });
 
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = btn.getAttribute('data-index');
-      const item = itemsToRender[idx];
-      if (confirm('Apakah yakin ingin menghapus penghargaan ini?')) {
-        fetch(`${LARAVEL_URL}/api/penghargaan/${item.id}`, { method: 'DELETE' })
-          .then(res => {
-            if (res.ok) {
-              penghargaanData = penghargaanData.filter(b => b.id !== item.id);
-              renderCards();
-              alert('Penghargaan berhasil dihapus!');
-            } else {
-              alert('Gagal menghapus penghargaan.');
-            }
-          })
-          .catch(err => console.error(err));
-      }
-    });
-  });
+    container.querySelectorAll('.delete-card').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = '#c0392b';
+        btn.style.transform = 'scale(1.05)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = '#e74c3c';
+        btn.style.transform = 'scale(1)';
+      });
 
-  // Hover + click Edit
-  container.querySelectorAll('.edit-card').forEach(btn => {
-    btn.addEventListener('mouseenter', () => btn.style.background = '#2980b9');
-    btn.addEventListener('mouseleave', () => btn.style.background = '#3498db');
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = btn.getAttribute('data-index');
-      const item = itemsToRender[idx];
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-id');
+        const item = penghargaanData.find(b => b.id == id);
+        if (!item) return;
 
-      document.getElementById('editTitle').value = item.title;
-      document.getElementById('editContent').value = item.content;
-      document.getElementById('editpenghargaanModal').style.display = 'block';
-      document.getElementById('editpenghargaanForm').setAttribute('data-id', item.id);
+        if (confirm('Apakah yakin ingin menghapus penghargaan ini?')) {
+          fetch(`${LARAVEL_URL}/api/penghargaan/${item.id}`, { method: 'DELETE' })
+            .then(res => {
+              if (res.ok) {
+                penghargaanData = penghargaanData.filter(b => b.id !== item.id);
+                renderCards();
+                alert('Penghargaan berhasil dihapus!');
+              } else {
+                alert('Gagal menghapus penghargaan.');
+              }
+            })
+            .catch(err => console.error(err));
+        }
+      });
     });
-  });
-}
+
+    container.querySelectorAll('.edit-card').forEach(btn => {
+      btn.addEventListener('mouseenter', () => btn.style.background = '#2980b9');
+      btn.addEventListener('mouseleave', () => btn.style.background = '#3498db');
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-id');
+        const item = penghargaanData.find(b => b.id == id);
+        if (!item) return;
+
+        document.getElementById('editTitle').value = item.title;
+        document.getElementById('editContent').value = item.content;
+        document.getElementById('editpenghargaanModal').style.display = 'block';
+        document.getElementById('editpenghargaanForm').setAttribute('data-id', item.id);
+      });
+    });
+  }
 
   // === Modal Detail ===
   let detailModal = document.getElementById('detailModal');
@@ -304,8 +301,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function showDetailModal(index) {
-    const item = penghargaanData[index];
+  // Show detail modal by id
+  function showDetailModal(id) {
+    const item = penghargaanData.find(b => b.id == id);
     if (!item) return;
 
     document.getElementById('detailTitle').innerText = item.title;
@@ -322,25 +320,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   container.addEventListener('click', (e) => {
-    if (e.target.classList.contains('read-more')) {
-      const idx = e.target.getAttribute('data-index');
-      showDetailModal(idx);
-    }
+    const id = e.target.closest('.card')?.getAttribute('data-id') || e.target.getAttribute('data-id');
+    if (!id) return;
+
+    showDetailModal(id);
   });
 
-  container.addEventListener('click', (e) => {
-    if (e.target.classList.contains('read-more')) {
-      const idx = e.target.getAttribute('data-index');
-      showDetailModal(idx);
-    }
-
-    const card = e.target.closest('.card');
-    if (card && !e.target.classList.contains('read-more')) {
-      const idx = card.getAttribute('data-index');
-      showDetailModal(idx);
-    }
-  });
-
+  // === Add/Edit Modal ===
   const addBtn = document.getElementById('addpenghargaanBtn');
   const modal = document.getElementById('penghargaanModal');
   const closeBtn = document.getElementById('closepenghargaanModal');
@@ -354,13 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form?.addEventListener('submit', e => {
     e.preventDefault();
-
     const img = form.querySelector('input[type="file"]').files[0];
     const title = form.querySelector('input[name="title"]').value;
     const content = form.querySelector('textarea[name="content"]').value;
 
     if (!img) return alert("Harap pilih gambar!");
-
     const validImageTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
     if (!validImageTypes.includes(img.type)) return alert("File bukan gambar valid.");
 
@@ -397,9 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (sectionTitle.includes(searchTerm) && searchTerm !== '') {
         section.style.display = '';
-        Array.from(cards).forEach(card => {
-          card.style.display = '';
-        });
+        Array.from(cards).forEach(card => { card.style.display = ''; });
         return; 
       }
 
@@ -407,16 +389,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
         const content = card.querySelector('p')?.innerText.toLowerCase() || '';
         const matches = title.includes(searchTerm) || content.includes(searchTerm);
-
         card.style.display = matches || searchTerm === '' ? '' : 'none';
         if (matches) cardMatches = true;
       });
 
-      if (sectionTitle.includes(searchTerm) || cardMatches || searchTerm === '') {
-        section.style.display = '';
-      } else {
-        section.style.display = 'none';
-      }
+      section.style.display = sectionTitle.includes(searchTerm) || cardMatches || searchTerm === '' ? '' : 'none';
     });
   });
 
@@ -444,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
       box-shadow: 0 8px 30px rgba(0,0,0,0.2);
       font-family: 'Segoe UI', Tahoma, sans-serif;
     ">
-      <!-- Tombol Close -->
       <button id="closeEditModal" style="
         position: absolute;
         top: 12px;
@@ -458,7 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
         transition: transform 0.2s ease, color 0.2s ease;
       ">&times;</button>
 
-      <!-- Judul Modal -->
       <h3 style="
         text-align: center;
         font-size: 20px;
@@ -467,10 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         margin-bottom: 20px;
       ">✏️ Edit penghargaan</h3>
 
-      <!-- Form Edit -->
       <form id="editpenghargaanForm" style="display: flex; flex-direction: column; gap: 15px;">
-        
-        <!-- Textarea Judul -->
         <textarea id="editTitle" name="title" placeholder="Judul penghargaan" required style="
           padding: 10px 12px;
           border: 1px solid #ccc;
@@ -482,7 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
           line-height: 1.4;
         "></textarea>
 
-        <!-- Textarea Konten -->
         <textarea id="editContent" name="content" placeholder="Deskripsi / Konten" required style="
           padding: 12px 14px;
           border: 1px solid #ccc;
@@ -492,13 +463,11 @@ document.addEventListener('DOMContentLoaded', () => {
           min-height: 120px;
         "></textarea>
 
-        <!-- Input Gambar -->
         <input type="file" id="editImg" name="img" accept="image/*" style="
           font-size: 14px;
           padding: 6px 0;
         ">
 
-        <!-- Tombol Simpan -->
         <button type="submit" style="
           background: #3498db;
           color: white;
@@ -522,29 +491,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('editpenghargaanForm').addEventListener('submit', e => {
     e.preventDefault();
-      // Konfirmasi sebelum menyimpan
-      const yakin = confirm("Yakin mau menyimpan perubahan?");
-      if (!yakin) return; // Jika klik "Batal", keluar dari fungsi
+    const yakin = confirm("Yakin mau menyimpan perubahan?");
+    if (!yakin) return;
 
-      const formEl = e.target;
-      const id = formEl.getAttribute('data-id');
-      const formData = new FormData(formEl);
-      const imgFile = document.getElementById('editImg').files[0];
-      if (imgFile) formData.append('img', imgFile);
+    const formEl = e.target;
+    const id = formEl.getAttribute('data-id');
+    const formData = new FormData(formEl);
+    const imgFile = document.getElementById('editImg').files[0];
+    if (imgFile) formData.append('img', imgFile);
 
-      fetch(`${LARAVEL_URL}/api/penghargaan/${id}`, {
-          method: 'POST',
-          headers: { 'X-HTTP-Method-Override': 'PUT' },
-          body: formData
-      })
-      .then(res => res.json())
-      .then(updated => {
-          const idx = penghargaanData.findIndex(p => p.id == id);
-          penghargaanData[idx] = updated;
-          renderCards();
-          editModal.style.display = "none";
-      })
-      .catch(err => console.error("Error updating:", err));
+    fetch(`${LARAVEL_URL}/api/penghargaan/${id}`, {
+      method: 'POST',
+      headers: { 'X-HTTP-Method-Override': 'PUT' },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(updated => {
+      const idx = penghargaanData.findIndex(p => p.id == id);
+      penghargaanData[idx] = updated;
+      renderCards();
+      editModal.style.display = "none";
+    })
+    .catch(err => console.error("Error updating:", err));
   });
 
   initSection();
