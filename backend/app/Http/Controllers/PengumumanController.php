@@ -49,7 +49,7 @@ class PengumumanController extends Controller
         $pengumuman = Pengumuman::find($id);
 
         if (!$pengumuman) {
-            return response()->json(['message' => 'Pengumuman tidak ditemukan'], 404);
+            return response()->json(['message' => 'pengumuman tidak ditemukan'], 404);
         }
 
         if ($pengumuman->img && Storage::disk('public')->exists($pengumuman->img)) {
@@ -58,6 +58,39 @@ class PengumumanController extends Controller
 
         $pengumuman->delete();
 
-        return response()->json(['message' => 'Pengumuman berhasil dihapus'], 200);
+        return response()->json(['message' => 'pengumuman berhasil dihapus'], 200);
+    }
+
+    /**
+     * Tambahan: Update/Edit pengumuman
+     */
+    public function update(Request $request, $id)
+    {
+        $pengumuman = Pengumuman::find($id);
+
+        if (!$pengumuman) {
+            return response()->json(['message' => 'pengumuman tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        // Jika ada gambar baru, hapus yang lama dan upload baru
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            if ($pengumuman->img && Storage::disk('public')->exists($pengumuman->img)) {
+                Storage::disk('public')->delete($pengumuman->img);
+            }
+            $imagePath = $request->file('img')->store('images', 'public');
+            $pengumuman->img = $imagePath;
+        }
+
+        $pengumuman->title = $request->title;
+        $pengumuman->content = $request->content;
+        $pengumuman->save();
+
+        return response()->json($pengumuman, 200);
     }
 }

@@ -15,14 +15,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
-    // Ambil semua data kartu
     public function index()
     {
         $berita_m = Berita::all();
         return response()->json($berita_m);
     }
 
-    // Tambah kartu baru
     public function store(Request $request)
     {
         $request->validate([
@@ -46,23 +44,53 @@ class BeritaController extends Controller
         return response()->json($berita_m, 201);
     }
 
-    // Hapus kartu berita
     public function destroy($id)
     {
         $berita = Berita::find($id);
 
         if (!$berita) {
-            return response()->json(['message' => 'Berita tidak ditemukan'], 404);
+            return response()->json(['message' => 'berita tidak ditemukan'], 404);
         }
 
-        // Hapus gambar dari storage jika ada
         if ($berita->img && Storage::disk('public')->exists($berita->img)) {
             Storage::disk('public')->delete($berita->img);
         }
 
-        // Hapus data dari database
         $berita->delete();
 
-        return response()->json(['message' => 'Berita berhasil dihapus'], 200);
+        return response()->json(['message' => 'berita berhasil dihapus'], 200);
+    }
+
+    /**
+     * Tambahan: Update/Edit berita
+     */
+    public function update(Request $request, $id)
+    {
+        $berita = Berita::find($id);
+
+        if (!$berita) {
+            return response()->json(['message' => 'berita tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        // Jika ada gambar baru, hapus yang lama dan upload baru
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            if ($berita->img && Storage::disk('public')->exists($berita->img)) {
+                Storage::disk('public')->delete($berita->img);
+            }
+            $imagePath = $request->file('img')->store('images', 'public');
+            $berita->img = $imagePath;
+        }
+
+        $berita->title = $request->title;
+        $berita->content = $request->content;
+        $berita->save();
+
+        return response()->json($berita, 200);
     }
 }

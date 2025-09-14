@@ -29,6 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML += `
         <div class="card searchable" data-index="${index}" style="cursor: pointer; position: relative; margin-top: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
           
+          <!-- Tombol Edit -->
+          <button class="edit-card" data-index="${index}" style="
+            position: absolute;
+            top: 10px;
+            height: 30px;
+            right: 100px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            z-index: 10;
+          ">
+            ✏️ Edit
+          </button>
+
+
           <!-- Tombol Hapus di atas -->
           <button class="delete-card" data-index="${index}" style="
             position: absolute;
@@ -44,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
             z-index: 10;
-          ">Hapus</button>
+          ">🗑️ Hapus</button>
 
           <!-- Gambar -->
           <div style="
@@ -110,8 +135,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    // Hover effect untuk tombol Edit
+    container.querySelectorAll('.edit-card').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = '#2980b9';  // warna sedikit lebih gelap
+        btn.style.transform = 'scale(1.05)';
+        btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = '#3498db';  // warna awal
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+      });
+    });
+
+
+    // Event tombol edit
+    container.querySelectorAll('.edit-card').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = btn.getAttribute('data-index');
+        const item = beritaData[idx];
+
+        document.getElementById('editTitle').value = item.title;
+        document.getElementById('editContent').value = item.content;
+        document.getElementById('editberitaModal').style.display = 'block';
+        document.getElementById('editberitaForm').setAttribute('data-id', item.id);
+      });
+    });
   }
 
+  // === Modal Detail ===
   let detailModal = document.getElementById('detailModal');
   if (!detailModal) {
     detailModal = document.createElement('div');
@@ -147,14 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
           position: absolute;
           top: 15px;
           right: 15px;
-          font-size: 12px;
+          font-size: 20px;
           font-weight: bold;
           border: none;
           background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
           color: white;
           border-radius: 50%;
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -172,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
           background-color: #f8f8f8;
           overflow: hidden;
         ">
-          <img id="detailImage" src="" alt="Gambar Berita" style="
+          <img id="detailImage" src="" alt="Gambar berita" style="
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
@@ -274,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  
   const addBtn = document.getElementById('addberitaBtn');
   const modal = document.getElementById('beritaModal');
   const closeBtn = document.getElementById('closeberitaModal');
@@ -320,7 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
   searchInput?.addEventListener('input', () => {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const sections = document.querySelectorAll('main section');
@@ -355,6 +409,132 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Inisialisasi
+  // === Modal Edit Baru ===
+  const editModal = document.createElement('div');
+  editModal.id = "editberitaModal";
+  editModal.style.display = "none";
+  editModal.style.position = "fixed";
+  editModal.style.top = "0";
+  editModal.style.left = "0";
+  editModal.style.width = "100%";
+  editModal.style.height = "100%";
+  editModal.style.backgroundColor = "rgba(0,0,0,0.7)";
+  editModal.style.zIndex = "3000";
+  editModal.style.overflow = "auto";
+
+  editModal.innerHTML = `
+    <div style="
+      background: white;
+      max-width: 520px;
+      margin: 60px auto;
+      padding: 25px 30px;
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    ">
+      <!-- Tombol Close -->
+      <button id="closeEditModal" style="
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 22px;
+        font-weight: bold;
+        color: #555;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      ">&times;</button>
+
+      <!-- Judul Modal -->
+      <h3 style="
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+      ">✏️ Edit berita</h3>
+
+      <!-- Form Edit -->
+      <form id="editberitaForm" style="display: flex; flex-direction: column; gap: 15px;">
+        
+        <!-- Textarea Judul -->
+        <textarea id="editTitle" name="title" placeholder="Judul berita" required style="
+          padding: 10px 12px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: 600;
+          resize: none;
+          min-height: 60px;
+          line-height: 1.4;
+        "></textarea>
+
+        <!-- Textarea Konten -->
+        <textarea id="editContent" name="content" placeholder="Deskripsi / Konten" required style="
+          padding: 12px 14px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+          resize: vertical;
+          min-height: 120px;
+        "></textarea>
+
+        <!-- Input Gambar -->
+        <input type="file" id="editImg" name="img" accept="image/*" style="
+          font-size: 14px;
+          padding: 6px 0;
+        ">
+
+        <!-- Tombol Simpan -->
+        <button type="submit" style="
+          background: #3498db;
+          color: white;
+          border: none;
+          padding: 12px;
+          border-radius: 8px;
+          font-weight: bold;
+          font-size: 15px;
+          cursor: pointer;
+          transition: background 0.2s ease, transform 0.2s ease;
+        ">💾 Simpan Perubahan</button>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(editModal);
+
+  document.getElementById('closeEditModal').addEventListener('click', () => {
+    editModal.style.display = "none";
+  });
+
+  document.getElementById('editberitaForm').addEventListener('submit', e => {
+    e.preventDefault();
+      // Konfirmasi sebelum menyimpan
+      const yakin = confirm("Yakin mau menyimpan perubahan?");
+      if (!yakin) return; // Jika klik "Batal", keluar dari fungsi
+
+      const formEl = e.target;
+      const id = formEl.getAttribute('data-id');
+      const formData = new FormData(formEl);
+      const imgFile = document.getElementById('editImg').files[0];
+      if (imgFile) formData.append('img', imgFile);
+
+      fetch(`${LARAVEL_URL}/api/berita/${id}`, {
+          method: 'POST',
+          headers: { 'X-HTTP-Method-Override': 'PUT' },
+          body: formData
+      })
+      .then(res => res.json())
+      .then(updated => {
+          const idx = beritaData.findIndex(p => p.id == id);
+          beritaData[idx] = updated;
+          renderCards();
+          editModal.style.display = "none";
+      })
+      .catch(err => console.error("Error updating:", err));
+  });
+
   initSection();
 });

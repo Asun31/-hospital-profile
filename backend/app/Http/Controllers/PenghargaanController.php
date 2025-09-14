@@ -62,7 +62,7 @@ class PenghargaanController extends Controller
     }
 
     /**
-     * Tambahan: Update/Edit Penghargaan
+     * Tambahan: Update/Edit penghargaan
      */
     public function update(Request $request, $id)
     {

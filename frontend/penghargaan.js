@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
               if (res.ok) {
                 penghargaanData.splice(idx, 1);
                 renderCards();
-                alert('penghargaan berhasil dihapus!');
+                alert('Penghargaan berhasil dihapus!');
               } else {
                 alert('Gagal menghapus penghargaan.');
               }
@@ -166,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
-  
 
   // === Modal Detail ===
   let detailModal = document.getElementById('detailModal');
@@ -204,14 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
           position: absolute;
           top: 15px;
           right: 15px;
-          font-size: 12px;
+          font-size: 20px;
           font-weight: bold;
           border: none;
           background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
           color: white;
           border-radius: 50%;
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -455,13 +454,13 @@ document.addEventListener('DOMContentLoaded', () => {
         font-weight: bold;
         color: #2c3e50;
         margin-bottom: 20px;
-      ">✏️ Edit Penghargaan</h3>
+      ">✏️ Edit penghargaan</h3>
 
       <!-- Form Edit -->
       <form id="editpenghargaanForm" style="display: flex; flex-direction: column; gap: 15px;">
         
         <!-- Textarea Judul -->
-        <textarea id="editTitle" name="title" placeholder="Judul Penghargaan" required style="
+        <textarea id="editTitle" name="title" placeholder="Judul penghargaan" required style="
           padding: 10px 12px;
           border: 1px solid #ccc;
           border-radius: 8px;
@@ -504,7 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `;
 
-
   document.body.appendChild(editModal);
 
   document.getElementById('closeEditModal').addEventListener('click', () => {
@@ -513,23 +511,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('editpenghargaanForm').addEventListener('submit', e => {
     e.preventDefault();
-    const formEl = e.target;
-    const id = formEl.getAttribute('data-id');
-    const formData = new FormData(formEl);
-    const imgFile = document.getElementById('editImg').files[0];
-    if (imgFile) formData.append('img', imgFile);
+      // Konfirmasi sebelum menyimpan
+      const yakin = confirm("Yakin mau menyimpan perubahan?");
+      if (!yakin) return; // Jika klik "Batal", keluar dari fungsi
 
-    fetch(`${LARAVEL_URL}/api/penghargaan/${id}`, {
-      method: 'POST',
-      headers: { 'X-HTTP-Method-Override': 'PUT' },
-      body: formData
-    })
+      const formEl = e.target;
+      const id = formEl.getAttribute('data-id');
+      const formData = new FormData(formEl);
+      const imgFile = document.getElementById('editImg').files[0];
+      if (imgFile) formData.append('img', imgFile);
+
+      fetch(`${LARAVEL_URL}/api/penghargaan/${id}`, {
+          method: 'POST',
+          headers: { 'X-HTTP-Method-Override': 'PUT' },
+          body: formData
+      })
       .then(res => res.json())
       .then(updated => {
-        const idx = penghargaanData.findIndex(p => p.id == id);
-        penghargaanData[idx] = updated;
-        renderCards();
-        editModal.style.display = "none";
+          const idx = penghargaanData.findIndex(p => p.id == id);
+          penghargaanData[idx] = updated;
+          renderCards();
+          editModal.style.display = "none";
       })
       .catch(err => console.error("Error updating:", err));
   });
