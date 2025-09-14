@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     itemsToRender.forEach((item) => {
+      const createdTime = new Date(item.created_at).getTime();
+      const now = Date.now();
+      const isNew = now - createdTime < 24 * 60 * 60 * 1000; 
+
       container.innerHTML += `
         <div class="card searchable" data-id="${item.id}" style="
           cursor: pointer;
@@ -42,6 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
           box-shadow: 0 4px 12px rgba(0,0,0,0.1);
           transition: transform 0.2s ease, box-shadow 0.3s ease;
         ">
+          ${isNew ? `<span style="
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #81cd8d;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 10;
+          ">Terbaru</span>` : ''}
+
           <button class="edit-card" data-id="${item.id}" style="
             position: absolute;
             top: 10px;
@@ -148,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
               if (res.ok) {
                 pengumumanData = pengumumanData.filter(b => b.id !== item.id);
                 renderCards();
-                alert('Pengumuman berhasil dihapus!');
+                alert('Perita berhasil dihapus!');
               } else {
                 alert('Gagal menghapus pengumuman.');
               }
