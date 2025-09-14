@@ -24,148 +24,159 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderCards() {
-    container.innerHTML = '';
-    pengumumanData.forEach((item, index) => {
-      container.innerHTML += `
-        <div class="card searchable" data-index="${index}" style="cursor: pointer; position: relative; margin-top: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          
-          <!-- Tombol Edit -->
-          <button class="edit-card" data-index="${index}" style="
-            position: absolute;
-            top: 10px;
-            height: 30px;
-            right: 100px;
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-            z-index: 10;
-          ">
-            ✏️ Edit
-          </button>
+  container.innerHTML = '';
 
+  // ✅ Urutkan pengumuman dari terbaru ke terlama (tidak dipotong)
+  const itemsToRender = [...pengumumanData].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
 
-          <!-- Tombol Hapus di atas -->
-          <button class="delete-card" data-index="${index}" style="
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-            z-index: 10;
-          ">🗑️ Hapus</button>
+  itemsToRender.forEach((item, index) => {
+    container.innerHTML += `
+      <div class="card searchable" data-index="${index}" style="
+        cursor: pointer;
+        position: relative;
+        margin-top: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+      ">
+        <!-- Tombol Edit -->
+        <button class="edit-card" data-index="${index}" style="
+          position: absolute;
+          top: 10px;
+          right: 100px;
+          background: #3498db;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+          transition: all 0.2s ease;
+          z-index: 10;
+        ">✏️ Edit</button>
 
-          <!-- Gambar -->
-          <div style="
+        <!-- Tombol Hapus -->
+        <button class="delete-card" data-index="${index}" style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: #e74c3c;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: bold;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+          transition: all 0.2s ease;
+          z-index: 10;
+        ">🗑️ Hapus</button>
+
+        <!-- Gambar -->
+        <div style="
+          width: 100%;
+          height: 120px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #f0f0f0;
+          overflow: hidden;
+        ">
+          <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
             width: 100%;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
+            height: 100%;
+            object-fit: cover;
           ">
-            <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
-              max-width: 100%;
-              max-height: 100%;
-              object-fit: contain;
-              display: block;
-            ">
-          </div>
-
-          <!-- Konten Card -->
-          <div class="card-content" style="padding: 15px;">
-            <h3>${item.title}</h3>
-            <p>${item.content.substring(0, 100)}...</p>
-            <p style="font-size: 10px; color: #777; margin-bottom: 10px; margin-top: 10px;">
-              <strong>Upload pada tanggal</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'},<br> 
-              <strong>oleh</strong> ${item.author || 'Admin'}
-            </p>
-            <button class="read-more" data-index="${index}">Selengkapnya</button>
-          </div>
         </div>
-      `;
+
+        <!-- Konten Card -->
+        <div class="card-content" style="padding: 10px 12px;">
+          <h3 style="font-size: 14px; margin: 5px 0;">${item.title}</h3>
+          <p style="
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            margin: 0 0 6px;
+          ">
+            ${item.content}
+          </p>
+          <p style="font-size: 10px; color: #777; margin: 0 0 8px;">
+            <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+            <strong>Oleh:</strong> ${item.author || 'Admin'}
+          </p>
+          <button class="read-more" data-index="${index}" style="
+            background: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+          ">Selengkapnya</button>
+        </div>
+      </div>
+    `;
+  });
+
+  // Hover + click Delete
+  container.querySelectorAll('.delete-card').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.background = '#c0392b';
+      btn.style.transform = 'scale(1.05)';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.background = '#e74c3c';
+      btn.style.transform = 'scale(1)';
     });
 
-    container.querySelectorAll('.delete-card').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        btn.style.background = '#c0392b';
-        btn.style.transform = 'scale(1.05)';
-        btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.background = '#e74c3c';
-        btn.style.transform = 'scale(1)';
-        btn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
-      });
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = btn.getAttribute('data-index');
+      const item = itemsToRender[idx];
+      if (confirm('Apakah yakin ingin menghapus pengumuman ini?')) {
+        fetch(`${LARAVEL_URL}/api/pengumuman/${item.id}`, { method: 'DELETE' })
+          .then(res => {
+            if (res.ok) {
+              pengumumanData = pengumumanData.filter(b => b.id !== item.id);
+              renderCards();
+              alert('Pengumuman berhasil dihapus!');
+            } else {
+              alert('Gagal menghapus pengumuman.');
+            }
+          })
+          .catch(err => console.error(err));
+      }
     });
+  });
 
-    container.querySelectorAll('.delete-card').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const idx = btn.getAttribute('data-index');
-        const item = pengumumanData[idx];
-        if (confirm('Apakah yakin ingin menghapus pengumuman ini?')) {
-          fetch(`${LARAVEL_URL}/api/pengumuman/${item.id}`, { method: 'DELETE' })
-            .then(res => {
-              if (res.ok) {
-                pengumumanData.splice(idx, 1);
-                renderCards();
-                alert('Pengumuman berhasil dihapus!');
-              } else {
-                alert('Gagal menghapus pengumuman.');
-              }
-            })
-            .catch(err => console.error(err));
-        }
-      });
+  // Hover + click Edit
+  container.querySelectorAll('.edit-card').forEach(btn => {
+    btn.addEventListener('mouseenter', () => btn.style.background = '#2980b9');
+    btn.addEventListener('mouseleave', () => btn.style.background = '#3498db');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = btn.getAttribute('data-index');
+      const item = itemsToRender[idx];
+
+      document.getElementById('editTitle').value = item.title;
+      document.getElementById('editContent').value = item.content;
+      document.getElementById('editpengumumanModal').style.display = 'block';
+      document.getElementById('editpengumumanForm').setAttribute('data-id', item.id);
     });
-
-    // Hover effect untuk tombol Edit
-    container.querySelectorAll('.edit-card').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        btn.style.background = '#2980b9';  // warna sedikit lebih gelap
-        btn.style.transform = 'scale(1.05)';
-        btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
-      });
-
-      btn.addEventListener('mouseleave', () => {
-        btn.style.background = '#3498db';  // warna awal
-        btn.style.transform = 'scale(1)';
-        btn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
-      });
-    });
-
-
-    // Event tombol edit
-    container.querySelectorAll('.edit-card').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const idx = btn.getAttribute('data-index');
-        const item = pengumumanData[idx];
-
-        document.getElementById('editTitle').value = item.title;
-        document.getElementById('editContent').value = item.content;
-        document.getElementById('editpengumumanModal').style.display = 'block';
-        document.getElementById('editpengumumanForm').setAttribute('data-id', item.id);
-      });
-    });
-  }
+  });
+}
 
   // === Modal Detail ===
   let detailModal = document.getElementById('detailModal');

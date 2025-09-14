@@ -17,29 +17,80 @@ class SejarahController extends Controller
 {
     public function index()
     {
-        $sejarah_m = Sejarah::all();  
-        return response()->json($sejarah_m);  
+        $sejarah_m = Sejarah::all();
+        return response()->json($sejarah_m);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
-            'title' => 'required|string',  
-            'content' => 'required|string', 
+            'title' => 'required|string',
+            'content' => 'required|string',
         ]);
 
         if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
             return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
         }
 
-        $imagePath = $request->file('img')->store('images', 'public');  
+        $imagePath = $request->file('img')->store('images', 'public');
+
         $sejarah_m = Sejarah::create([
-            'img' => $imagePath, 
+            'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return response()->json($sejarah_m, 201); 
+        return response()->json($sejarah_m, 201);
+    }
+
+    public function destroy($id)
+    {
+        $sejarah = Sejarah::find($id);
+
+        if (!$sejarah) {
+            return response()->json(['message' => 'sejarah tidak ditemukan'], 404);
+        }
+
+        if ($sejarah->img && Storage::disk('public')->exists($sejarah->img)) {
+            Storage::disk('public')->delete($sejarah->img);
+        }
+
+        $sejarah->delete();
+
+        return response()->json(['message' => 'sejarah berhasil dihapus'], 200);
+    }
+
+    /**
+     * Tambahan: Update/Edit sejarah
+     */
+    public function update(Request $request, $id)
+    {
+        $sejarah = Sejarah::find($id);
+
+        if (!$sejarah) {
+            return response()->json(['message' => 'sejarah tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        // Jika ada gambar baru, hapus yang lama dan upload baru
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            if ($sejarah->img && Storage::disk('public')->exists($sejarah->img)) {
+                Storage::disk('public')->delete($sejarah->img);
+            }
+            $imagePath = $request->file('img')->store('images', 'public');
+            $sejarah->img = $imagePath;
+        }
+
+        $sejarah->title = $request->title;
+        $sejarah->content = $request->content;
+        $sejarah->save();
+
+        return response()->json($sejarah, 200);
     }
 }
