@@ -9,16 +9,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Struktur;
+use App\Models\Direksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class StrukturController extends Controller
+class DireksiController extends Controller
 {
     public function index()
     {
-        $struktur_m = Struktur::all();
-        return response()->json($struktur_m);
+        $direksi_m = Direksi::all();
+        return response()->json($direksi_m);
     }
 
     public function store(Request $request)
@@ -35,41 +35,41 @@ class StrukturController extends Controller
 
         $imagePath = $request->file('img')->store('images', 'public');
 
-        $struktur_m = Struktur::create([
+        $direksi_m = Direksi::create([
             'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return response()->json($struktur_m, 201);
+        return response()->json($direksi_m, 201);
     }
 
     public function destroy($id)
     {
-        $struktur = Struktur::find($id);
+        $direksi = Direksi::find($id);
 
-        if (!$struktur) {
-            return response()->json(['message' => 'struktur tidak ditemukan'], 404);
+        if (!$direksi) {
+            return response()->json(['message' => 'direksi tidak ditemukan'], 404);
         }
 
-        if ($struktur->img && Storage::disk('public')->exists($struktur->img)) {
-            Storage::disk('public')->delete($struktur->img);
+        if ($direksi->img && Storage::disk('public')->exists($direksi->img)) {
+            Storage::disk('public')->delete($direksi->img);
         }
 
-        $struktur->delete();
+        $direksi->delete();
 
-        return response()->json(['message' => 'struktur berhasil dihapus'], 200);
+        return response()->json(['message' => 'direksi berhasil dihapus'], 200);
     }
 
     /**
-     * Tambahan: Update/Edit struktur
+     * Tambahan: Update/Edit direksi
      */
     public function update(Request $request, $id)
     {
-        $struktur = Struktur::find($id);
+        $direksi = Direksi::find($id);
 
-        if (!$struktur) {
-            return response()->json(['message' => 'struktur tidak ditemukan'], 404);
+        if (!$direksi) {
+            return response()->json(['message' => 'direksi tidak ditemukan'], 404);
         }
 
         $request->validate([
@@ -80,17 +80,17 @@ class StrukturController extends Controller
 
         // Jika ada gambar baru, hapus yang lama dan upload baru
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            if ($struktur->img && Storage::disk('public')->exists($struktur->img)) {
-                Storage::disk('public')->delete($struktur->img);
+            if ($direksi->img && Storage::disk('public')->exists($direksi->img)) {
+                Storage::disk('public')->delete($direksi->img);
             }
             $imagePath = $request->file('img')->store('images', 'public');
-            $struktur->img = $imagePath;
+            $direksi->img = $imagePath;
         }
 
-        $struktur->title = $request->title;
-        $struktur->content = $request->content;
-        $struktur->save();
+        $direksi->title = $request->title;
+        $direksi->content = $request->content;
+        $direksi->save();
 
-        return response()->json($struktur, 200);
+        return response()->json($direksi, 200);
     }
 }

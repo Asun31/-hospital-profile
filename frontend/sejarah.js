@@ -31,6 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
       formId: 'beritaForm',
       editModalId: 'editberitaModal',
       editFormId: 'editberitaForm'
+    },
+    {
+      id: 'pengumuman-pengumuman_m', // #TAG: PENGUMUMAN
+      api: '/api/pengumuman',
+      addBtnId: 'addpengumumanBtn',
+      modalId: 'pengumumanModal',
+      closeBtnId: 'closepengumumanModal',
+      formId: 'pengumumanForm',
+      editModalId: 'editpengumumanModal',
+      editFormId: 'editpengumumanForm'
+    },
+    {
+      id: 'penghargaan-penghargaan_m', // #TAG: PENGHARGAAN
+      api: '/api/penghargaan',
+      addBtnId: 'addpenghargaanBtn',
+      modalId: 'penghargaanModal',
+      closeBtnId: 'closepenghargaanModal',
+      formId: 'penghargaanForm',
+      editModalId: 'editpenghargaanModal',
+      editFormId: 'editpenghargaanForm'
     }
   ];
 
@@ -91,29 +111,28 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '';
       
       let itemsToRender = dataItems;
-      if (config.id === 'berita-berita_m') {
+      if (config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
         itemsToRender = [...dataItems] 
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) 
-          .slice(0, 4); 
+          .slice(0, 3); 
       }
 
-
       itemsToRender.forEach((item, index) => {
-      const isBerita = config.id === 'berita-berita_m';
-      const divImgStyle = isBerita
-        ? "width:100%; height:80px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
+      const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
+      const divImgStyle = isSmallCard
+        ? "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
         : "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
 
-      const imgStyle = isBerita
+      const imgStyle = isSmallCard
         ? "width:100%; height:100%; object-fit:cover; object-position:center;"
         : "width:100%; height:auto; object-fit:contain;";
 
       container.innerHTML += `
         <div class="card searchable" data-index="${index}" style="
           cursor:pointer; position:relative;
-          margin:${isBerita ? '10px 0' : '10px 0'}; /* 🔥 kasih jarak antar card */
+          margin:${isSmallCard ? '15px 0' : '0px 0'};
           border-radius:6px; overflow:hidden;
-          box-shadow:${isBerita ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
+          box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
           width:100%; background:#fff; border:1px solid #f0f0f0;
         ">
           <button class="edit-card" data-index="${index}" style="
@@ -125,18 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
           <div style="${divImgStyle}">
             <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">
           </div>
-          <div class="card-content" style="padding:${isBerita ? '8px 10px' : '15px'};">
+          <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
             <h3 style="
-              font-size:${isBerita ? '14px' : '18px'};
+              font-size:${isSmallCard ? '12px' : '18px'};
               font-weight:600; margin:0 0 4px 0;
               color:#333; line-height:1.3;">${item.title}</h3>
             <p style="
-              font-size:${isBerita ? '12px' : '14px'};
+              font-size:${isSmallCard ? '10px' : '14px'};
               margin:0; color:#666; line-height:1.4;">${item.content}</p>
           </div>
+            <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
+              <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+              <strong>Oleh:</strong> ${item.author || 'Admin'}
+            </p>
         </div>
       `;
-    });
+
+      });
 
       // --- DELETE BUTTONS ---
       container.querySelectorAll('.delete-card').forEach(btn => {
@@ -171,22 +195,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      // --- BERITA CONTENT LIMIT ---
-      if(config.id === 'berita-berita_m') {
+      // --- SMALL CARD CONTENT LIMIT ---
+      if(config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
         container.querySelectorAll('.card-content p').forEach(p => {
           p.style.display = '-webkit-box';
           p.style.webkitBoxOrient = 'vertical';
           p.style.webkitLineClamp = '3';
           p.style.overflow = 'hidden';
           p.style.textOverflow = 'ellipsis';
-          p.style.fontSize = '10px'
         });
-      }
-
-      if(config.id === 'berita-berita_m') {
-        // Atur judul menjadi h3 dengan ukuran font kecil
         container.querySelectorAll('.card-content h3').forEach(h3 => {
-          h3.style.fontSize = '12px'; // ganti sesuai kebutuhan
+          h3.style.fontSize = '12px';
           h3.style.fontWeight = 'bold';
           h3.style.margin = '0 0 5px 0';
         });

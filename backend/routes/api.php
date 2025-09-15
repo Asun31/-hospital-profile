@@ -15,6 +15,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\DaftarDokterController;
 use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\SpesialisController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -86,6 +87,15 @@ Route::get('/jadwaldokter', [JadwalDokterController::class, 'index']);
 Route::post('/jadwaldokter', [JadwalDokterController::class, 'store']); 
 Route::put('/jadwaldokter/{id}', [JadwalDokterController::class, 'update']); // ✅ Tambah update
 Route::delete('/jadwaldokter/{id}', [JadwalDokterController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- spesialis -------------------
+Route::get('/spesialis', [SpesialisController::class, 'index']);  
+Route::post('/spesialis', [SpesialisController::class, 'store']); 
+Route::put('/spesialis/{id}', [SpesialisController::class, 'update']); // ✅ Tambah update
+Route::delete('/spesialis/{id}', [SpesialisController::class, 'destroy']); 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

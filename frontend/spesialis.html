@@ -45,10 +45,22 @@
 
     section {
       margin-bottom: 60px;
-      scroll-margin-top: 80px;
+      scroll-margin-top: 50px;
     }
 
-   h2.section-title {
+    h1 {
+      font-size: 2em;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    h2.section-title {
       color: #81cd8d;
       font-size: 25px;
       margin-bottom: 20px;
@@ -180,11 +192,12 @@
       font-size: 12px;
     }
 
-    .cards {
+   .cards {
+      margin-top: 10%;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
-      margin-top: 20px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 10px;
       padding: 10px;
     }
 
@@ -196,6 +209,10 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       flex-direction: column;
+      align-items: center;    
+      justify-content: center; 
+      width: 200px;
+      height: 150px;
     }
 
     .card:hover {
@@ -204,10 +221,9 @@
     }
 
     .card img {
-      width: 100%;
-      height: 200px;
+      width: 60px;       /* Ukuran gambar seperti ikon */
+      height: 60px;
       object-fit: contain;
-      background-color: #f5f5f5;
       display: block;
     }
 
@@ -217,27 +233,22 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 15px;
+      width: 100%; /* Biar konten tetap full width */
     }
 
     .card-content h3 {
-      width: 100%;
       color: #2e7d32;
       margin-bottom: 8px;
       font-size: 14px;
       font-weight: 600;
-      line-height: 1.4;
       text-align: justify;
-      text-justify: inter-word;
-      display: block;
     }
 
     .card-content p {
-      width: 100%;
       font-size: 12px;
       line-height: 1.5;
       color: #555;
       text-align: justify;
-      text-justify: inter-word;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 4;
@@ -246,19 +257,8 @@
       text-overflow: ellipsis;
     }
 
-    .card-content .meta {
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 8px;
-      text-align: justify;
-      text-justify: inter-word;
-      display: block;
-      width: 100%;
-    }
-
     .card-content .read-more {
       margin-top: 12px;
-      align-self: flex-start;
       padding: 6px 14px;
       font-size: 13px;
       color: white;
@@ -401,7 +401,7 @@
         <div class="menu">
           <a href="/home">Beranda</a>
           <div class="dropdown">
-            <a  class="dropbtn">Profile ▾</a>
+            <a class="dropbtn">Profile ▾</a>
             <div class="dropdown-content">
               <a href="/sejarah">Sejarah</a>
               <a href="/struktur">Struktur</a>
@@ -410,7 +410,7 @@
           </div>
 
           <div class="dropdown">
-            <a  class="dropbtn">Publikasi &#9662;</a>
+            <a class="dropbtn">Publikasi &#9662;</a>
             <div class="dropdown-content">
               <a href="/berita">Berita</a>
               <a href="/pengumuman">Pengumuman</a>
@@ -454,33 +454,123 @@
     </header>
 
     <main>
-      <section id="penghargaan">
-        <h2 class="section-title">Penghargaan</h2>
-        <button id="addpenghargaanBtn">+ Tambah Kartu</button>
-        <div class="cards" id="penghargaan-penghargaan_m"></div>
+      <section id="spesialis">
+        <h1>Spesialis Kami</h1>
+        <h4>"Dokter kami adalah tenaga ahli berpengalaman di bidangnya, siap memberikan pelayanan terbaik untuk Anda dan keluarga."</h4>
+        <div class="cards">
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Anak</p>
+          </div>
 
-        <div id="penghargaanModal" class="modal">
-          <div class="modal-content">
-            <span class="close-btn" id="closepenghargaanModal">&times;</span>
-            <h3>Tambah Kartu Baru (Penghargaan)</h3>
-            <form id="penghargaanForm" enctype="multipart/form-data">
-              <label for="penghargaanImg">Unggah Gambar:</label>
-              <input type="file" id="penghargaanImg" name="img" accept="image/*" required>
-              
-              <label for="penghargaanTitle">Judul Kartu:</label>
-              <input type="text" id="penghargaanTitle" name="title" required placeholder="Masukkan judul kartu">
-              
-              <label for="penghargaanContent">Konten Kartu:</label>
-              <textarea id="penghargaanContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Anastesi</p>
+          </div>
 
-              <button type="submit">Tambah Kartu</button>
-            </form>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Bedah</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Forensik</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Gigi</p>
+          </div>
+
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Gizi Klinik</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Jantung dan Pembuluh Darah</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Jiwa</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Kulit dan Kelamin</p>
+           </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Mata</p>
+           </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Obgyn</p>
+          </div>
+
+           <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Okupasi</p>
+          </div>
+
+           <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Orthopedi</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Paru</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Patologi Anatomi</p>
+          </div>
+
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Patologi Klinik</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Penyakit Dalam</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Radiologi</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Rehabilitasi Medik</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Saraf</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>THT-KL</p>
+          </div>
+           <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Umum</p>
+          </div>
+          <div class="card">
+            <img src="../asset/anak.png" alt="Anak">
+            <br><p>Urologi</p>
           </div>
         </div>
       </section>
     </main>
 
-   <footer id="contact">
+    <footer id="contact">
       <p></p>
       <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
       <p class="social">
@@ -490,6 +580,6 @@
         <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3">Youtube</a>
       </p>
     </footer>
-    <script src="penghargaan.js"></script>
-  </body>
+    <script src="spesialis.js"></script>
+</body>
 </html>

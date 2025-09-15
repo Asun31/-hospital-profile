@@ -9,16 +9,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Struktur;
+use App\Models\Spesialis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class StrukturController extends Controller
+class SpesialisController extends Controller
 {
     public function index()
     {
-        $struktur_m = Struktur::all();
-        return response()->json($struktur_m);
+        $spesialis_m = Spesialis::all();
+        return response()->json($spesialis_m);
     }
 
     public function store(Request $request)
@@ -35,41 +35,41 @@ class StrukturController extends Controller
 
         $imagePath = $request->file('img')->store('images', 'public');
 
-        $struktur_m = Struktur::create([
+        $spesialis_m = Spesialis::create([
             'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return response()->json($struktur_m, 201);
+        return response()->json($spesialis_m, 201);
     }
 
     public function destroy($id)
     {
-        $struktur = Struktur::find($id);
+        $spesialis = Spesialis::find($id);
 
-        if (!$struktur) {
-            return response()->json(['message' => 'struktur tidak ditemukan'], 404);
+        if (!$spesialis) {
+            return response()->json(['message' => 'spesialis tidak ditemukan'], 404);
         }
 
-        if ($struktur->img && Storage::disk('public')->exists($struktur->img)) {
-            Storage::disk('public')->delete($struktur->img);
+        if ($spesialis->img && Storage::disk('public')->exists($spesialis->img)) {
+            Storage::disk('public')->delete($spesialis->img);
         }
 
-        $struktur->delete();
+        $spesialis->delete();
 
-        return response()->json(['message' => 'struktur berhasil dihapus'], 200);
+        return response()->json(['message' => 'spesialis berhasil dihapus'], 200);
     }
 
     /**
-     * Tambahan: Update/Edit struktur
+     * Tambahan: Update/Edit spesialis
      */
     public function update(Request $request, $id)
     {
-        $struktur = Struktur::find($id);
+        $spesialis = Spesialis::find($id);
 
-        if (!$struktur) {
-            return response()->json(['message' => 'struktur tidak ditemukan'], 404);
+        if (!$spesialis) {
+            return response()->json(['message' => 'spesialis tidak ditemukan'], 404);
         }
 
         $request->validate([
@@ -80,17 +80,17 @@ class StrukturController extends Controller
 
         // Jika ada gambar baru, hapus yang lama dan upload baru
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            if ($struktur->img && Storage::disk('public')->exists($struktur->img)) {
-                Storage::disk('public')->delete($struktur->img);
+            if ($spesialis->img && Storage::disk('public')->exists($spesialis->img)) {
+                Storage::disk('public')->delete($spesialis->img);
             }
             $imagePath = $request->file('img')->store('images', 'public');
-            $struktur->img = $imagePath;
+            $spesialis->img = $imagePath;
         }
 
-        $struktur->title = $request->title;
-        $struktur->content = $request->content;
-        $struktur->save();
+        $spesialis->title = $request->title;
+        $spesialis->content = $request->content;
+        $spesialis->save();
 
-        return response()->json($struktur, 200);
+        return response()->json($spesialis, 200);
     }
 }

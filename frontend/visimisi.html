@@ -13,11 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RSUD Talang Ubi</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Reset Global ===== */
     * {
       margin: 0;
       padding: 0;
@@ -38,10 +36,11 @@
     }
 
     main {
-      flex: 1;
+      flex: 1; 
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
+      font-family: Arial, sans-serif;
     }
 
     section {
@@ -68,56 +67,76 @@
       border-bottom-color: #048a16;
     }
 
-    /* ===== Header ===== */
     header {
       background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);
       color: #fff;
       padding: 10px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 100%;
+    }
+
+    .welcome-message {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      text-align: left;
+    }
+    .welcome-message span {
+      opacity: 0;
+      display: inline-block;
+      animation: appear 0.3s forwards;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .logo-container {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 0 0 auto;
     }
-
     .logo-container img {
       width: 50%;
       height: auto;
       object-fit: contain;
     }
+    .logo-container h1 {
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0;
+      white-space: nowrap;
+    }
 
     .menu {
       display: flex;
       justify-content: flex-end;
-      gap: 20px;
+      gap: 15px;
       flex-wrap: wrap;
     }
-
     .menu a {
       color: #fff;
       text-decoration: none;
       font-weight: 600;
       transition: 0.3s;
     }
-
     .menu a:hover {
       color: #048a16;
     }
 
-    /* Dropdown Menu */
     .dropdown {
       position: relative;
     }
-
     .dropdown-content {
       display: none;
       position: absolute;
@@ -126,22 +145,18 @@
       box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
       z-index: 1;
     }
-
     .dropdown-content a {
       color: #000;
       padding: 8px 12px;
       text-decoration: none;
       display: block;
     }
-
     .dropdown-content a:hover {
       background-color: #f1f1f1;
     }
-
     .dropdown:hover .dropdown-content {
       display: block;
     }
-
     .dropdown:hover .dropbtn {
       color: #048a16;
     }
@@ -150,51 +165,144 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 0 0 auto;
     }
-
     .search-box input {
+      flex: 0 0 120px;
       padding: 6px 10px;
       border-radius: 20px;
       border: none;
       outline: none;
       font-size: 12px;
     }
+    .search-box input::placeholder {
+      color: #666;
+      font-size: 12px;
+    }
 
-    /* ===== Cards ===== */
     .cards {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
       gap: 25px;
       margin-top: 20px;
+      padding: 10px;
     }
-
-    @media (max-width: 992px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 
     .card {
       background: #fff;
-      border-radius: 15px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
     }
 
-   .card img {
-      width: 100%;              
-      height: auto;           
-      object-fit: cover;       
-      background-color: #f0f0f0;
-      display: block;          
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #f5f5f5;
+      display: block;
     }
 
     .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       padding: 15px;
-      text-align: justify;
     }
 
-    /* ===== Modal ===== */
+    .card-content h3 {
+      width: 100%;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+    }
+
+    .card-content p {
+      width: 100%;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #555;
+      text-align: justify;
+      text-justify: inter-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 0;
+      line-clamp: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-content .meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 8px;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+      width: 100%;
+    }
+
+    .card-content .read-more {
+      margin-top: 12px;
+      align-self: flex-start;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: white;
+      background: #81cd8d;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .card-content .read-more:hover {
+      background: #048a16;
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #addCardBtn {
+      background-color: #81cd8d;
+      color: white;
+      font-size: 16px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      margin-bottom: 20px;
+    }
+    #addCardBtn:hover { background-color: #66b370; transform: scale(1.05); }
+    #addCardBtn:focus { outline: none; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+    #addCardBtn:active { background-color: #56a55b; }
+
     .modal {
       display: none;
       position: fixed;
@@ -254,11 +362,39 @@
     }
     .close-btn:hover { color: #000; transform: scale(1.2); }
 
-    /* ===== visimisi Layout - Kiri dan Kanan ===== */
+    footer {
+      background: #81cd8d;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      width: 100%;
+      flex-shrink: 0; 
+    }
+    footer p { font-size: 12px; margin: 5px 0; }
+    .social a {
+      margin: 0 8px;
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .social a:hover { color: #048a16; }
+
+    .powered-by {
+      user-select: none;     
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      cursor: default;
+    }
+
+    .powered-by::selection {
+      background: none;
+    }
+
     .visimisi-layout {
       display: grid;
-      grid-template-columns: 3fr 1fr; /* Kiri lebih besar */
-      gap: 30px;
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
     }
 
     .visimisi-kiri {
@@ -266,8 +402,10 @@
     }
 
     .visimisi-kanan {
-      margin-top: 14%;
-      background-color: transparent;
+      color: #048a16;  
+      font-size: 20px;
+      margin-top: 22%;
+      text-decoration: underline;
     }
 
     @media (max-width: 768px) {
@@ -275,45 +413,14 @@
         grid-template-columns: 1fr;
       }
     }
-
-    /* ===== Footer ===== */
-    footer {
-      background: #81cd8d;
-      color: #fff;
-      text-align: center;
-      padding: 10px 0;
-      width: 100%;
-      flex-shrink: 0;
-    }
-
-    footer p {
-      font-size: 12px;
-      margin: 5px 0;
-    }
-
-    .social a {
-      margin: 0 8px;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .social a:hover { color: #048a16; }
-
-    .powered-by {
-      user-select: none;
-      cursor: default;
-    }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header>
-    <div class="logo-container">
-      <img src="../asset/logo-rsud.png" alt="Logo RSUD">
-    </div>
-    <nav>
+    <header>
+      <div class="logo-container">
+        <img src="../asset/logo-rsud.png" alt="Logo RSUD">
+      </div>
+      <nav>
         <div class="menu">
           <a href="/home">Beranda</a>
           <div class="dropdown">
@@ -337,7 +444,7 @@
           <div class="dropdown">
             <a class="dropbtn">Dokter &#9662;</a>
             <div class="dropdown-content">
-              <a href="#daftardokter">Daftar Dokter</a>
+              <a href="spesialis">Daftar Dokter</a>
               <a href="#jadwaldokter">Jadwal Dokter</a>
             </div>
           </div>
@@ -361,66 +468,70 @@
           </div>
         </div>
       </nav>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Cari...">
-    </div>
-    <div class="welcome-message">
-      Admin
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    <!-- SECTION visimisi -->
-    <section id="visimisi">
-      <h2 class="section-title">Visi & Misi</h2>
-
-      <div class="visimisi-layout">
-        <!-- Kiri -->
-        <div class="visimisi-kiri">
-          <button id="addVisimisiBtn">+ Tambah Kartu</button>
-          <div class="cards" id="visimisi-visimisi_m"></div>
-        </div>
-
-        <!-- Kanan -->
-        <div class="visimisi-kanan">
-          <p><b>Berita Terkini</b></p>
-        </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Cari...">
       </div>
-
-      <div id="visimisiModal" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" id="closevisimisiModal">&times;</span>
-          <h3>Tambah Kartu Baru <br> (Visi & Misi)</h3>
-          <form id="visimisiForm" enctype="multipart/form-data">
-            <label for="visimisiImg">Unggah Gambar:</label>
-            <input type="file" id="visimisiImg" name="img" accept="image/*" required>
-            
-            <label for="visimisiTitle">Judul Kartu:</label>
-            <input type="text" id="visimisiTitle" name="title" required placeholder="Masukkan judul kartu">
-            
-            <label for="visimisiContent">Konten Kartu:</label>
-            <textarea id="visimisiContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
-
-            <button type="submit">Tambah Kartu</button>
-          </form>
-        </div>
+      <div class="welcome-message">
+          Admin
       </div>
-    </section>
-  </main>
+    </header>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; <span class="powered-by">Powered by asunfadrianto | All rights reserved.</span></p>
+    <main>
+      <!-- SECTION visimisi -->
+      <section id="visimisi">
+        <h2 class="section-title">Visi & Misi</h2>
+
+        <div class="visimisi-layout">
+          <!-- Kiri -->
+          <div class="visimisi-kiri">
+            <button id="addvisimisiBtn">+ Tambah Kartu</button>
+            <div class="cards" id="visimisi-visimisi_m"></div>
+          </div>
+
+          <!-- Kanan -->
+          <div class="visimisi-kanan">
+            <p><b>Berita Terbaru</b></p>
+            <div class="" id="berita-berita_m"></div>
+
+            <p><b>Pengumuman Terbaru</b></p>
+            <div class="" id="pengumuman-pengumuman_m"></div>
+
+            <p><b>Penghargaan Terbaru</b></p>
+            <div class="" id="penghargaan-penghargaan_m"></div>
+          </div>
+        </div>
+
+        <div id="visimisiModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closevisimisiModal">&times;</span>
+            <h3>Tambah Kartu Baru (Visimisi)</h3>
+            <form id="visimisiForm" enctype="multipart/form-data">
+              <label for="visimisiImg">Unggah Gambar:</label>
+              <input type="file" id="visimisiImg" name="img" accept="image/*" required>
+              
+              <label for="visimisiTitle">Judul Kartu:</label>
+              <input type="text" id="visimisiTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="visimisiContent">Konten Kartu:</label>
+              <textarea id="visimisiContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  <footer id="contact">
+    <p></p>
+    <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
     <p class="social">
-      <a href="#">Facebook</a> | 
-      <a href="#">Instagram</a> | 
-      <a href="#">X</a> | 
-      <a href="#">Youtube</a>
+      <a href="https://www.facebook.com/godak.lolo.5">Facebook</a> | 
+      <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6">Instagram</a> | 
+      <a href="https://www.instagram.com/gores_sun/">X</a> | 
+      <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3">Youtube</a>
     </p>
   </footer>
-
-  <!-- JS eksternal -->
-  <script src="visimisi.js"></script>
+    <script src="visimisi.js"></script>
 </body>
 </html>
