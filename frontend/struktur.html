@@ -231,6 +231,18 @@
       display: block;
     }
 
+    h4 {
+      width: 100%;
+      color: #81cd8d;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+    }
+
     .card-content p {
       width: 100%;
       font-size: 12px;
@@ -413,6 +425,21 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Direksi: 3 kolom */
+    #direksi-direksi_m {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* Responsif: jadi 1 kolom di layar kecil */
+    @media (max-width: 768px) {
+      #direksi-direksi_m {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -427,7 +454,7 @@
             <a  class="dropbtn">Profile ▾</a>
             <div class="dropdown-content">
               <a href="/sejarah">Sejarah</a>
-              <a href="/struktur">Struktur</a>
+              <a href="/struktur">Struktur & Direksi</a>
               <a href="/visimisi">Visi & Misi</a>
             </div>
           </div>
@@ -479,13 +506,19 @@
     <main>
       <!-- SECTION struktur -->
       <section id="struktur">
-        <h2 class="section-title">struktur</h2>
+        <h2 class="section-title">Struktur & Direksi</h2>
 
         <div class="struktur-layout">
           <!-- Kiri -->
           <div class="struktur-kiri">
-            <button id="addstrukturBtn">+ Tambah Kartu</button>
+            <h4><b>Struktur</b></h4>
+            <button id="addstrukturBtn">+ Tambah struktur</button>
             <div class="cards" id="struktur-struktur_m"></div>
+
+            <h4><b>Direksi</b></h4>
+            <button id="adddireksiBtn">+ Tambah direksi</button>
+            <div class="cards" id="direksi-direksi_m"></div>
+
           </div>
 
           <!-- Kanan -->
@@ -498,6 +531,25 @@
 
             <p><b>Penghargaan Terbaru</b></p>
             <div class="" id="penghargaan-penghargaan_m"></div>
+          </div>
+        </div>
+
+        <div id="direksiModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closedireksiModal">&times;</span>
+            <h3>Tambah Kartu Baru (Direksi)</h3>
+            <form id="direksiForm" enctype="multipart/form-data">
+              <label for="direksiImg">Unggah Gambar:</label>
+              <input type="file" id="direksiImg" name="img" accept="image/*" required>
+              
+              <label for="direksiTitle">Nama Direksi:</label>
+              <input type="text" id="direksiTitle" name="title" required placeholder="Masukkan nama direksi">
+              
+              <label for="direksiContent">Jabatan / Keterangan:</label>
+              <textarea id="direksiContent" name="content" required placeholder="Masukkan jabatan atau keterangan"></textarea>
+
+              <button type="submit">Tambah Direksi</button>
+            </form>
           </div>
         </div>
 

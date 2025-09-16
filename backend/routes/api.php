@@ -16,6 +16,7 @@ use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\DaftarDokterController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\SpesialisController;
+use App\Http\Controllers\DireksiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,15 @@ Route::get('/sejarah', [SejarahController::class, 'index']);
 Route::post('/sejarah', [SejarahController::class, 'store']); 
 Route::put('/sejarah/{id}', [SejarahController::class, 'update']); // ✅ Tambah update
 Route::delete('/sejarah/{id}', [SejarahController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- direksi -------------------
+Route::get('/direksi', [DireksiController::class, 'index']);  
+Route::post('/direksi', [DireksiController::class, 'store']); 
+Route::put('/direksi/{id}', [DireksiController::class, 'update']); // ✅ Tambah update
+Route::delete('/direksi/{id}', [DireksiController::class, 'destroy']); 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

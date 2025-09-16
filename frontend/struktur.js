@@ -22,6 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
       editModalId: 'editstrukturModal',
       editFormId: 'editstrukturForm'
     },
+
+    {
+      id: 'direksi-direksi_m', // #TAG: direksi
+      api: '/api/direksi',
+      addBtnId: 'adddireksiBtn',
+      modalId: 'direksiModal',
+      closeBtnId: 'closedireksiModal',
+      formId: 'direksiForm',
+      editModalId: 'editdireksiModal',
+      editFormId: 'editdireksiForm'
+    },
+
     {
       id: 'berita-berita_m', // #TAG: BERITA
       api: '/api/berita',
