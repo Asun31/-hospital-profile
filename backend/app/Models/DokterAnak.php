@@ -12,12 +12,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jadwaldokter extends Model
+class dokteranak extends Model
 {
     use HasFactory;
 
     // Nama tabel sesuai database
-    protected $table = 'jadwaldokter_m';
+    protected $table = 'dokteranak_m';
 
     // Tentukan kolom yang bisa diisi secara massal
     protected $fillable = [

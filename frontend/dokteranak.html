@@ -397,11 +397,11 @@
       <div class="logo-container">
         <img src="../asset/logo-rsud.png" alt="Logo RSUD">
       </div>
-      <nav>
+       <nav>
         <div class="menu">
           <a href="/home">Beranda</a>
           <div class="dropdown">
-            <a  class="dropbtn">Profile ▾</a>
+            <a class="dropbtn">Profile ▾</a>
             <div class="dropdown-content">
               <a href="/sejarah">Sejarah</a>
               <a href="/struktur">Struktur</a>
@@ -410,7 +410,7 @@
           </div>
 
           <div class="dropdown">
-            <a  class="dropbtn">Publikasi &#9662;</a>
+            <a class="dropbtn">Publikasi &#9662;</a>
             <div class="dropdown-content">
               <a href="/berita">Berita</a>
               <a href="/pengumuman">Pengumuman</a>
@@ -421,8 +421,7 @@
           <div class="dropdown">
             <a class="dropbtn">Dokter &#9662;</a>
             <div class="dropdown-content">
-              <a href="spesialis">Daftar Dokter</a>
-              <a href="#jadwaldokter">Jadwal Dokter</a>
+              <a style="font-size: 15px;" href="spesialis">Daftar & Jadwal<br> Dokter</a>
             </div>
           </div>
 
@@ -454,24 +453,27 @@
     </header>
 
     <main>
-      <section id="penghargaan">
-        <h2 class="section-title">Penghargaan</h2>
-        <button id="addpenghargaanBtn">+ Tambah Kartu</button>
-        <div class="cards" id="penghargaan-penghargaan_m"></div>
+      <section id="dokteranak">
+        <h2 class="section-title">Dokter Anak</h2>
+        <button id="adddokteranakBtn">+ Tambah Kartu</button>
+        <div class="cards" id="dokteranak-dokteranak_m"></div>
 
-        <div id="penghargaanModal" class="modal">
+        <div id="dokteranakModal" class="modal">
           <div class="modal-content">
-            <span class="close-btn" id="closepenghargaanModal">&times;</span>
-            <h3>Tambah Kartu Baru (Penghargaan)</h3>
-            <form id="penghargaanForm" enctype="multipart/form-data">
-              <label for="penghargaanImg">Unggah Gambar:</label>
-              <input type="file" id="penghargaanImg" name="img" accept="image/*" required>
+            <span class="close-btn" id="closedokteranakModal">&times;</span>
+            <h3>Tambah Kartu Baru<br>(Dokter Anak)</h3>
+            <form id="dokteranakForm" enctype="multipart/form-data">
+              <label for="dokteranakImg">Unggah Gambar Foto:</label>
+              <input type="file" id="dokteranakImg" name="img" accept="image/*" required>
               
-              <label for="penghargaanTitle">Judul Kartu:</label>
-              <input type="text" id="penghargaanTitle" name="title" required placeholder="Masukkan judul kartu">
+              <label for="dokteranakTitle">Nama Dokter:</label>
+              <input type="text" id="dokteranakTitle" name="title" required placeholder="Masukkan judul kartu">
               
-              <label for="penghargaanContent">Konten Kartu:</label>
-              <textarea id="penghargaanContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+              <label for="dokteranakContent">Nama RSUD:</label>
+              <textarea id="dokteranakContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <label for="dokteranakImg2">Unggah Jadwal Dokter:</label>
+              <input type="file" id="dokteranakImg2" name="img2" accept="image/*">
 
               <button type="submit">Tambah Kartu</button>
             </form>
@@ -480,7 +482,7 @@
       </section>
     </main>
 
-    <footer id="contact">
+   <footer id="contact">
       <p></p>
       <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
       <p class="social">
@@ -490,6 +492,6 @@
         <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3">Youtube</a>
       </p>
     </footer>
-    <script src="penghargaan.js"></script>
+    <script src="dokteranak.js"></script>
   </body>
 </html>

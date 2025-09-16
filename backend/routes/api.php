@@ -17,6 +17,7 @@ use App\Http\Controllers\DaftarDokterController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\SpesialisController;
 use App\Http\Controllers\DireksiController;
+use App\Http\Controllers\DokterAnakController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +83,16 @@ Route::delete('/penghargaan/{id}', [PenghargaanController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// ------------------- dokteranak -------------------
+Route::get('/dokteranak', [DokterAnakController::class, 'index']);  
+Route::post('/dokteranak', [DokterAnakController::class, 'store']); 
+Route::put('/dokteranak/{id}', [DokterAnakController::class, 'update']); // ✅ Tambah update
+Route::delete('/dokteranak/{id}', [DokterAnakController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 
 // ------------------- Daftar Dokter -------------------
 Route::get('/daftardokter', [DaftarDokterController::class, 'index']);  
