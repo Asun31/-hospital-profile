@@ -131,13 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       itemsToRender.forEach((item, index) => {
       const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
-      const divImgStyle = isSmallCard
-        ? "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
-        : "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
-
-      const imgStyle = isSmallCard
-        ? "width:100%; height:100%; object-fit:cover; object-position:center;"
-        : "width:100%; height:auto; object-fit:contain;";
+      
+      let divImgStyle, imgStyle;
+      if(config.id === 'direksi-direksi_m') {
+        divImgStyle = "width:100%; height:200px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
+        imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
+      } else if(isSmallCard) {
+        divImgStyle = "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
+        imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
+      } else {
+        divImgStyle = "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
+        imgStyle = "width:100%; height:auto; object-fit:contain;";
+      }
 
       container.innerHTML += `
         <div class="card searchable" data-index="${index}" style="
