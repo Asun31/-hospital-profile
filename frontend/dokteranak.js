@@ -252,6 +252,8 @@ if (!detailModal) {
 
       <!-- FOTO DOKTER -->
       <div style="
+        width: 100%;
+        max-height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
