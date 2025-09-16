@@ -21,6 +21,6 @@ class dokteranak extends Model
 
     // Tentukan kolom yang bisa diisi secara massal
     protected $fillable = [
-        'img', 'title', 'content',
+        'img', 'title', 'content','img2',
     ];
 }

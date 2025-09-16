@@ -76,6 +76,7 @@ class DokterAnakController extends Controller
             'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
             'title' => 'required|string',
             'content' => 'required|string',
+            'img2' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
         ]);
 
         // Jika ada gambar baru, hapus yang lama dan upload baru
@@ -85,6 +86,13 @@ class DokterAnakController extends Controller
             }
             $imagePath = $request->file('img')->store('images', 'public');
             $dokteranak->img = $imagePath;
+        }
+        if ($request->hasFile('img2') && $request->file('img2')->isValid()) {
+            if ($dokteranak->img2 && Storage::disk('public')->exists($dokteranak->img2)) {
+                Storage::disk('public')->delete($dokteranak->img2);
+            }
+            $imagePath = $request->file('img2')->store('images', 'public');
+            $dokteranak->img2 = $imagePath;
         }
 
         $dokteranak->title = $request->title;

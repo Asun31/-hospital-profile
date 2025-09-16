@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background-color: #fff; /* supaya ada latar belakang putih kalau aspect ratio beda */
+            background-color: #fff;
           ">
 
           </div>
@@ -297,12 +297,20 @@ if (!detailModal) {
       ">
         <div>
           <h3 style="margin: 0 0 10px; font-size: 18px; font-weight: bold;">📅 Jadwal Praktek</h3>
-          
+          <!-- Tambahan untuk Jadwal Dokter -->
+         <img id="detailSchedule" src="" alt="Jadwal Dokter" style="
+            width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            margin-top: 30px;
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+          ">
         </div>
 
         <div>
-          <h3 style="margin: 0 0 10px; font-size: 18px; font-weight: bold;">📜 Training Certifications & License</h3>
-          <div id="detailLicense" style="font-size: 14px; line-height: 1.6; color: #444;"></div>
+          <div id="detailLicense" style="font-size: 10px; line-height: 1.6; color: #444;"> <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p></div>
         </div>
       </div>
     </div>
@@ -337,223 +345,252 @@ if (!detailModal) {
 }
 
 
-  // Show detail modal by id
-  function showDetailModal(id) {
-    const item = dokteranakData.find(b => b.id == id);
-    if (!item) return;
+// Show detail modal by id
+function showDetailModal(id) {
+  const item = dokteranakData.find(b => b.id == id);
+  if (!item) return;
 
-    document.getElementById('detailTitle').innerText = item.title;
-    const dateStr = item.created_at
-      ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-      : '';
-    document.getElementById('detailDate').innerText = `Upload ${dateStr}, oleh ${item.author || 'Admin'}`;
-    document.getElementById('detailImage').src = `${LARAVEL_URL}/storage/${item.img}`;
-    document.getElementById('detailImage').alt = item.title;
-    document.getElementById('detailContent').innerText = item.content;
+  document.getElementById('detailTitle').innerText = item.title;
+  const dateStr = item.created_at
+    ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+    : '';
+  document.getElementById('detailDate').innerText = `Upload ${dateStr}, oleh ${item.author || 'Admin'}`;
+  document.getElementById('detailImage').src = `${LARAVEL_URL}/storage/${item.img}`;
+  document.getElementById('detailImage').alt = item.title;
+  document.getElementById('detailContent').innerText = item.content;
 
-    detailModal.style.display = 'block';
-    detailModal.scrollTop = 0;
+  // Tambahkan jadwal dokter jika ada
+  const scheduleEl = document.getElementById('detailSchedule');
+  if (item.img2) {
+    scheduleEl.src = `${LARAVEL_URL}/storage/${item.img2}`;
+    scheduleEl.alt = `Jadwal ${item.title}`;
+    scheduleEl.style.display = 'block';
+  } else {
+    scheduleEl.style.display = 'none';
   }
 
-  container.addEventListener('click', (e) => {
-    const id = e.target.closest('.card')?.getAttribute('data-id') || e.target.getAttribute('data-id');
-    if (!id) return;
+  detailModal.style.display = 'block';
+  detailModal.scrollTop = 0;
+}
 
-    showDetailModal(id);
+container.addEventListener('click', (e) => {
+  const id = e.target.closest('.card')?.getAttribute('data-id') || e.target.getAttribute('data-id');
+  if (!id) return;
+
+  showDetailModal(id);
+});
+
+// === Add/Edit Modal ===
+const addBtn = document.getElementById('adddokteranakBtn');
+const modal = document.getElementById('dokteranakModal');
+const closeBtn = document.getElementById('closedokteranakModal');
+const form = document.getElementById('dokteranakForm');
+
+addBtn?.addEventListener('click', () => modal.style.display = 'block');
+closeBtn?.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => {
+  if (e.target === modal) modal.style.display = 'none';
+});
+
+form?.addEventListener('submit', e => {
+  e.preventDefault();
+  const img = document.getElementById('dokteranakImg').files[0];
+  const img2 = document.getElementById('dokteranakImg2').files[0]; // Gambar tambahan
+  const title = form.querySelector('input[name="title"]').value;
+  const content = form.querySelector('textarea[name="content"]').value;
+
+  if (!img) return alert("Harap pilih gambar!");
+  const validImageTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
+  if (!validImageTypes.includes(img.type)) return alert("File bukan gambar valid.");
+
+  const formData = new FormData();
+  formData.append('img', img);
+  if (img2) formData.append('img2', img2);
+  formData.append('title', title);
+  formData.append('content', content);
+
+  fetch(`${LARAVEL_URL}/api/dokteranak`, {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(newCard => {
+    dokteranakData.push(newCard);
+    renderCards();
+    modal.style.display = 'none';
+    form.reset();
+  })
+  .catch(err => {
+    console.error(`Error adding dokteranak:`, err);
+    alert(`Gagal menambahkan data, periksa koneksi backend dokteranak.`);
   });
+});
 
-  // === Add/Edit Modal ===
-  const addBtn = document.getElementById('adddokteranakBtn');
-  const modal = document.getElementById('dokteranakModal');
-  const closeBtn = document.getElementById('closedokteranakModal');
-  const form = document.getElementById('dokteranakForm');
+searchInput?.addEventListener('input', () => {
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const sections = document.querySelectorAll('main section');
 
-  addBtn?.addEventListener('click', () => modal.style.display = 'block');
-  closeBtn?.addEventListener('click', () => modal.style.display = 'none');
-  window.addEventListener('click', e => {
-    if (e.target === modal) modal.style.display = 'none';
-  });
+  sections.forEach(section => {
+    const sectionTitle = section.querySelector('h2.section-title')?.innerText.toLowerCase() || '';
+    const cards = section.getElementsByClassName('card');
+    let cardMatches = false;
 
-  form?.addEventListener('submit', e => {
-    e.preventDefault();
-    const img = document.getElementById('dokteranakImg').files[0];
-    const img2 = document.getElementById('dokteranakImg2').files[0]; // Gambar tambahan
-    const title = form.querySelector('input[name="title"]').value;
-    const content = form.querySelector('textarea[name="content"]').value;
+    if (sectionTitle.includes(searchTerm) && searchTerm !== '') {
+      section.style.display = '';
+      Array.from(cards).forEach(card => { card.style.display = ''; });
+      return; 
+    }
 
-    if (!img) return alert("Harap pilih gambar!");
-    const validImageTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
-    if (!validImageTypes.includes(img.type)) return alert("File bukan gambar valid.");
-
-    const formData = new FormData();
-    formData.append('img', img);
-    if (img2) formData.append('img2', img2);
-    formData.append('title', title);
-    formData.append('content', content);
-
-    fetch(`${LARAVEL_URL}/api/dokteranak`, {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(newCard => {
-      dokteranakData.push(newCard);
-      renderCards();
-      modal.style.display = 'none';
-      form.reset();
-    })
-    .catch(err => {
-      console.error(`Error adding dokteranak:`, err);
-      alert(`Gagal menambahkan data, periksa koneksi backend dokteranak.`);
+    Array.from(cards).forEach(card => {
+      const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+      const content = card.querySelector('p')?.innerText.toLowerCase() || '';
+      const matches = title.includes(searchTerm) || content.includes(searchTerm);
+      card.style.display = matches || searchTerm === '' ? '' : 'none';
+      if (matches) cardMatches = true;
     });
+
+    section.style.display = sectionTitle.includes(searchTerm) || cardMatches || searchTerm === '' ? '' : 'none';
   });
+});
 
-  searchInput?.addEventListener('input', () => {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const sections = document.querySelectorAll('main section');
+// === Modal Edit Baru ===
+const editModal = document.createElement('div');
+editModal.id = "editdokteranakModal";
+editModal.style.display = "none";
+editModal.style.position = "fixed";
+editModal.style.top = "0";
+editModal.style.left = "0";
+editModal.style.width = "100%";
+editModal.style.height = "100%";
+editModal.style.backgroundColor = "rgba(0,0,0,0.7)";
+editModal.style.zIndex = "3000";
+editModal.style.overflow = "auto";
 
-    sections.forEach(section => {
-      const sectionTitle = section.querySelector('h2.section-title')?.innerText.toLowerCase() || '';
-      const cards = section.getElementsByClassName('card');
-      let cardMatches = false;
+editModal.innerHTML = `
+  <div style="
+    background: white;
+    max-width: 520px;
+    margin: 60px auto;
+    padding: 25px 30px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <button id="closeEditModal" style="
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #555;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+    ">&times;</button>
 
-      if (sectionTitle.includes(searchTerm) && searchTerm !== '') {
-        section.style.display = '';
-        Array.from(cards).forEach(card => { card.style.display = ''; });
-        return; 
-      }
+    <h3 style="
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    ">✏️ Edit Dokter anak</h3>
 
-      Array.from(cards).forEach(card => {
-        const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
-        const content = card.querySelector('p')?.innerText.toLowerCase() || '';
-        const matches = title.includes(searchTerm) || content.includes(searchTerm);
-        card.style.display = matches || searchTerm === '' ? '' : 'none';
-        if (matches) cardMatches = true;
-      });
-
-      section.style.display = sectionTitle.includes(searchTerm) || cardMatches || searchTerm === '' ? '' : 'none';
-    });
-  });
-
-  // === Modal Edit Baru ===
-  const editModal = document.createElement('div');
-  editModal.id = "editdokteranakModal";
-  editModal.style.display = "none";
-  editModal.style.position = "fixed";
-  editModal.style.top = "0";
-  editModal.style.left = "0";
-  editModal.style.width = "100%";
-  editModal.style.height = "100%";
-  editModal.style.backgroundColor = "rgba(0,0,0,0.7)";
-  editModal.style.zIndex = "3000";
-  editModal.style.overflow = "auto";
-
-  editModal.innerHTML = `
-    <div style="
-      background: white;
-      max-width: 520px;
-      margin: 60px auto;
-      padding: 25px 30px;
-      border-radius: 12px;
-      position: relative;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-    ">
-      <button id="closeEditModal" style="
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        font-size: 22px;
-        font-weight: bold;
-        color: #555;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        transition: transform 0.2s ease, color 0.2s ease;
-      ">&times;</button>
-
-      <h3 style="
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 20px;
-      ">✏️ Edit dokteranak</h3>
-
-      <form id="editdokteranakForm" style="display: flex; flex-direction: column; gap: 15px;">
-        <textarea id="editTitle" name="title" placeholder="Judul dokteranak" required style="
-          padding: 10px 12px;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          font-size: 15px;
-          font-weight: 600;
-          resize: none;
-          min-height: 60px;
-          line-height: 1.4;
-        "></textarea>
-
-        <textarea id="editContent" name="content" placeholder="Deskripsi / Konten" required style="
-          padding: 12px 14px;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          font-size: 14px;
-          resize: vertical;
-          min-height: 120px;
-        "></textarea>
-
-        <input type="file" id="editImg" name="img" accept="image/*" style="
+    <form id="editdokteranakForm" style="display: flex; flex-direction: column; gap: 15px;">
+    
+      <label for="editImg" style="font-size: 14px; font-weight: 600; margin-bottom: 4px; display: block;">
+        Unggah Foto Dokter:
+      </label>
+      <input type="file" id="editImg" name="img" accept="image/*" style="
           font-size: 14px;
           padding: 6px 0;
         ">
 
-        <button type="submit" style="
-          background: #3498db;
-          color: white;
-          border: none;
-          padding: 12px;
-          border-radius: 8px;
-          font-weight: bold;
-          font-size: 15px;
-          cursor: pointer;
-          transition: background 0.2s ease, transform 0.2s ease;
-        ">💾 Simpan Perubahan</button>
-      </form>
-    </div>
-  `;
+      <label for="editTitle" style="font-size: 14px; font-weight: 600; margin-bottom: 4px; display: block;">
+        Nama Dokter:
+      </label>
+      <textarea id="editTitle" name="title" placeholder="Judul dokteranak" required style="
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        resize: none;
+        min-height: 60px;
+        line-height: 1.4;
+      "></textarea>
 
-  document.body.appendChild(editModal);
+      <label for="editContent" style="font-size: 14px; font-weight: 600; margin-bottom: 4px; display: block;">
+        Nama RSUD:
+      </label>
+      <textarea id="editContent" name="content" placeholder="Deskripsi / Konten" required style="
+        padding: 12px 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 120px;
+      "></textarea>
 
-  document.getElementById('closeEditModal').addEventListener('click', () => {
+      <label for="editImg2" style="font-size: 14px; font-weight: 600; margin-bottom: 4px; display: block;">
+        Unggah Jadwal Dokter:
+      </label>
+      <input type="file" id="editImg2" name="Img2" accept="image/*" style="
+        font-size: 14px;
+        padding: 6px 0;
+      ">
+
+      <button type="submit" style="
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+      ">💾 Simpan Perubahan</button>
+    </form>
+  </div>
+`;
+
+document.body.appendChild(editModal);
+
+document.getElementById('closeEditModal').addEventListener('click', () => {
+  editModal.style.display = "none";
+});
+
+document.getElementById('editdokteranakForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const yakin = confirm("Yakin mau menyimpan perubahan?");
+  if (!yakin) return;
+
+  const formEl = e.target;
+  const id = formEl.getAttribute('data-id');
+  const formData = new FormData(formEl);
+  const imgFile = document.getElementById('editImg').files[0];
+  const imgFile2 = document.getElementById('editImg2').files[0]; // Gambar tambahan
+  if (imgFile) formData.append('img', imgFile);
+  if (imgFile2) formData.append('img2', imgFile2);
+
+  fetch(`${LARAVEL_URL}/api/dokteranak/${id}`, {
+    method: 'POST',
+    headers: { 'X-HTTP-Method-Override': 'PUT' },
+    body: formData
+  })
+  .then(res => res.json())
+  .then(updated => {
+    const idx = dokteranakData.findIndex(p => p.id == id);
+    dokteranakData[idx] = updated;
+    renderCards();
     editModal.style.display = "none";
-  });
+  })
+  .catch(err => console.error("Error updating:", err));
+});
 
-  document.getElementById('editdokteranakForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const yakin = confirm("Yakin mau menyimpan perubahan?");
-    if (!yakin) return;
+initSection();
 
-    const formEl = e.target;
-    const id = formEl.getAttribute('data-id');
-    const formData = new FormData(formEl);
-    const imgFile = document.getElementById('editImg').files[0];
-    const imgFile2 = document.getElementById('editImg2').files[0]; // Gambar tambahan
-    if (imgFile) formData.append('img', imgFile);
-    if (imgFile2) formData.append('img2', imgFile2);
-
-    fetch(`${LARAVEL_URL}/api/dokteranak/${id}`, {
-      method: 'POST',
-      headers: { 'X-HTTP-Method-Override': 'PUT' },
-      body: formData
-    })
-    .then(res => res.json())
-    .then(updated => {
-      const idx = dokteranakData.findIndex(p => p.id == id);
-      dokteranakData[idx] = updated;
-      renderCards();
-      editModal.style.display = "none";
-    })
-    .catch(err => console.error("Error updating:", err));
-  });
-
-  initSection();
 });
