@@ -195,156 +195,156 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // === Modal Detail ===
-let detailModal = document.getElementById('detailModal');
-if (!detailModal) {
-  detailModal = document.createElement('div');
-  detailModal.id = 'detailModal';
-  detailModal.style.position = 'fixed';
-  detailModal.style.top = '0';
-  detailModal.style.left = '0';
-  detailModal.style.width = '100vw';
-  detailModal.style.height = '100vh';
-  detailModal.style.backgroundColor = 'rgba(0,0,0,0.7)';
-  detailModal.style.display = 'none';
-  detailModal.style.zIndex = '3000';
-  detailModal.style.overflowY = 'auto';
-  detailModal.style.padding = '30px 15px';
-  detailModal.style.boxSizing = 'border-box';
-  detailModal.style.fontFamily = 'Arial, sans-serif';
-
-  detailModal.innerHTML = `
-    <div id="detailModalContent" style="
-      position: relative;
-      max-width: 1000px;
-      width: 95%;
-      margin: 50px auto;
-      background: #ffffff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      transform: translateY(-50px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 20px;
-      padding: 25px;
-    ">
-      <button id="closeDetailModal" style="
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 20px;
-        font-weight: bold;
-        border: none;
-        background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
-        color: white;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
-      ">&times;</button>
-
-      <!-- FOTO DOKTER -->
-      <div style="
-        width: 100%;
-        max-height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 12px;
-        background: #fff;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        overflow: hidden;
-      ">
-        <img id="detailImage" src="" alt="Gambar dokter" style="
-          width: 100%;
-          height: auto;
-          object-fit: cover;
-          display: block;
-        ">
-        <div style="padding: 15px; text-align: center;">
-          <h2 id="detailTitle" style="
-            font-size: 16px;
-            color: #048a16;
-            margin: 0 0 5px;">
-          </h2>
-          <p id="detailContent" style="
-            font-size: 12px;
-            line-height: 1.6;
-            white-space: pre-line;
-            color: #444;
-            margin: 0;
-          "></p>
-          <br>
-          <p id="detailDate" style="
-            font-size: 12px;
-            color: #555;
-            margin: 0;
-          "></p>
-        </div>
-      </div>
-
-      <!-- INFORMASI DETAIL -->
-      <div style="
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 20px;
-      ">
-        <div>
-          <h3 style="margin: 0 0 10px; font-size: 18px; font-weight: bold;">📅 Jadwal Praktek</h3>
-          <!-- Tambahan untuk Jadwal Dokter -->
-         <img id="detailSchedule" src="" alt="Jadwal Dokter" style="
-            width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            margin-top: 30px;
-            display: none;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-          ">
-        </div>
-
-        <div>
-          <div id="detailLicense" style="font-size: 10px; line-height: 1.6; color: #444;"> <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(detailModal);
-
-  setTimeout(() => {
-    const modalContent = document.getElementById('detailModalContent');
-    modalContent.style.transform = 'translateY(0)';
-    modalContent.style.opacity = '1';
-  }, 10);
-
-  const closeBtnDetail = document.getElementById('closeDetailModal');
-  closeBtnDetail.addEventListener('click', () => {
+  let detailModal = document.getElementById('detailModal');
+  if (!detailModal) {
+    detailModal = document.createElement('div');
+    detailModal.id = 'detailModal';
+    detailModal.style.position = 'fixed';
+    detailModal.style.top = '0';
+    detailModal.style.left = '0';
+    detailModal.style.width = '100vw';
+    detailModal.style.height = '100vh';
+    detailModal.style.backgroundColor = 'rgba(0,0,0,0.7)';
     detailModal.style.display = 'none';
-  });
-  closeBtnDetail.addEventListener('mouseenter', () => {
-    closeBtnDetail.style.transform = 'scale(1.2)';
-    closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5))';
-    closeBtnDetail.style.boxShadow = '0 6px 18px rgba(0,0,0,0.6)';
-  });
-  closeBtnDetail.addEventListener('mouseleave', () => {
-    closeBtnDetail.style.transform = 'scale(1)';
-    closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3))';
-    closeBtnDetail.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
-  });
+    detailModal.style.zIndex = '3000';
+    detailModal.style.overflowY = 'auto';
+    detailModal.style.padding = '30px 15px';
+    detailModal.style.boxSizing = 'border-box';
+    detailModal.style.fontFamily = 'Arial, sans-serif';
 
-  detailModal.addEventListener('click', (e) => {
-    if (e.target === detailModal) detailModal.style.display = 'none';
-  });
-}
+    detailModal.innerHTML = `
+      <div id="detailModalContent" style="
+        position: relative;
+        max-width: 1000px;
+        width: 95%;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        transform: translateY(-50px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 20px;
+        padding: 25px;
+      ">
+        <button id="closeDetailModal" style="
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          font-size: 20px;
+          font-weight: bold;
+          border: none;
+          background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+          color: white;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+        ">&times;</button>
+
+        <!-- FOTO DOKTER -->
+        <div style="
+          width: 100%;
+          max-height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          border-radius: 12px;
+          background: #fff;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+          overflow: hidden;
+        ">
+          <img id="detailImage" src="" alt="Gambar dokter" style="
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+          ">
+          <div style="padding: 15px; text-align: center;">
+            <h2 id="detailTitle" style="
+              font-size: 16px;
+              color: #048a16;
+              margin: 0 0 5px;">
+            </h2>
+            <p id="detailContent" style="
+              font-size: 12px;
+              line-height: 1.6;
+              white-space: pre-line;
+              color: #444;
+              margin: 0;
+            "></p>
+            <br>
+            <p id="detailDate" style="
+              font-size: 12px;
+              color: #555;
+              margin: 0;
+            "></p>
+          </div>
+        </div>
+
+        <!-- INFORMASI DETAIL -->
+        <div style="
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          gap: 20px;
+        ">
+          <div>
+            <h3 style="margin: 0 0 10px; font-size: 18px; font-weight: bold;">📅 Jadwal Praktek</h3>
+            <!-- Tambahan untuk Jadwal Dokter -->
+          <img id="detailSchedule" src="" alt="Jadwal Dokter" style="
+              width: 100%;
+              max-height: 100%;
+              object-fit: contain;
+              margin-top: 30px;
+              display: none;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+            ">
+          </div>
+
+          <div>
+            <div id="detailLicense" style="font-size: 10px; line-height: 1.6; color: #444;"> <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(detailModal);
+
+    setTimeout(() => {
+      const modalContent = document.getElementById('detailModalContent');
+      modalContent.style.transform = 'translateY(0)';
+      modalContent.style.opacity = '1';
+    }, 10);
+
+    const closeBtnDetail = document.getElementById('closeDetailModal');
+    closeBtnDetail.addEventListener('click', () => {
+      detailModal.style.display = 'none';
+    });
+    closeBtnDetail.addEventListener('mouseenter', () => {
+      closeBtnDetail.style.transform = 'scale(1.2)';
+      closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5))';
+      closeBtnDetail.style.boxShadow = '0 6px 18px rgba(0,0,0,0.6)';
+    });
+    closeBtnDetail.addEventListener('mouseleave', () => {
+      closeBtnDetail.style.transform = 'scale(1)';
+      closeBtnDetail.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3))';
+      closeBtnDetail.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+    });
+
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) detailModal.style.display = 'none';
+    });
+  }
 
 
 // Show detail modal by id
