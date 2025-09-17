@@ -130,53 +130,52 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       itemsToRender.forEach((item, index) => {
-      const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
-      
-      let divImgStyle, imgStyle;
-      if(config.id === 'direksi-direksi_m') {
-        divImgStyle = "width:100%; height:200px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
-        imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
-      } else if(isSmallCard) {
-        divImgStyle = "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
-        imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
-      } else {
-        divImgStyle = "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
-        imgStyle = "width:100%; height:auto; object-fit:contain;";
-      }
+        const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
+        
+        let divImgStyle, imgStyle;
+        if(config.id === 'direksi-direksi_m') {
+          divImgStyle = "width:100%; height:200px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
+          imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
+        } else if(isSmallCard) {
+          divImgStyle = "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
+          imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
+        } else {
+          divImgStyle = "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
+          imgStyle = "width:100%; height:auto; object-fit:contain;";
+        }
 
-      container.innerHTML += `
-        <div class="card searchable" data-index="${index}" style="
-          cursor:pointer; position:relative;
-          margin:${isSmallCard ? '15px 0' : '0px 0'};
-          border-radius:6px; overflow:hidden;
-          box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
-          width:100%; background:#fff; border:1px solid #f0f0f0;
-        ">
-          <button class="edit-card" data-index="${index}" style="
-            position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
-            padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
-          <button class="delete-card" data-index="${index}" style="
-            position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
-            padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
-          <div style="${divImgStyle}">
-            <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">
+        container.innerHTML += `
+          <div class="card searchable" data-index="${index}" style="
+            cursor:pointer; position:relative;
+            margin:${isSmallCard ? '15px 0' : '0px 0'};
+            border-radius:6px; overflow:hidden;
+            box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
+            width:100%; background:#fff; border:1px solid #f0f0f0;
+          ">
+            <button class="edit-card" data-index="${index}" style="
+              position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
+              padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
+            <button class="delete-card" data-index="${index}" style="
+              position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
+              padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
+            <div style="${divImgStyle}">
+              <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">
+            </div>
+            <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
+              <h3 style="
+                font-size:${isSmallCard ? '12px' : '18px'};
+                font-weight:600; margin:0 0 4px 0;
+                color:#333; line-height:1.3;">${item.title}</h3>
+              <p style="
+                font-size:${isSmallCard ? '10px' : '14px'};
+                margin:0; color:#666; line-height:1.4;">${item.content}</p>
+            </div>
+              <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
+                <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+                <strong>Oleh:</strong> ${item.author || 'Admin'}
+              </p>
           </div>
-          <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
-            <h3 style="
-              font-size:${isSmallCard ? '12px' : '18px'};
-              font-weight:600; margin:0 0 4px 0;
-              color:#333; line-height:1.3;">${item.title}</h3>
-            <p style="
-              font-size:${isSmallCard ? '10px' : '14px'};
-              margin:0; color:#666; line-height:1.4;">${item.content}</p>
-          </div>
-            <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
-              <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
-              <strong>Oleh:</strong> ${item.author || 'Admin'}
-            </p>
-        </div>
-      `;
-
+        `;
       });
 
       // --- DELETE BUTTONS ---
@@ -184,13 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
           const idx = btn.dataset.index;
-          const item = itemsToRender[idx];
+          const item = dataItems[idx];
           if (confirm(`Apakah yakin ingin menghapus ${item.title}?`)) {
             fetch(`${LARAVEL_URL}${config.api}/${item.id}`, { method: 'DELETE' })
               .then(res => {
                 if (res.ok) {
-                  const realIndex = dataItems.findIndex(d => d.id === item.id);
-                  dataItems.splice(realIndex, 1);
+                  dataItems.splice(idx, 1);
                   renderCards();
                   alert(`${item.title} berhasil dihapus!`);
                 } else alert(`Gagal menghapus ${item.title}`);
@@ -204,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
           const idx = btn.dataset.index;
-          const item = itemsToRender[idx];
+          const item = dataItems[idx];
           editTitleInput.value = item.title;
           editContentInput.value = item.content;
           editForm.setAttribute('data-id', item.id);
@@ -227,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
           h3.style.margin = '0 0 5px 0';
         });
       }
-
     }
 
     // --- ADD / MODAL ADD ---
@@ -315,5 +312,80 @@ document.addEventListener('DOMContentLoaded', () => {
       section.style.display = hasMatch || searchTerm === '' ? '' : 'none';
     });
   });
+
+  // --- TAMBAHAN: MODAL DETAIL DIREKSI ---
+  (() => {
+    const container = document.getElementById('direksi-direksi_m');
+    if (!container) return;
+
+    const detailModal = document.createElement('div');
+    detailModal.id = 'direksiDetailModal';
+    detailModal.style.cssText = `
+      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+      background-color: rgba(0,0,0,0.7); z-index:3000; overflow:auto;
+    `;
+    detailModal.innerHTML = `
+      <div style="
+        background: #fff; max-width: 520px; margin: 60px auto; padding: 30px 35px;
+        border-radius: 16px; position: relative; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      ">
+        <button id="close-direksiDetailModal" style="
+          position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%;
+          background-color: rgba(0,0,0,0.1); border: none; font-size: 20px; font-weight: bold;
+          color: #333; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          z-index: 10;
+        " 
+          onmouseover="this.style.backgroundColor='rgba(255,77,77,0.9)'; this.style.color='#fff'; this.style.transform='scale(1.15)';" 
+          onmouseout="this.style.backgroundColor='rgba(0,0,0,0.1)'; this.style.color='#333'; this.style.transform='scale(1)';">&times;</button>
+
+        <img id="detailImg" src="" alt="" style="
+          width: 100%; max-height: 440px; object-fit: contain; margin-top: 25px; margin-bottom: 20px;
+          display: block; margin-left: auto; margin-right: auto;
+        ">
+
+        <h3 id="detailTitle" style="text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 18px; color: #333;"></h3>
+
+        <p id="detailContent" style="
+          font-size: 15px; 
+          line-height: 1.7; 
+          color: #555; 
+          text-align: center;
+          background-color: #f0f4f8; 
+          padding: 12px 15px; 
+          border-radius: 8px;
+          font-weight: bold;
+          max-width: 410px;  /* atur lebar background sesuai kebutuhan */
+          margin: 0 auto;    
+        "></p>
+      </div>
+    `;
+
+    document.body.appendChild(detailModal);
+
+    document.getElementById('close-direksiDetailModal').addEventListener('click', () => detailModal.style.display = 'none');
+    window.addEventListener('click', e => { if (e.target === detailModal) detailModal.style.display = 'none'; });
+
+    container.addEventListener('click', e => {
+      const card = e.target.closest('.card');
+      if (!card) return;
+      const index = card.dataset.index;
+      if (index === undefined) return;
+
+      const item = card.querySelector('h3') ? {
+        title: card.querySelector('h3').innerText,
+        content: card.querySelector('p')?.innerText || '',
+        img: card.querySelector('img')?.getAttribute('src')?.replace(`${LARAVEL_URL}/storage/`, '') || ''
+      } : null;
+      if (!item) return;
+
+      document.getElementById('detailTitle').innerText = item.title;
+      document.getElementById('detailContent').innerText = item.content;
+      document.getElementById('detailImg').src = `${LARAVEL_URL}/storage/${item.img}`;
+      document.getElementById('detailImg').alt = item.title;
+
+      detailModal.style.display = 'block';
+    });
+  })();
 
 });
