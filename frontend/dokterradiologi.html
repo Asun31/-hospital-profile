@@ -45,22 +45,10 @@
 
     section {
       margin-bottom: 60px;
-      scroll-margin-top: 50px;
+      scroll-margin-top: 80px;
     }
 
-    h1 {
-      font-size: 2em;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    h4 {
-      font-size: 15px;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    h2.section-title {
+   h2.section-title {
       color: #81cd8d;
       font-size: 25px;
       margin-bottom: 20px;
@@ -192,12 +180,11 @@
       font-size: 12px;
     }
 
-   .cards {
-      margin-top: 10%;
+    .cards {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin-top: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-top: 20px;
       padding: 10px;
     }
 
@@ -209,11 +196,6 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       flex-direction: column;
-      align-items: center;    
-      justify-content: center; 
-      width: 150px;
-      height: 150px;
-      text-align: center;
     }
 
     .card:hover {
@@ -222,9 +204,10 @@
     }
 
     .card img {
-      width: 60px;       /* Ukuran gambar seperti ikon */
-      height: 60px;
+      width: 100%;
+      height: 200px;
       object-fit: contain;
+      background-color: #f5f5f5;
       display: block;
     }
 
@@ -234,22 +217,27 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 15px;
-      width: 100%; /* Biar konten tetap full width */
     }
 
     .card-content h3 {
+      width: 100%;
       color: #2e7d32;
       margin-bottom: 8px;
       font-size: 14px;
       font-weight: 600;
+      line-height: 1.4;
       text-align: justify;
+      text-justify: inter-word;
+      display: block;
     }
 
     .card-content p {
+      width: 100%;
       font-size: 12px;
       line-height: 1.5;
       color: #555;
       text-align: justify;
+      text-justify: inter-word;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 4;
@@ -258,8 +246,19 @@
       text-overflow: ellipsis;
     }
 
+    .card-content .meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 8px;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+      width: 100%;
+    }
+
     .card-content .read-more {
       margin-top: 12px;
+      align-self: flex-start;
       padding: 6px 14px;
       font-size: 13px;
       color: white;
@@ -391,6 +390,45 @@
     .powered-by::selection {
       background: none;
     }
+
+    .button-group {
+      display: flex;
+      gap: 10px; /* jarak antar tombol */
+      margin-bottom: 20px;
+      align-items: center; /* vertikal sejajar */
+    }
+
+    .btn-back {
+      padding: 6px 14px; /* lebih kecil */
+      font-size: 13px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-back:hover {
+      background-color: #0056b3;
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn-back:active {
+      background-color: #004085;
+      transform: translateY(0) scale(1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Sesuaikan tombol tambah kartu agar tetap serasi */
+    #adddokterradiologiBtn {
+      padding: 6px 14px;
+      font-size: 13px;
+      border-radius: 6px;
+    }
+
   </style>
 </head>
 <body>
@@ -398,7 +436,7 @@
       <div class="logo-container">
         <img src="../asset/logo-rsud.png" alt="Logo RSUD">
       </div>
-      <nav>
+       <nav>
         <div class="menu">
           <a href="/home">Beranda</a>
           <div class="dropdown">
@@ -454,110 +492,37 @@
     </header>
 
     <main>
-      <section id="spesialis">
-        <h1>Spesialis Kami</h1>
-        <h4>"Dokter kami adalah tenaga ahli berpengalaman di bidangnya, siap memberikan pelayanan terbaik untuk Anda dan keluarga."</h4>
-        <div class="cards">
-          <a href="/dokteranak" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/anak.png" alt="Anak">
-              <br>
-              <p>Anak</p>
-            </div>
-          </a> 
+      <section id="dokterradiologi">
+        <h2 class="section-title">Dokter Radiologi</h2>
+        <button id="adddokterradiologiBtn">+ Tambah Kartu</button>
+        <div class="cards" id="dokterradiologi-dokterradiologi_m"></div>
 
-          <a href="/dokteranastesi" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/anastesi.png" alt="Anastesi">
-              <br>
-              <p>Anastesi</p>
-            </div>
-          </a> 
+        <div id="dokterradiologiModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closedokterradiologiModal">&times;</span>
+            <h3>Tambah Kartu Baru<br>(Dokter Radiologi)</h3>
+            <form id="dokterradiologiForm" enctype="multipart/form-data">
+              <label for="dokterradiologiImg">Unggah Foto Dokter:</label>
+              <input type="file" id="dokterradiologiImg" name="img" accept="image/*" required>
+              
+              <label for="dokterradiologiTitle">Nama Dokter:</label>
+              <input type="text" id="dokterradiologiTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="dokterradiologiContent">Nama RSUD:</label>
+              <textarea id="dokterradiologiContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
 
-          <a href="/dokterbedah" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/bedah.png" alt="Bedah">
-              <br>
-              <p>Bedah</p>
-            </div>
-          </a> 
+              <label for="dokterradiologiImg2">Unggah Jadwal Dokter:</label>
+              <input type="file" id="dokterradiologiImg2" name="img2" accept="image/*">
 
-           <a href="/doktergigi" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/gigi.png" alt="Gigi">
-              <br>
-              <p>Gigi</p>
-            </div>
-          </a> 
-
-           <a href="/doktergizi" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/gizi.png" alt="Gizi Klinik">
-              <br>
-              <p>Gizi Klinik</p>
-            </div>
-          </a> 
-
-          <a href="/dokterobgyn" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/kandungan.png" alt="Obgyn">
-              <br>
-              <p>Obgyn</p>
-            </div>
-          </a> 
-
-          <a href="/dokterpenyakitdalam" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/penyakitdalam.png" alt="Penyakit Dalam">
-              <br>
-              <p>Penyakit Dalam</p>
-            </div>
-          </a> 
-
-          <a href="/dokterradiologi" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/radiologi.png" alt="Radiologi">
-              <br>
-              <p>Radiologi</p>
-            </div>
-          </a> 
-
-          <a href="/dokterrehabilitasi" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/rehabilitas.png" alt="Rehabilitasi Medik">
-              <br>
-              <p>Rehabilitasi Medik</p>
-            </div>
-          </a> 
-
-          <a href="/doktersaraf" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/syaraf.png" alt="Saraf">
-              <br>
-              <p>Saraf</p>
-            </div>
-          </a> 
-
-          <a href="/doktertht" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/tht.png" alt="THT-KL">
-              <br>
-              <p>THT-KL</p>
-            </div>
-          </a> 
-
-          <a href="/dokterumum" style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img src="../asset/Umum.png" alt="Umum">
-              <br>
-              <p>Umum</p>
-            </div>
-          </a> 
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
         </div>
       </section>
+      <a href="javascript:history.back()" class="btn-back">← Kembali</a>
     </main>
 
-    <footer id="contact">
+   <footer id="contact">
       <p></p>
       <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
       <p class="social">
@@ -567,6 +532,6 @@
         <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3">Youtube</a>
       </p>
     </footer>
-    <script src="spesialis.js"></script>
-</body>
+    <script src="dokterradiologi.js"></script>
+  </body>
 </html>
