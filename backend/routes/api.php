@@ -18,6 +18,10 @@ use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\SpesialisController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DokterAnakController;
+use App\Http\Controllers\DokterAnastesiController;
+use App\Http\Controllers\DokterBedahController;
+use App\Http\Controllers\DokterGigiController;
+use App\Http\Controllers\DokterGiziController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -93,6 +97,41 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// ------------------- dokteranastesi -------------------
+Route::get('/dokteranastesi', [DokterAnastesiController::class, 'index']);  
+Route::post('/dokteranastesi', [DokterAnastesiController::class, 'store']); 
+Route::put('/dokteranastesi/{id}', [DokterAnastesiController::class, 'update']); // ✅ Tambah update
+Route::delete('/dokteranastesi/{id}', [DokterAnastesiController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- dokterbedah -------------------
+Route::get('/dokterbedah', [DokterBedahController::class, 'index']);  
+Route::post('/dokterbedah', [DokterBedahController::class, 'store']); 
+Route::put('/dokterbedah/{id}', [DokterBedahController::class, 'update']); // ✅ Tambah update
+Route::delete('/dokterbedah/{id}', [DokterBedahController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- doktergigi -------------------
+Route::get('/doktergigi', [DokterGigiController::class, 'index']);  
+Route::post('/doktergigi', [DokterGigiController::class, 'store']); 
+Route::put('/doktergigi/{id}', [DokterGigiController::class, 'update']); // ✅ Tambah update
+Route::delete('/doktergigi/{id}', [DokterGigiController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- doktergizi -------------------
+Route::get('/doktergizi', [DokterGiziController::class, 'index']);  
+Route::post('/doktergizi', [DokterGiziController::class, 'store']); 
+Route::put('/doktergizi/{id}', [DokterGiziController::class, 'update']); // ✅ Tambah update
+Route::delete('/doktergizi/{id}', [DokterGiziController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 // ------------------- Daftar Dokter -------------------
 Route::get('/daftardokter', [DaftarDokterController::class, 'index']);  
