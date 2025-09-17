@@ -123,15 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '';
       
       let itemsToRender = dataItems;
-      if (config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
+      const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
+      if (isSmallCard) {
         itemsToRender = [...dataItems] 
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) 
-          .slice(0, 3); 
+          .slice(0, 3);
       }
 
-      itemsToRender.forEach((item, index) => {
-        const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
-        
+      itemsToRender.forEach((item) => {
         let divImgStyle, imgStyle;
         if(config.id === 'direksi-direksi_m') {
           divImgStyle = "width:100%; height:200px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
@@ -145,17 +144,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         container.innerHTML += `
-          <div class="card searchable" data-index="${index}" style="
+          <div class="card searchable" data-id="${item.id}" style="
             cursor:pointer; position:relative;
             margin:${isSmallCard ? '15px 0' : '0px 0'};
             border-radius:6px; overflow:hidden;
             box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
             width:100%; background:#fff; border:1px solid #f0f0f0;
           ">
-            <button class="edit-card" data-index="${index}" style="
+            <button class="edit-card" data-id="${item.id}" style="
               position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
               padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
-            <button class="delete-card" data-index="${index}" style="
+            <button class="delete-card" data-id="${item.id}" style="
               position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
               padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
             <div style="${divImgStyle}">
@@ -182,10 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
       container.querySelectorAll('.delete-card').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const idx = btn.dataset.index;
+          const id = btn.dataset.id;
+          const idx = dataItems.findIndex(x => x.id == id);
           const item = dataItems[idx];
           if (confirm(`Apakah yakin ingin menghapus ${item.title}?`)) {
-            fetch(`${LARAVEL_URL}${config.api}/${item.id}`, { method: 'DELETE' })
+            fetch(`${LARAVEL_URL}${config.api}/${id}`, { method: 'DELETE' })
               .then(res => {
                 if (res.ok) {
                   dataItems.splice(idx, 1);
@@ -201,17 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
       container.querySelectorAll('.edit-card').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const idx = btn.dataset.index;
-          const item = dataItems[idx];
+          const id = btn.dataset.id;
+          const item = dataItems.find(x => x.id == id);
           editTitleInput.value = item.title;
           editContentInput.value = item.content;
-          editForm.setAttribute('data-id', item.id);
+          editForm.setAttribute('data-id', id);
           editModal.style.display = 'block';
         });
       });
 
       // --- SMALL CARD CONTENT LIMIT ---
-      if(config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
+      if(isSmallCard) {
         container.querySelectorAll('.card-content p').forEach(p => {
           p.style.display = '-webkit-box';
           p.style.webkitBoxOrient = 'vertical';
@@ -355,37 +355,37 @@ document.addEventListener('DOMContentLoaded', () => {
           padding: 12px 15px; 
           border-radius: 8px;
           font-weight: bold;
-          max-width: 410px;  /* atur lebar background sesuai kebutuhan */
-          margin: 0 auto;    
+          border: 2px solid #3498db;   
+          max-width: 360px;            /* lebar maksimal */
+          margin: 0 auto;            
         "></p>
       </div>
     `;
-
     document.body.appendChild(detailModal);
 
-    document.getElementById('close-direksiDetailModal').addEventListener('click', () => detailModal.style.display = 'none');
-    window.addEventListener('click', e => { if (e.target === detailModal) detailModal.style.display = 'none'; });
+    const closeDetail = document.getElementById('close-direksiDetailModal');
+    closeDetail.addEventListener('click', () => detailModal.style.display = 'none');
+    window.addEventListener('click', e => { if(e.target === detailModal) detailModal.style.display = 'none'; });
 
     container.addEventListener('click', e => {
       const card = e.target.closest('.card');
-      if (!card) return;
-      const index = card.dataset.index;
-      if (index === undefined) return;
+      if(!card) return;
+      const id = card.dataset.id;
+      const item = Array.from(container.querySelectorAll('.card')).map(c => {
+        return {
+          id: c.dataset.id,
+          title: c.querySelector('h3')?.innerText,
+          content: c.querySelector('p')?.innerText,
+          img: c.querySelector('img')?.src
+        };
+      }).find(x => x.id === id);
 
-      const item = card.querySelector('h3') ? {
-        title: card.querySelector('h3').innerText,
-        content: card.querySelector('p')?.innerText || '',
-        img: card.querySelector('img')?.getAttribute('src')?.replace(`${LARAVEL_URL}/storage/`, '') || ''
-      } : null;
-      if (!item) return;
-
-      document.getElementById('detailTitle').innerText = item.title;
-      document.getElementById('detailContent').innerText = item.content;
-      document.getElementById('detailImg').src = `${LARAVEL_URL}/storage/${item.img}`;
-      document.getElementById('detailImg').alt = item.title;
-
-      detailModal.style.display = 'block';
+      if(item) {
+        document.getElementById('detailTitle').innerText = item.title;
+        document.getElementById('detailContent').innerText = item.content;
+        document.getElementById('detailImg').src = item.img;
+        detailModal.style.display = 'block';
+      }
     });
   })();
-
 });
