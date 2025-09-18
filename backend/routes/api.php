@@ -29,6 +29,7 @@ use App\Http\Controllers\DokterRehabilitasiController;
 use App\Http\Controllers\DokterSarafController;
 use App\Http\Controllers\DokterThtController;
 use App\Http\Controllers\DokterUmumController;
+use App\Http\Controllers\SlideController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -226,6 +227,15 @@ Route::get('/spesialis', [SpesialisController::class, 'index']);
 Route::post('/spesialis', [SpesialisController::class, 'store']); 
 Route::put('/spesialis/{id}', [SpesialisController::class, 'update']); // ✅ Tambah update
 Route::delete('/spesialis/{id}', [SpesialisController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- slides -------------------
+Route::get('/slides', [SlideController::class, 'index']);  
+Route::post('/slides', [SlideController::class, 'store']); 
+Route::put('/slides/{id}', [SlideController::class, 'update']); // ✅ Tambah update
+Route::delete('/slides/{id}', [SlideController::class, 'destroy']); 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
