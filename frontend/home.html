@@ -1,520 +1,142 @@
 <!DOCTYPE html>
-
-<!-- /**
- * Created by PhpStorm.
- * User: asun fadrianto
- * Date: 07/09/2025
- * Time: 10.05
- */ -->
-
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RSUD Talang Ubi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSUD Talang Ubi</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
+<style>
     /* ===== Reset Global ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    html, body { height: 100%; }
     body {
-      display: flex;
-      flex-direction: column;
-      font-family: 'Poppins', sans-serif;
+      display: flex; flex-direction: column; font-family: 'Poppins', sans-serif;
       color: #333;
-      background-color: #f9f9f9;
-    }
-
-    main {
-      flex: 1; /* fleksibel menempati ruang antara header dan footer */
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-      font-family: Arial, sans-serif;
-    }
-
-    section {
-      margin-bottom: 60px;
-      scroll-margin-top: 80px;
-    }
-
-   h2.section-title {
-      color: #81cd8d;
-      font-size: 25px;
-      margin-bottom: 20px;
-      font-weight: 600;
-      border-left: 6px solid #81cd8d;
-      height: 30px; 
-      padding-left: 10px;
-      border-bottom: 2px solid #81cd8d; 
-      padding-bottom: 5px; 
-      transition: all 0.3s ease; 
-    }
-
-    h2.section-title:hover {
-      color: #048a16;               
-      border-left-color: #048a16;    
-      border-bottom-color: #048a16;
+      background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),
+                  url('../asset/baground_rsud.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
     }
 
     /* ===== Header ===== */
-    header {
-      background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);
-      color: #fff;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+    header { background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+    .logo-container { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+    .logo-container img { width: 50%; height: auto; object-fit: contain; }
+    .menu { display: flex; justify-content: flex-end; gap: 15px; flex-wrap: wrap; }
+    .menu a { color: #fff; text-decoration: none; font-weight: 600; transition: 0.3s; }
+    .menu a:hover { color: #048a16; }
+    .dropdown { position: relative; }
+    .dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 150px;box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1; }
+    .dropdown-content a { color: #000; padding: 8px 12px; text-decoration: none; display: block; }
+    .dropdown-content a:hover { background-color: #f1f1f1; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown:hover .dropbtn { color: #048a16; }
 
-    /* ===== Welcome Message ===== */
-    .welcome-message {
-      display: flex;
-      align-items: center;
-      gap: 1px;
-      flex: 0 0 auto;
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      text-align: left;
-    }
-    .welcome-message span {
-      opacity: 0;
-      display: inline-block;
-      animation: appear 0.3s forwards;
-    }
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .search-box { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+    .search-box input { flex: 0 0 120px; padding: 6px 10px; border-radius: 20px; border: none; outline: none; font-size: 12px; }
+    .search-box input::placeholder { color: #666; font-size: 12px; }
+    .welcome-message { display: flex; align-items: center; gap: 1px; flex: 0 0 auto; font-size: 15px; font-weight: 600; color: #fff; text-align: left; }
 
-    /* ===== Logo ===== */
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 0 0 auto;
-    }
-    .logo-container img {
-      width: 50%;
-      height: auto;
-      object-fit: contain;
-    }
-    .logo-container h1 {
-      font-size: 12px;
-      font-weight: 700;
-      margin: 0;
-      white-space: nowrap;
-    }
+    /* ===== Main ===== */
+     main { flex: 1; max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: Arial, sans-serif; }
+    .add-slide-container {display: flex;justify-content: center;  margin-bottom: 20px;      }
 
-    /* ===== Navigation Menu ===== */
-    .menu {
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .menu a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-    .menu a:hover {
-      color: #048a16;
-    }
+    #addSlideBtn {background-color: #81cd8d;  color: #fff;font-size: 14px; padding: 8px 16px; border-radius: 6px; border: none;cursor: pointer;transition: 0.3s;font-weight: 600;}
 
-    /* ===== Dropdown Menu ===== */
-    .dropdown {
-      position: relative;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #fff;
-      min-width: 150px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-    .dropdown-content a {
-      color: #000;
-      padding: 8px 12px;
-      text-decoration: none;
-      display: block;
-    }
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .dropdown:hover .dropbtn {
-      color: #048a16;
-    }
+    #addSlideBtn:hover {background-color: #66b370;transform: scale(1.05);}
 
-    /* ===== Search Box ===== */
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 0 0 auto;
-    }
-    .search-box input {
-      flex: 0 0 120px;
-      padding: 6px 10px;
-      border-radius: 20px;
-      border: none;
-      outline: none;
-      font-size: 12px;
-    }
-    .search-box input::placeholder {
-      color: #666;
-      font-size: 12px;
-    }
+    /* ===== Slider ===== */
+    .slider { position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 40px; }
+    .slides { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .slide { display: none; flex-direction: column; align-items: center; width: 100%; }
+    .slide-card {margin-top: 10px; width: 80%; max-width: 80%; height: 490px; border-radius: 14px; overflow: hidden;box-shadow: 0 8px 20px rgba(0,0,0,0.12); display: flex; justify-content: center; align-items: center;position: relative; background-color: #fff; }
+    .slide-card img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 14px; }
+    
+    .controls {position: absolute;top: 50%;width: 100%;transform: translateY(-50%);pointer-events: auto;z-index: 10;display: flex;justify-content: space-between;padding: 0 10%; }
 
-    /* ===== Cards ===== */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
-      margin-top: 20px;
-    }
-    @media (max-width: 992px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+    .control-btn {background: rgba(0,0,0,0.4); border: none;color: #fff;font-size: 36px;cursor: pointer;padding: 12px 16px;border-radius: 50%;transition: 0.3s;}
 
-    .card {
-      background: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
-    .card img {
-      width: 100%;
-      height: 200px;      
-      object-fit: contain; 
-      background-color: #f0f0f0;
-      display: block;
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-    }
+    .control-btn:hover {background: rgba(0,0,0,0.6);}
 
-    .card-content {
-      padding: 15px;
-      text-align: justify;
-    }
-    .card-content h3 {
-      color: #81cd8d;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    .card-content p {
-      font-size: 12px;
-      text-align: justify;
-      color: #555;
-    }
+    .caption {position: absolute;    bottom: 0;left: 0;width: 100%;padding: 12px 20px;color: #ffffff;font-family: 'Poppins', sans-serif;font-size: 16px;font-weight: 500;text-align: left;box-sizing: border-box;text-shadow: 1px 1px 4px rgba(0,0,0,0.7);border-top-right-radius: 10px;border-top-left-radius: 10px;}
 
-    /* ===== Buttons ===== */
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #addCardBtn {
-      background-color: #81cd8d;
-      color: white;
-      font-size: 16px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-      margin-bottom: 20px;
-    }
-    #addCardBtn:hover { background-color: #66b370; transform: scale(1.05); }
-    #addCardBtn:focus { outline: none; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-    #addCardBtn:active { background-color: #56a55b; }
+    /* ===== Card Buttons ===== */
+    .card-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+    .card-buttons button { padding: 6px 12px; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; transition: 0.2s; }
+    .card-buttons .edit-btn { background-color: #81cd8d; color: #fff; }
+    .card-buttons .edit-btn:hover { background-color: #66b370; }
+    .card-buttons .delete-btn { background-color: #ff4d4f; color: #fff; }
+    .card-buttons .delete-btn:hover { background-color: #e04344; }
 
     /* ===== Modal ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      padding: 10px;
-    }
-    .modal-content {
-      background-color: #fff;
-      border-radius: 8px;
-      width: 280px;
-      padding: 15px 12px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-      position: relative;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-    .modal input,
-    .modal textarea {
-      width: 100%;
-      padding: 8px 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 13px;
-    }
-    .modal input:focus,
-    .modal textarea:focus {
-      border-color: #007bff;
-      outline: none;
-      box-shadow: 0 0 4px rgba(0,123,255,0.2);
-    }
-    .modal button {
-      padding: 8px 18px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-    .modal button:hover {
-      background-color: #0056b3;
-      transform: translateY(-1px);
-    }
-    .close-btn {
-      color: #aaa;
-      font-size: 20px;
-      font-weight: bold;
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      cursor: pointer;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
+    .modal { display: none; position: fixed; z-index: 1000; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 10px; }
+    .modal-content { background-color: #fff; border-radius: 8px; width: 280px; padding: 15px 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); position: relative; }
+    .modal input, .modal textarea { width: 100%; padding: 8px 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; }
+    .modal input:focus, .modal textarea:focus { border-color: #007bff; outline: none; box-shadow: 0 0 4px rgba(0,123,255,0.2); }
+    .modal button { padding: 8px 18px; background-color: #007bff; color: #fff; border-radius: 5px; cursor: pointer; font-size: 13px; }
+    .modal button:hover { background-color: #0056b3; transform: translateY(-1px); }
+    .close-btn { position: absolute; top: 8px; right: 8px; font-size: 20px; font-weight: bold; color: #aaa; cursor: pointer; }
     .close-btn:hover { color: #000; transform: scale(1.2); }
 
     /* ===== Footer ===== */
-    footer {
-      background: #81cd8d;
-      color: #fff;
-      text-align: center;
-      padding: 10px 0;
-      width: 100%;
-      flex-shrink: 0; 
-    }
+    footer { background: #81cd8d; color: #fff; text-align: center; padding: 10px 0; }
     footer p { font-size: 12px; margin: 5px 0; }
-    .social a {
-      margin: 0 8px;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-    }
+    .social a { margin: 0 8px; color: #fff; font-weight: bold; text-decoration: none; }
     .social a:hover { color: #048a16; }
 
-    .powered-by {
-      user-select: none;     
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      cursor: default;
-    }
-
-    .powered-by::selection {
-      background: none;
-    }
-
-      /* ===== Slider Modern ===== */
-    .slide-card {
-      margin: 10px auto; 
-      width: 80%;
-      max-width: 80%;
-      height: 600px;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: transparent;
-      position: relative; 
-    }
-
-    .slide-card img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      margin: auto;
-      background-color: transparent;
-      user-select: none;
-      border-radius: 14px;
-    }
-
-    .caption {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      padding: 20px 80px;
-      color: #55f73c;
-      font-size: 12px;
-      text-align: right;
-    }
-
-    .controls {
-      position: absolute;
-      top: 50%;
-      width: 80%; 
-      max-width: 80%; 
-      left: 50%; 
-      transform: translate(-50%, -50%);
-      display: flex;
-      justify-content: space-between;
-      pointer-events: auto; 
-      z-index: 10;
-    }
-
-    .control-btn {
-      background: rgba(0, 0, 0, 0.4);
-      border: none;
-      color: #fff;
-      font-size: 28px;
-      cursor: pointer;
-      padding: 8px 14px;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
-
-    .control-btn:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    @media (max-width: 768px) {
-      .slide-card {
-        width: 95% !important;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .slide-card {
-        width: 100% !important;
-      }
-
-      .control-btn {
-        font-size: 22px;
-        padding: 6px 10px;
-      }
-    }
-
-    body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  color: #333;
-
-  /* Background gambar + overlay transparan 50% */
-  background: 
-    linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), /* overlay 50% */
-    url('../asset/baground_rsud.jpg') no-repeat center center fixed;
-
-  background-size: cover;
-}
-
+    @media (max-width: 768px) { .slide-card { width: 95% !important; } }
+    @media (max-width: 480px) { .slide-card { width: 100% !important; } .control-btn { font-size: 22px; padding: 6px 10px; } }
   </style>
 </head>
+
 <body>
-
-  <!-- Header -->
   <header>
-    <div class="logo-container">
-      <img src="../asset/logo-rsud.png" alt="Logo RSUD">
-    </div>
-     <nav>
-        <div class="menu">
-          <a href="/home">Beranda</a>
-          <div class="dropdown">
-            <a class="dropbtn">Profile ▾</a>
-            <div class="dropdown-content">
-              <a href="/sejarah">Sejarah</a>
-              <a href="/struktur">Struktur</a>
-              <a href="/visimisi">Visi & Misi</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <a class="dropbtn">Publikasi &#9662;</a>
-            <div class="dropdown-content">
-              <a href="/berita">Berita</a>
-              <a href="/pengumuman">Pengumuman</a>
-              <a href="/penghargaan">Penghargaan</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <a class="dropbtn">Dokter &#9662;</a>
-            <div class="dropdown-content">
-              <a style="font-size: 15px;" href="spesialis">Daftar & Jadwal<br> Dokter</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <a class="dropbtn">Fasilitas &#9662;</a>
-            <div class="dropdown-content">
-              <a href="#rawatjalan">Rawat Jalan</a>
-              <a href="#rawatinap">Rawat Inap</a>
-              <a href="#laboratorium">Laboratorium</a>
-              <a href="#radiologi">Radiologi</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <a class="dropbtn">Kontak &#9662;</a>
-            <div class="dropdown-content">
-              <a href="#telphone">Telphone</a>
-              <a href="#whatsapp">Whatsapp</a>
-            </div>
+    <div class="logo-container"><img src="../asset/logo-rsud.png" alt="Logo RSUD"></div>
+    <nav>
+      <div class="menu">
+        <a href="/home">Beranda</a>
+        <div class="dropdown"><a class="dropbtn">Profile ▾</a>
+          <div class="dropdown-content">
+            <a href="/sejarah">Sejarah</a>
+            <a href="/struktur">Struktur</a>
+            <a href="/visimisi">Visi & Misi</a>
           </div>
         </div>
-      </nav>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Cari...">
-    </div>
-    <div class="welcome-message">
-        Admin
-    </div>
+        <div class="dropdown"><a class="dropbtn">Publikasi ▾</a>
+          <div class="dropdown-content">
+            <a href="/berita">Berita</a>
+            <a href="/pengumuman">Pengumuman</a>
+            <a href="/penghargaan">Penghargaan</a>
+          </div>
+        </div>
+        <div class="dropdown"><a class="dropbtn">Dokter ▾</a>
+          <div class="dropdown-content">
+            <a style="font-size:15px;" href="spesialis">Daftar & Jadwal<br> Dokter</a>
+          </div>
+        </div>
+        <div class="dropdown"><a class="dropbtn">Fasilitas ▾</a>
+          <div class="dropdown-content">
+            <a href="#rawatjalan">Rawat Jalan</a>
+            <a href="#rawatinap">Rawat Inap</a>
+            <a href="#laboratorium">Laboratorium</a>
+            <a href="#radiologi">Radiologi</a>
+          </div>
+        </div>
+        <div class="dropdown"><a class="dropbtn">Kontak ▾</a>
+          <div class="dropdown-content">
+            <a href="#telphone">Telphone</a>
+            <a href="#whatsapp">Whatsapp</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="search-box"><input type="text" id="searchInput" placeholder="Cari..."></div>
+    <div class="welcome-message">Admin</div>
   </header>
 
-  <!-- Slider -->
   <div class="slider">
     <div class="slides" id="slides"></div>
     <div class="controls">
@@ -523,24 +145,40 @@
     </div>
   </div>
 
-  <!-- Konten -->
-  <main>
+  <div class="add-slide-container">
     <button id="addSlideBtn">+ Tambah Kartu</button>
+  </div>
+
+  <main>
+
     <div id="addSlideModal" class="modal">
       <div class="modal-content">
         <span id="closeAddSlideModal" class="close-btn">&times;</span>
         <h3>Tambah Slide Baru</h3>
         <form id="addSlideForm">
-          <input type="file" name="img" accept="image/*">
+          <label style="margin-top: 20px;" for="slideImage">Pilih Gambar (Rasio 21:9):</label>
+          <input type="file" id="slideImage" name="img" accept="image/*">
           <textarea name="caption" placeholder="Caption Slide" rows="3"></textarea>
           <button type="submit">Simpan Slide</button>
         </form>
       </div>
     </div>
+
+    <div id="editSlideModal" class="modal">
+      <div class="modal-content">
+        <span id="closeEditSlideModal" class="close-btn">&times;</span>
+        <h3>Edit Slide</h3>
+        <label style="margin-top: 20px;" for="slideImage">Pilih Gambar (Rasio 21:9):</label>
+        <form id="editSlideForm">
+          <input type="file" name="img" accept="image/*">
+          <textarea name="caption" placeholder="Caption Slide" rows="3"></textarea>
+          <button type="submit">Simpan Perubahan</button>
+        </form>
+      </div>
+    </div>
   </main>
 
-  <footer id="contact">
-    <p></p>
+  <footer>
     <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
     <p class="social">
       <a href="https://www.facebook.com/godak.lolo.5">Facebook</a> | 
@@ -550,7 +188,6 @@
     </p>
   </footer>
 
-  <!-- JS eksternal -->
   <script src="home.js"></script>
 </body>
 </html>
