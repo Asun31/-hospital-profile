@@ -93,4 +93,16 @@ class BeritaController extends Controller
 
         return response()->json($berita, 200);
     }
+
+    public function show($id)
+    {
+        $berita = Berita::find($id);
+
+        if (!$berita) {
+            return response()->json(['message' => 'Berita tidak ditemukan'], 404);
+        }
+
+        return response()->json($berita);
+    }
+
 }

@@ -6,6 +6,7 @@
 <title>RSUD Talang Ubi</title>
 
 <!-- Google Fonts -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -42,29 +43,29 @@
 
     /* ===== Main ===== */
      main { flex: 1; max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: Arial, sans-serif; }
-    .add-slide-container {display: flex;justify-content: center;  margin-bottom: 20px;      }
+    .add-slide-container {display: flex;justify-content: center;  margin-bottom: 0px;      }
 
     #addSlideBtn {background-color: #81cd8d;  color: #fff;font-size: 14px; padding: 8px 16px; border-radius: 6px; border: none;cursor: pointer;transition: 0.3s;font-weight: 600;}
 
     #addSlideBtn:hover {background-color: #66b370;transform: scale(1.05);}
 
     /* ===== Slider ===== */
-    .slider { position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 40px; }
+    .slider { position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 10px; }
     .slides { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .slide { display: none; flex-direction: column; align-items: center; width: 100%; }
     .slide-card {margin-top: 10px; width: 80%; max-width: 80%; height: 490px; border-radius: 14px; overflow: hidden;box-shadow: 0 8px 20px rgba(0,0,0,0.12); display: flex; justify-content: center; align-items: center;position: relative; background-color: #fff; }
     .slide-card img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 14px; }
     
-    .controls {position: absolute;top: 50%;width: 100%;transform: translateY(-50%);pointer-events: auto;z-index: 10;display: flex;justify-content: space-between;padding: 0 10%; }
+    .controls {position: absolute;top: 50%;width: 110%;transform: translateY(-50%);pointer-events: auto;z-index: 10;display: flex;justify-content: space-between;padding: 0 10%; }
 
-    .control-btn {background: rgba(0,0,0,0.4); border: none;color: #fff;font-size: 36px;cursor: pointer;padding: 12px 16px;border-radius: 50%;transition: 0.3s;}
+    .control-btn {background: rgba(0,0,0,0.4); border: none;color: #fff;font-size: 20px;cursor: pointer;padding: 12px 16px;border-radius: 50%;transition: 0.3s;}
 
     .control-btn:hover {background: rgba(0,0,0,0.6);}
 
     .caption {position: absolute;    bottom: 0;left: 0;width: 100%;padding: 12px 20px;color: #ffffff;font-family: 'Poppins', sans-serif;font-size: 16px;font-weight: 500;text-align: left;box-sizing: border-box;text-shadow: 1px 1px 4px rgba(0,0,0,0.7);border-top-right-radius: 10px;border-top-left-radius: 10px;}
 
     /* ===== Card Buttons ===== */
-    .card-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+    .card-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 0px; }
     .card-buttons button { padding: 6px 12px; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; transition: 0.2s; }
     .card-buttons .edit-btn { background-color: #81cd8d; color: #fff; }
     .card-buttons .edit-btn:hover { background-color: #66b370; }
@@ -87,8 +88,126 @@
     .social a { margin: 0 8px; color: #fff; font-weight: bold; text-decoration: none; }
     .social a:hover { color: #048a16; }
 
-    @media (max-width: 768px) { .slide-card { width: 95% !important; } }
-    @media (max-width: 480px) { .slide-card { width: 100% !important; } .control-btn { font-size: 22px; padding: 6px 10px; } }
+    @media (max-width: 768px) { .slide-card { width: 100% !important; } }
+    @media (max-width: 480px) { .slide-card { width: 100% !important; } .control-btn { font-size: 20px; padding: 6px 10px; } }
+  
+    .slider-container {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .info-track {
+      display: flex;
+      animation: scroll-left 20s linear infinite;
+      width: 1135px; /* agar lebar menyesuaikan isi */
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .info-card {
+      flex: 0 0 auto; /* agar card tidak shrink */
+      width: 150px; /* lebar tetap 200px */
+      height: 120px; /* tinggi 150px */
+      margin-right: 16px; /* jarak antar card */
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    /* --- Info Card --- */
+    .info-card {
+      flex: 0 0 auto;
+      width: 150px;
+      height: 120px;
+      margin-right: 16px;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 20px 10px;         /* ruang lebih untuk icon */
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      text-align: center;
+      color: #333;
+      text-decoration: none;      /* hilangkan underline link */
+      display: flex;
+      flex-direction: column;     /* icon di atas, teks di bawah */
+      justify-content: center;
+      align-items: center;
+      gap: 10px;                  /* jarak icon-teks */
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .info-card i {
+      font-size: 30px;            /* ukuran ikon */
+      color: #81cd8d;             /* warna ikon (bisa disesuaikan) */
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+  .news-slider {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background: #f4f4f4;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 100%;   
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .news-label {
+    background: #81cd8d;
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 4px;
+    flex: 0 0 auto;
+    margin-right: 12px;
+  }
+
+  .news-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    max-width: 880px;
+  }
+
+  .marquee {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: 4px;
+    flex: 0 0 auto;
+    margin-left: 8px;
+  }
+
+  .nav-btn {
+    background: #81cd8d;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
   </style>
 </head>
 
@@ -150,7 +269,6 @@
   </div>
 
   <main>
-
     <div id="addSlideModal" class="modal">
       <div class="modal-content">
         <span id="closeAddSlideModal" class="close-btn">&times;</span>
@@ -176,6 +294,46 @@
         </form>
       </div>
     </div>
+
+   <div class="news-slider">
+      <div class="news-label">BERITA TERKINI</div>
+      <div class="news-content">
+        <a href="#" class="marquee" id="marquee-link"></a>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn" id="btn-prev">&#10094;</button>
+        <button class="nav-btn" id="btn-next">&#10095;</button>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="info-track">
+        <a href="/berita" class="info-card">
+          <i class="fa fa-newspaper-o"></i>
+          <span>Berita</span>
+        </a>
+        <a href="/pengumuman" class="info-card">
+          <i class="fa fa-bullhorn"></i>
+          <span>Pengumuman</span>
+        </a>
+        <a href="/penghargaan" class="info-card">
+          <i class="fa fa-star-o"></i>
+          <span>Penghargaan</span>
+        </a>
+        <a href="/spesialis" class="info-card">
+          <i class="fa fa-address-card-o"></i>
+          <span>Dokter Spesialis</span>
+        </a>
+        <a href="/berita5" class="info-card">
+          <i class="fa fa-newspaper-o"></i>
+          <span>Card 5</span>
+        </a>
+        <a href="/berita6" class="info-card">
+          <i class="fa fa-newspaper-o"></i>
+          <span>Card 6</span>
+        </a>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -189,5 +347,7 @@
   </footer>
 
   <script src="home.js"></script>
+  <script src="berita.js"></script>
+
 </body>
 </html>

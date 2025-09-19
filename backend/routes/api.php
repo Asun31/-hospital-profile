@@ -71,6 +71,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // ------------------- Berita -------------------
 Route::get('/berita', [BeritaController::class, 'index']);  
+Route::get('/berita/{id}', [BeritaController::class, 'show']);
 Route::post('/berita', [BeritaController::class, 'store']); 
 Route::put('/berita/{id}', [BeritaController::class, 'update']); // ✅ Tambah update
 Route::delete('/berita/{id}', [BeritaController::class, 'destroy']); 

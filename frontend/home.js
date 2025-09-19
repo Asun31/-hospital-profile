@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let editingSlideId = null;
   let autoSlideInterval;
 
-  /** ==== Render slide ==== */
   function renderSlide(slide) {
     const slideDiv = document.createElement('div');
     slideDiv.className = 'slide';
@@ -34,19 +33,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slidesContainer.appendChild(slideDiv);
 
-    // Event tombol
     slideDiv.querySelector('.edit-btn').addEventListener('click', () => openEditModal(slide));
     slideDiv.querySelector('.delete-btn').addEventListener('click', () => deleteSlide(slide.id));
   }
 
-  /** ==== Buka modal edit ==== */
   function openEditModal(slide) {
     editingSlideId = slide.id;
     editSlideForm.querySelector('textarea[name="caption"]').value = slide.caption || '';
     editSlideModal.style.display = 'block';
   }
 
-  /** ==== Tutup modal ==== */
   closeAddSlideModal.addEventListener('click', () => addSlideModal.style.display = 'none');
   closeEditSlideModal.addEventListener('click', () => editSlideModal.style.display = 'none');
   window.addEventListener('click', e => {
@@ -54,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === editSlideModal) editSlideModal.style.display = 'none';
   });
 
-  /** ==== Submit tambah slide ==== */
   addSlideForm.addEventListener('submit', e => {
     e.preventDefault();
     const imgFile = addSlideForm.querySelector('input[name="img"]').files[0];
@@ -79,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => { console.error(err); alert('Gagal menyimpan slide'); });
   });
 
-  /** ==== Submit edit slide ==== */
   editSlideForm.addEventListener('submit', e => {
     e.preventDefault();
     const imgFile = editSlideForm.querySelector('input[name="img"]').files[0];
@@ -88,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData();
     if(imgFile) formData.append('img', imgFile);
     formData.append('caption', captionText);
-    formData.append('_method', 'PUT'); // supaya Laravel bisa menerima PUT dengan FormData
+    formData.append('_method', 'PUT'); 
 
     fetch(`${LARAVEL_URL}/api/slides/${editingSlideId}`, { method: 'POST', body: formData })
       .then(res => res.json())
@@ -104,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => { console.error(err); alert('Gagal update slide'); });
   });
 
-  /** ==== Hapus slide ==== */
   function deleteSlide(id){
     if(!confirm('Apakah Anda yakin ingin menghapus slide ini?')) return;
 
@@ -123,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => alert('Error saat menghapus slide'));
   }
 
-  /** ==== Load slide ==== */
   function loadSlides() {
     fetch(`${LARAVEL_URL}/api/slides`)
       .then(res => res.json())
@@ -140,20 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error(err));
   }
 
-  /** ==== Sort slides ==== */
   function getAllSlidesSorted() {
     return Array.from(document.querySelectorAll('.slides .slide'))
       .sort((a, b) => parseInt(b.dataset.id) - parseInt(a.dataset.id));
   }
 
-  /** ==== Tampilkan slide ==== */
   function showSlideById(id) {
     document.querySelectorAll('.slides .slide').forEach(slide => {
       slide.style.display = (slide.dataset.id === id ? 'flex' : 'none');
     });
   }
 
-  /** ==== Navigasi ==== */
   window.nextSlide = function() {
     const allSlides = getAllSlidesSorted();
     if (!allSlides.length) return;
@@ -171,15 +160,77 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlideById(currentSlideId);
   };
 
-  /** ==== Auto slide ==== */
+
   function startAutoSlide() {
     clearInterval(autoSlideInterval);
-    autoSlideInterval = setInterval(() => { nextSlide(); }, 8000);
+    autoSlideInterval = setInterval(() => { nextSlide(); }, 5000);
   }
 
-  /** ==== Modal buka ==== */
   addSlideBtn.addEventListener('click', () => addSlideModal.style.display = 'block');
 
-  /** ==== Load pertama ==== */
+  window.onload = function(){
+    const track = document.querySelector('.info-track');
+    track.innerHTML += track.innerHTML; 
+  }
+  
+  const marqueeLink  = document.getElementById('marquee-link');
+  const btnPrev      = document.getElementById('btn-prev');
+  const btnNext      = document.getElementById('btn-next');
+
+  let newsList = [];      // array berisi {id, title}
+  let currentIndex = 0;
+  let autoTimer = null;
+
+  function showNews(i) {
+    if (!newsList.length) return;
+    const item = newsList[i];
+    marqueeLink.style.opacity = 0;
+    setTimeout(() => {
+      marqueeLink.textContent = item.title;
+      marqueeLink.dataset.id  = item.id;       // simpan ID berita
+      marqueeLink.style.opacity = 1;
+    }, 400);
+  }
+
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => {
+      currentIndex = (currentIndex + 1) % newsList.length;
+      showNews(currentIndex);
+    }, 5000);
+  }
+
+  btnPrev.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + newsList.length) % newsList.length;
+    showNews(currentIndex);
+    startAuto();
+  });
+  btnNext.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % newsList.length;
+    showNews(currentIndex);
+    startAuto();
+  });
+
+  fetch(`${LARAVEL_URL}/api/berita`)
+    .then(res => res.json())
+    .then(data => {
+      newsList = data
+        .sort((a,b)=> new Date(b.created_at) - new Date(a.created_at))
+        .map(item => ({ id: item.id, title: item.title }));
+      if (newsList.length) {
+        showNews(currentIndex);
+        startAuto();
+      }
+    })
+    .catch(err => console.error('Error memuat berita:', err));
+
+  marqueeLink.addEventListener('click', e => {
+    e.preventDefault();
+    const id = marqueeLink.dataset.id;
+    if (!id) return;
+
+    window.location.href = `/berita?id=${id}`;
+  });
+
   loadSlides();
 });
