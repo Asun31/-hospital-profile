@@ -532,7 +532,26 @@
           </div>
         </div>
 
-        <div id="direksiModal" class="modal">
+        <div id="strukturModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closestrukturModal">&times;</span>
+            <h3>Tambah Kartu Baru (struktur)</h3>
+            <form id="strukturForm" enctype="multipart/form-data">
+              <label for="strukturImg">Unggah Gambar:</label>
+              <input type="file" id="strukturImg" name="img" accept="image/*">
+              
+              <label for="strukturTitle">Judul Kartu:</label>
+              <input type="text" id="strukturTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="strukturContent">Konten Kartu:</label>
+              <textarea id="strukturContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
+        </div>
+
+         <div id="direksiModal" class="modal">
           <div class="modal-content">
             <span class="close-btn" id="closedireksiModal">&times;</span>
             <h3>Tambah Kartu Baru (Direksi)</h3>
@@ -547,25 +566,6 @@
               <textarea id="direksiContent" name="content" required placeholder="Masukkan jabatan atau keterangan"></textarea>
 
               <button type="submit">Tambah Direksi</button>
-            </form>
-          </div>
-        </div>
-
-        <div id="strukturModal" class="modal">
-          <div class="modal-content">
-            <span class="close-btn" id="closestrukturModal">&times;</span>
-            <h3>Tambah Kartu Baru (struktur)</h3>
-            <form id="strukturForm" enctype="multipart/form-data">
-              <label for="strukturImg">Unggah Gambar:</label>
-              <input type="file" id="strukturImg" name="img" accept="image/*" required>
-              
-              <label for="strukturTitle">Judul Kartu:</label>
-              <input type="text" id="strukturTitle" name="title" required placeholder="Masukkan judul kartu">
-              
-              <label for="strukturContent">Konten Kartu:</label>
-              <textarea id="strukturContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
-
-              <button type="submit">Tambah Kartu</button>
             </form>
           </div>
         </div>

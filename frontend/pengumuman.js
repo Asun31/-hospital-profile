@@ -532,5 +532,21 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(err => console.error("Error updating:", err));
   });
 
+  const params = new URLSearchParams(window.location.search);
+  const idFromUrl = params.get('id');
+  if (idFromUrl) { 
+
+    fetch(`${LARAVEL_URL}/api/pengumuman`)
+      .then(res => res.json())
+      .then(data => {
+        pengumumanData = data; 
+        renderCards();    
+        showDetailModal(idFromUrl); 
+      })
+      .catch(err => console.error('Gagal memuat pengumuman:', err));
+  } else {
+    initSection(); 
+  }
+
   initSection();
 });

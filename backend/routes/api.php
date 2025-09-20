@@ -81,6 +81,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // ------------------- Pengumuman -------------------
 Route::get('/pengumuman', [PengumumanController::class, 'index']);  
+Route::get('/berpengumumanita/{id}', [PengumumanController::class, 'show']);
 Route::post('/pengumuman', [PengumumanController::class, 'store']); 
 Route::put('/pengumuman/{id}', [PengumumanController::class, 'update']); // ✅ Tambah update
 Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy']); 
@@ -90,6 +91,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // ------------------- Penghargaan -------------------
 Route::get('/penghargaan', [PenghargaanController::class, 'index']);  
+Route::get('/penghargaan/{id}', [PenghargaanController::class, 'show']);
 Route::post('/penghargaan', [PenghargaanController::class, 'store']); 
 Route::put('/penghargaan/{id}', [PenghargaanController::class, 'update']); // ✅ Tambah update
 Route::delete('/penghargaan/{id}', [PenghargaanController::class, 'destroy']); 

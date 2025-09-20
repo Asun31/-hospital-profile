@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       editFormId: 'editberitaForm'
     },
     {
-      id: 'pengumuman-pengumuman_m', // #TAG: PENGUMUMAN
+      id: 'pengumuman-pengumuman_m', // #TAG: pengumuman
       api: '/api/pengumuman',
       addBtnId: 'addpengumumanBtn',
       modalId: 'pengumumanModal',
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderCards() {
       container.innerHTML = '';
-      
+          
       let itemsToRender = dataItems;
       if (config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
         itemsToRender = [...dataItems] 
@@ -118,47 +118,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       itemsToRender.forEach((item, index) => {
-      const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
-      const divImgStyle = isSmallCard
-        ? "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
-        : "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
+        const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
+        const divImgStyle = isSmallCard
+          ? "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
+          : "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
 
-      const imgStyle = isSmallCard
-        ? "width:100%; height:100%; object-fit:cover; object-position:center;"
-        : "width:100%; height:auto; object-fit:contain;";
+        const imgStyle = isSmallCard
+          ? "width:100%; height:100%; object-fit:cover; object-position:center;"
+          : "width:100%; height:auto; object-fit:contain;";
 
-      container.innerHTML += `
-        <div class="card searchable" data-index="${index}" style="
-          cursor:pointer; position:relative;
-          margin:${isSmallCard ? '15px 0' : '0px 0'};
-          border-radius:6px; overflow:hidden;
-          box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
-          width:100%; background:#fff; border:1px solid #f0f0f0;
-        ">
-          <button class="edit-card" data-index="${index}" style="
-            position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
-            padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
-          <button class="delete-card" data-index="${index}" style="
-            position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
-            padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
-          <div style="${divImgStyle}">
-            ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">` : ''}
+        container.innerHTML += `
+          <div class="card searchable" 
+              data-index="${index}" 
+              data-id="${item.id}"   
+              style="
+            cursor:pointer; position:relative;
+            margin:${isSmallCard ? '15px 0' : '0px 0'};
+            border-radius:6px; overflow:hidden;
+            box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
+            width:100%; background:#fff; border:1px solid #f0f0f0;
+          ">
+            <button class="edit-card" data-index="${index}" style="
+              position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
+              padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
+            <button class="delete-card" data-index="${index}" style="
+              position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
+              padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
+            <div style="${divImgStyle}">
+              ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">` : ''}
+            </div>
+            <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
+              <h3 style="
+                font-size:${isSmallCard ? '12px' : '18px'};
+                font-weight:600; margin:0 0 4px 0;
+                color:#333; line-height:1.3;">${item.title}</h3>
+              <p style="
+                font-size:${isSmallCard ? '10px' : '14px'};
+                margin:0; color:#666; line-height:1.4;">${item.content}</p>
+            </div>
+              <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
+                <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+                <strong>Oleh:</strong> ${item.author || 'Admin'}
+              </p>
           </div>
-          <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
-            <h3 style="
-              font-size:${isSmallCard ? '12px' : '18px'};
-              font-weight:600; margin:0 0 4px 0;
-              color:#333; line-height:1.3;">${item.title}</h3>
-            <p style="
-              font-size:${isSmallCard ? '10px' : '14px'};
-              margin:0; color:#666; line-height:1.4;">${item.content}</p>
-          </div>
-            <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
-              <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
-              <strong>Oleh:</strong> ${item.author || 'Admin'}
-            </p>
-        </div>
-      `;
+        `;
 
       });
 
@@ -209,8 +212,23 @@ document.addEventListener('DOMContentLoaded', () => {
           h3.style.fontWeight = 'bold';
           h3.style.margin = '0 0 5px 0';
         });
-      }
 
+        // ✨ Tambahan: klik card → pindah halaman sesuai + id
+        container.querySelectorAll('.card').forEach(card => {
+          card.addEventListener('click', e => {
+            // abaikan bila klik tombol edit/hapus
+            if (e.target.classList.contains('edit-card') || e.target.classList.contains('delete-card')) return;
+
+            const id = card.dataset.id;
+            let target = '/';
+            if (config.id === 'berita-berita_m') target = '/berita';
+            if (config.id === 'pengumuman-pengumuman_m') target = '/pengumuman';
+            if (config.id === 'penghargaan-penghargaan_m') target = '/penghargaan';
+
+            window.location.href = `${target}?id=${id}`;
+          });
+        });
+      }
     }
 
     // --- ADD / MODAL ADD ---
@@ -232,6 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Validasi title & content wajib
       if (!title || !content) return alert("Judul dan konten wajib diisi!");
+
+      const yakin = confirm("Apakah yakin ingin menyimpan data ini?");
+      if (!yakin) return; // jika tidak, keluar dari fungsi
 
       const fd = new FormData();
       if (img) fd.append('img', img); // opsional
@@ -283,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initSection();
   });
+  
 
   // --- SEARCH FUNCTIONALITY ---
   searchInput?.addEventListener('input', () => {

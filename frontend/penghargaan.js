@@ -532,5 +532,21 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(err => console.error("Error updating:", err));
   });
 
+  const params = new URLSearchParams(window.location.search);
+  const idFromUrl = params.get('id');
+  if (idFromUrl) { 
+
+    fetch(`${LARAVEL_URL}/api/penghargaan`)
+      .then(res => res.json())
+      .then(data => {
+        penghargaanData = data; 
+        renderCards();    
+        showDetailModal(idFromUrl); 
+      })
+      .catch(err => console.error('Gagal memuat penghargaan:', err));
+  } else {
+    initSection(); 
+  }
+
   initSection();
 });

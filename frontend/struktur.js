@@ -121,44 +121,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderCards() {
       container.innerHTML = '';
-      
+          
       let itemsToRender = dataItems;
-      const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
-      if (isSmallCard) {
+      if (config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
         itemsToRender = [...dataItems] 
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) 
-          .slice(0, 3);
+          .slice(0, 3); 
       }
 
-      itemsToRender.forEach((item) => {
-        let divImgStyle, imgStyle;
-        if(config.id === 'direksi-direksi_m') {
-          divImgStyle = "width:100%; height:200px; display:flex; justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
-          imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
-        } else if(isSmallCard) {
-          divImgStyle = "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;";
-          imgStyle = "width:100%; height:100%; object-fit:cover; object-position:center;";
-        } else {
-          divImgStyle = "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
-          imgStyle = "width:100%; height:auto; object-fit:contain;";
-        }
+      itemsToRender.forEach((item, index) => {
+        const isSmallCard = config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m';
+        const divImgStyle = isSmallCard
+          ? "width:100%; height:80px; display:flex; margin-top:10px ;justify-content:center; align-items:center; overflow:hidden; background:#f8f8f8; border-bottom:1px solid #eee;"
+          : "width:100%; display:flex; justify-content:center; align-items:center; background:#f0f0f0;";
+
+        const imgStyle = isSmallCard
+          ? "width:100%; height:100%; object-fit:cover; object-position:center;"
+          : "width:100%; height:auto; object-fit:contain;";
 
         container.innerHTML += `
-          <div class="card searchable" data-id="${item.id}" style="
+          <div class="card searchable" 
+              data-index="${index}" 
+              data-id="${item.id}"   
+              style="
             cursor:pointer; position:relative;
             margin:${isSmallCard ? '15px 0' : '0px 0'};
             border-radius:6px; overflow:hidden;
             box-shadow:${isSmallCard ? '0 1px 4px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.1)'};
             width:100%; background:#fff; border:1px solid #f0f0f0;
           ">
-            <button class="edit-card" data-id="${item.id}" style="
+            <button class="edit-card" data-index="${index}" style="
               position:absolute; top:10px; right:100px; background:#3498db; color:white; border:none;
               padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; z-index:10;">✏️ Edit</button>
-            <button class="delete-card" data-id="${item.id}" style="
+            <button class="delete-card" data-index="${index}" style="
               position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
               padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
             <div style="${divImgStyle}">
-              <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">
+              ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">` : ''}
             </div>
             <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
               <h3 style="
@@ -175,20 +174,21 @@ document.addEventListener('DOMContentLoaded', () => {
               </p>
           </div>
         `;
+
       });
 
       // --- DELETE BUTTONS ---
       container.querySelectorAll('.delete-card').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const id = btn.dataset.id;
-          const idx = dataItems.findIndex(x => x.id == id);
-          const item = dataItems[idx];
+          const idx = btn.dataset.index;
+          const item = itemsToRender[idx];
           if (confirm(`Apakah yakin ingin menghapus ${item.title}?`)) {
-            fetch(`${LARAVEL_URL}${config.api}/${id}`, { method: 'DELETE' })
+            fetch(`${LARAVEL_URL}${config.api}/${item.id}`, { method: 'DELETE' })
               .then(res => {
                 if (res.ok) {
-                  dataItems.splice(idx, 1);
+                  const realIndex = dataItems.findIndex(d => d.id === item.id);
+                  dataItems.splice(realIndex, 1);
                   renderCards();
                   alert(`${item.title} berhasil dihapus!`);
                 } else alert(`Gagal menghapus ${item.title}`);
@@ -201,17 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
       container.querySelectorAll('.edit-card').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const id = btn.dataset.id;
-          const item = dataItems.find(x => x.id == id);
+          const idx = btn.dataset.index;
+          const item = itemsToRender[idx];
           editTitleInput.value = item.title;
           editContentInput.value = item.content;
-          editForm.setAttribute('data-id', id);
+          editForm.setAttribute('data-id', item.id);
           editModal.style.display = 'block';
         });
       });
 
       // --- SMALL CARD CONTENT LIMIT ---
-      if(isSmallCard) {
+      if(config.id === 'berita-berita_m' || config.id === 'pengumuman-pengumuman_m' || config.id === 'penghargaan-penghargaan_m') {
         container.querySelectorAll('.card-content p').forEach(p => {
           p.style.display = '-webkit-box';
           p.style.webkitBoxOrient = 'vertical';
@@ -223,6 +223,22 @@ document.addEventListener('DOMContentLoaded', () => {
           h3.style.fontSize = '12px';
           h3.style.fontWeight = 'bold';
           h3.style.margin = '0 0 5px 0';
+        });
+
+        // ✨ Tambahan: klik card → pindah halaman sesuai + id
+        container.querySelectorAll('.card').forEach(card => {
+          card.addEventListener('click', e => {
+            // abaikan bila klik tombol edit/hapus
+            if (e.target.classList.contains('edit-card') || e.target.classList.contains('delete-card')) return;
+
+            const id = card.dataset.id;
+            let target = '/';
+            if (config.id === 'berita-berita_m') target = '/berita';
+            if (config.id === 'pengumuman-pengumuman_m') target = '/pengumuman';
+            if (config.id === 'penghargaan-penghargaan_m') target = '/penghargaan';
+
+            window.location.href = `${target}?id=${id}`;
+          });
         });
       }
     }
@@ -237,18 +253,24 @@ document.addEventListener('DOMContentLoaded', () => {
     closeBtn?.addEventListener('click', () => modal.style.display = 'none');
     window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
-    form?.addEventListener('submit', e => {
+     form?.addEventListener('submit', e => {
       e.preventDefault();
+      
       const img = form.querySelector('input[type="file"]').files[0];
-      const title = form.querySelector('input[name="title"]').value;
-      const content = form.querySelector('textarea[name="content"]').value;
-      if (!img) return alert("Harap pilih gambar!");
-      const validTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
-      if (!validTypes.includes(img.type)) return alert("File bukan gambar valid.");
+      const title = form.querySelector('input[name="title"]').value.trim();
+      const content = form.querySelector('textarea[name="content"]').value.trim();
+
+      // Validasi title & content wajib
+      if (!title || !content) return alert("Judul dan konten wajib diisi!");
+
+      const yakin = confirm("Apakah yakin ingin menyimpan data ini?");
+      if (!yakin) return; // jika tidak, keluar dari fungsi
+
       const fd = new FormData();
-      fd.append('img', img);
+      if (img) fd.append('img', img); // opsional
       fd.append('title', title);
       fd.append('content', content);
+
       fetch(`${LARAVEL_URL}${config.api}`, { method:'POST', body: fd })
         .then(res => res.json())
         .then(newItem => {
@@ -256,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
           renderCards();
           modal.style.display = 'none';
           form.reset();
-        }).catch(err => { console.error(err); alert(`Gagal menambahkan data, periksa backend.`); });
+        }).catch(err => { console.error(err); alert("Gagal menambahkan data."); });
     });
 
     // --- SUBMIT EDIT FORM ---
