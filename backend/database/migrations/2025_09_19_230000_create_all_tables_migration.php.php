@@ -156,10 +156,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('slide_m', function (Blueprint $table) {
+        Schema::create('slide_m', function (Blueprint $table) { 
             $table->id();
             $table->string('img');
-            $table->string('caption');
+            $table->string('caption')->nullable(); // <-- opsional sekarang
             $table->timestamps();
         });
 
