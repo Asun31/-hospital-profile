@@ -75,12 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   editSlideForm.addEventListener('submit', e => {
-    e.preventDefault();
+  e.preventDefault();
+
+    const isConfirmed = confirm("Apakah Anda yakin ingin menyimpan perubahan?");
+    if (!isConfirmed) return; 
+
     const imgFile = editSlideForm.querySelector('input[name="img"]').files[0];
     const captionText = editSlideForm.querySelector('textarea[name="caption"]').value || '';
 
     const formData = new FormData();
-    if(imgFile) formData.append('img', imgFile);
+    if (imgFile) formData.append('img', imgFile);
     formData.append('caption', captionText);
     formData.append('_method', 'PUT'); 
 
@@ -94,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         editSlideModal.style.display = 'none';
         editSlideForm.reset();
+        alert('Perubahan berhasil disimpan!'); // opsional notifikasi sukses
       })
       .catch(err => { console.error(err); alert('Gagal update slide'); });
   });
@@ -168,10 +173,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addSlideBtn.addEventListener('click', () => addSlideModal.style.display = 'block');
 
-  window.onload = function(){
+  window.onload = function() {
     const track = document.querySelector('.info-track');
-    track.innerHTML += track.innerHTML; 
-  }
+    track.innerHTML += track.innerHTML;
+
+    // Hitung lebar total track
+    let totalWidth = 0;
+    track.querySelectorAll('.info-card').forEach(card => {
+      totalWidth += card.offsetWidth + parseInt(getComputedStyle(card).marginRight);
+    });
+    track.style.width = totalWidth + 'px';
+
+    let x = 0;
+    const speed = 1; // px/frame
+
+    function animate() {
+      x -= speed;
+      if (x <= -totalWidth / 2) x = 0; // reset tepat di akhir track pertama
+      track.style.transform = `translateX(${x}px)`;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  };
   
   const marqueeLink  = document.getElementById('marquee-link');
   const btnPrev      = document.getElementById('btn-prev');
@@ -231,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.location.href = `/berita?id=${id}`;
   });
+
 
   loadSlides();
 });
