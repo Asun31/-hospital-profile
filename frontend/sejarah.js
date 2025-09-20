@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             position:absolute; top:10px; right:10px; background:#e74c3c; color:white; border:none;
             padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; z-index:10;">🗑️ Hapus</button>
           <div style="${divImgStyle}">
-            <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">
+            ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="${imgStyle}">` : ''}
           </div>
           <div class="card-content" style="padding:${isSmallCard ? '8px 10px' : '15px'};">
             <h3 style="
@@ -225,16 +225,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form?.addEventListener('submit', e => {
       e.preventDefault();
+      
       const img = form.querySelector('input[type="file"]').files[0];
-      const title = form.querySelector('input[name="title"]').value;
-      const content = form.querySelector('textarea[name="content"]').value;
-      if (!img) return alert("Harap pilih gambar!");
-      const validTypes = ['image/jpeg','image/jpg','image/png','image/bmp','image/gif'];
-      if (!validTypes.includes(img.type)) return alert("File bukan gambar valid.");
+      const title = form.querySelector('input[name="title"]').value.trim();
+      const content = form.querySelector('textarea[name="content"]').value.trim();
+
+      // Validasi title & content wajib
+      if (!title || !content) return alert("Judul dan konten wajib diisi!");
+
       const fd = new FormData();
-      fd.append('img', img);
+      if (img) fd.append('img', img); // opsional
       fd.append('title', title);
       fd.append('content', content);
+
       fetch(`${LARAVEL_URL}${config.api}`, { method:'POST', body: fd })
         .then(res => res.json())
         .then(newItem => {
@@ -242,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
           renderCards();
           modal.style.display = 'none';
           form.reset();
-        }).catch(err => { console.error(err); alert(`Gagal menambahkan data, periksa backend.`); });
+        }).catch(err => { console.error(err); alert("Gagal menambahkan data."); });
     });
 
     // --- SUBMIT EDIT FORM ---

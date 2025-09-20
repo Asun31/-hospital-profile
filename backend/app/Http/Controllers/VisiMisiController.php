@@ -17,30 +17,79 @@ class VisiMisiController extends Controller
 {
     public function index()
     {
-        $visimisi_m = VisiMisi::all();  
-        return response()->json($visimisi_m);  
+        $visimisi_m = VisiMisi::all();
+        return response()->json($visimisi_m);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif|max:2048',
-            'title' => 'required|string',  
-            'content' => 'required|string', 
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
         ]);
 
-        if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
-            return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
+        $imagePath = null;
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            $imagePath = $request->file('img')->store('images', 'public');
         }
 
-        $imagePath = $request->file('img')->store('images', 'public');  
-
         $visimisi_m = VisiMisi::create([
-            'img' => $imagePath, 
+            'img' => $imagePath,
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return response()->json($visimisi_m, 201); 
+        return response()->json($visimisi_m, 201);
+    }
+
+    public function destroy($id)
+    {
+        $visimisi = VisiMisi::find($id);
+
+        if (!$visimisi) {
+            return response()->json(['message' => 'visimisi tidak ditemukan'], 404);
+        }
+
+        if ($visimisi->img && Storage::disk('public')->exists($visimisi->img)) {
+            Storage::disk('public')->delete($visimisi->img);
+        }
+
+        $visimisi->delete();
+
+        return response()->json(['message' => 'visimisi berhasil dihapus'], 200);
+    }
+
+    /**
+     * Tambahan: Update/Edit visimisi
+     */
+    public function update(Request $request, $id)
+    {
+        $visimisi = VisiMisi::find($id);
+
+        if (!$visimisi) {
+            return response()->json(['message' => 'visimisi tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        // Jika ada gambar baru, hapus yang lama dan upload baru
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            if ($visimisi->img && Storage::disk('public')->exists($visimisi->img)) {
+                Storage::disk('public')->delete($visimisi->img);
+            }
+            $imagePath = $request->file('img')->store('images', 'public');
+            $visimisi->img = $imagePath;
+        }
+
+        $visimisi->title = $request->title;
+        $visimisi->content = $request->content;
+        $visimisi->save();
+
+        return response()->json($visimisi, 200);
     }
 }

@@ -24,16 +24,15 @@ class SejarahController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'img' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
+            'img' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,tiff,heif,raw',
             'title' => 'required|string',
             'content' => 'required|string',
         ]);
 
-        if (!$request->hasFile('img') || !$request->file('img')->isValid()) {
-            return response()->json(['error' => 'Gambar yang di-upload tidak valid.'], 400);
+        $imagePath = null;
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            $imagePath = $request->file('img')->store('images', 'public');
         }
-
-        $imagePath = $request->file('img')->store('images', 'public');
 
         $sejarah_m = Sejarah::create([
             'img' => $imagePath,
