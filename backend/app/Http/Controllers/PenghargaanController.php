@@ -93,4 +93,16 @@ class PenghargaanController extends Controller
 
         return response()->json($penghargaan, 200);
     }
+
+    public function show($id)
+    {
+        $penghargaan = Penghargaan::find($id);
+
+        if (!$penghargaan) {
+            return response()->json(['message' => 'penghargaan tidak ditemukan'], 404);
+        }
+
+        return response()->json($penghargaan);
+    }
+
 }

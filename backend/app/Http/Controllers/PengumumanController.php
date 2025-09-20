@@ -93,4 +93,16 @@ class PengumumanController extends Controller
 
         return response()->json($pengumuman, 200);
     }
+
+    public function show($id)
+    {
+        $pengumuman = Pengumuman::find($id);
+
+        if (!$pengumuman) {
+            return response()->json(['message' => 'pengumuman tidak ditemukan'], 404);
+        }
+
+        return response()->json($pengumuman);
+    }
+
 }
