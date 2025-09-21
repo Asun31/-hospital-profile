@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 color:#333; line-height:1.3;">${item.title}</h3>
               <p style="
                 font-size:${isSmallCard ? '10px' : '14px'};
-                margin:0; color:#666; line-height:1.4;">${item.content}</p>
+                margin:0; color:#666; line-height:1.4;white-space: pre-line;">${item.content}</p>
             </div>
               <p style="font-size: 10px; color: #777; margin: 8px 0 8px; padding: 0 10px;">
                 <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>

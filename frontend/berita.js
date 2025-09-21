@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="card-content" style="padding:10px 12px;">
             <h3 style="font-size:14px; margin:5px 0;">${item.title}</h3>
-            <p style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; text-overflow:ellipsis; font-size:12px; margin:0 0 6px;">${item.content}</p>
+            <p style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; text-overflow:ellipsis; font-size:12px; margin:0 0 6px;white-space: pre-line;">${item.content}</p>
             <p style="font-size:10px; color:#777; margin:0 0 8px;"><strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' }) : '-'}<br><strong>Oleh:</strong> ${item.author || 'Admin'}</p>
             <button class="read-more" data-id="${item.id}" style="background:transparent; border:1px solid #3498db; color:#3498db; padding:4px 8px; border-radius:4px; font-size:12px; cursor:pointer; transition:all 0.2s ease;">Selengkapnya</button>
           </div>

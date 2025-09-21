@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ">
               ${item.content}
             </p>
-            <p style="font-size: 10px; color: #777; margin: 0 0 8px;">
+            <p style="font-size: 10px; color: #777; margin: 0 0 8px;white-space: pre-line;">
               <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
               <strong>Oleh:</strong> ${item.author || 'Admin'}
             </p>

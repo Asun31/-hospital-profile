@@ -208,7 +208,8 @@
   }
 
 
-  .visimisi-sejarah {
+  .home-sejarah,
+  .home-visimisi {
     margin-top: 40px; 
     margin-bottom: 20px; 
     display: flex;
@@ -221,14 +222,8 @@
     box-sizing: border-box;
   }
 
-  .news-y {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-
-  .kolom-visited-misi,
-  .kolom-sejarah {
+  .sejarah-kolom-satu,
+  .visimisi-kolom-satu {
     border: 1px solid #81cd8d; 
     flex: 1 1 45%;
     box-sizing: border-box;
@@ -238,14 +233,24 @@
   }
 
   @media (max-width: 768px) {
-    .news-y {
-      flex-direction: column;
-    }
-    .kolom-visited-misi,
-    .kolom-sejarah {
+    .sejarah-kolom-satu,
+    .visimisi-kolom-satu {
       width: 100%;
       margin-bottom: 18px;
     }
+  }
+
+  .sejarah-item,
+  .visimisi-item {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .sejarah-item:hover,
+  .visimisi-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+    background-color: #f0fff4;
   }
 
   </style>
@@ -375,20 +380,13 @@
       </div>
     </div>
 
-   <div class="visimisi-sejarah">
-    <div class="news-y">
-      <div class="kolom-visited-misi">
-        <h2>Visi Kami</h2>
-        <p>Menjadi Rumah Sakit yang Memiliki Layanan Unggulan Terbaik Level Asia dengan Pertumbuhan Berkelanjutan.</p>
-        <h2>Misi Kami</h2>
-        <p>Bekerja secara cermat, tertib, disiplin dan semangat tinggi, melaksanakan tugas dengan pengetahuan dan keterampilan terkini, cepat, akurat, terjangkau, efisien, nyaman.</p>
-      </div>
-      <!-- <div class="kolom-sejarah">
-        <h2>Sejarah</h2>
-        <p>Berdiri sejak 1993, RS Adam Malik memprioritaskan keselamatan pasien dengan PATEN (Pelayanan Cepat, Akurat, Terjangkau, Efisien, Nyaman).</p>
-      </div> -->
+    <div class="home-sejarah">
+      <div class="sejarah-kolom-satu"></div>
     </div>
-  </div>
+
+    <div class="home-visimisi">
+      <div class="visimisi-kolom-satu"></div>
+    </div>
 
   </main>
 

@@ -256,6 +256,70 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = `/berita?id=${id}`;
   });
 
+const sejarahContainer = document.querySelector('.sejarah-kolom-satu');
+const visimisiContainer = document.querySelector('.visimisi-kolom-satu');
+
+if (!sejarahContainer || !visimisiContainer) return;
+
+// --- Fetch Sejarah ---
+fetch(`${LARAVEL_URL}/api/sejarah`)
+  .then(res => res.json())
+  .then(data => {
+    sejarahContainer.innerHTML = ''; 
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'sejarah-item';
+      div.style.cssText = `display: flex; align-items: flex-start; margin-bottom: 20px;`;
+
+      div.innerHTML = `
+        ${item.img ? `<div style="flex: 0 0 40%; margin-right: 15px;">
+                        <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
+                      </div>` : ''}
+        <div style="flex: 1;">
+          <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">${item.title}</h3>
+          <p style="margin:0; font-size:14px; color:#555; line-height:1.5; text-align: justify;white-space: pre-line;">${item.content}</p>
+        </div>
+      `;
+
+      sejarahContainer.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error('Gagal memuat sejarah:', err);
+    sejarahContainer.innerHTML = '<p style="color:red;">Gagal memuat data sejarah.</p>';
+  });
+
+// --- Fetch VisiMisi ---
+fetch(`${LARAVEL_URL}/api/visimisi`)
+  .then(res => res.json())
+  .then(data => {
+    visimisiContainer.innerHTML = '';
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'visimisi-item';
+      div.style.cssText = `
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      `;
+
+      div.innerHTML = `
+        <div style="flex: 1; padding-right: 15px;">
+          <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">${item.title}</h3>
+          <p style="margin:0; font-size:14px; color:#555; line-height:1.5; text-align: justify; white-space: pre-line;">${item.content}</p>
+        </div>
+        ${item.img ? `<div style="flex: 0 0 40%;">
+        <img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
+        </div>` : ''}
+      `;
+
+      visimisiContainer.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error('Gagal memuat visimisi:', err);
+    visimisiContainer.innerHTML = '<p style="color:red;">Gagal memuat data VisiMisi.</p>';
+  });
 
   loadSlides();
 });
