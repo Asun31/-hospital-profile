@@ -16,7 +16,7 @@
     body {
       display: flex; flex-direction: column; font-family: 'Poppins', sans-serif;
       color: #333;
-      background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),
+      background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
                   url('../asset/baground_rsud.jpg') no-repeat center center fixed;
       background-size: cover;
       min-height: 100vh;
@@ -226,7 +226,8 @@
 
 
   .home-sejarah,
-  .home-visimisi {
+  .home-visimisi,
+  .home-pengumuman {
     margin-top: 40px; 
     margin-bottom: 20px; 
     display: flex;
@@ -240,7 +241,8 @@
   }
 
   .sejarah-kolom-satu,
-  .visimisi-kolom-satu {
+  .visimisi-kolom-satu,
+  .pengumuman-kolom-satu {
     border: 1px solid #81cd8d; 
     flex: 1 1 45%;
     box-sizing: border-box;
@@ -251,7 +253,8 @@
 
   @media (max-width: 768px) {
     .sejarah-kolom-satu,
-    .visimisi-kolom-satu {
+    .visimisi-kolom-satu,
+    .pengumuman-kolom-satu {
       width: 100%;
       margin-bottom: 18px;
     }
@@ -268,6 +271,30 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     background-color: #f0fff4;
+  }
+
+  .pengumuman-kolom-satu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* jarak antar card */
+    justify-content: flex-start;
+  }
+
+  .pengumuman-kolom-satu .pengumuman-item {
+    flex: 0 0 calc(25% - 12px); /* 4 per baris */
+    margin-top: 0; /* margin diganti dengan gap flex */
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+
+  @media (max-width: 1200px) {
+    .pengumuman-kolom-satu .pengumuman-item { flex: 0 0 calc(33.33% - 12px); }
+  }
+  @media (max-width: 900px) {
+    .pengumuman-kolom-satu .pengumuman-item { flex: 0 0 calc(50% - 12px); }
+  }
+  @media (max-width: 600px) {
+    .pengumuman-kolom-satu .pengumuman-item { flex: 0 0 100%; }
   }
 
   </style>
@@ -403,6 +430,11 @@
 
     <div class="home-visimisi">
       <div class="visimisi-kolom-satu"></div>
+    </div>
+
+    <div class="home-pengumuman">
+      <div class="pengumuman-kolom-satu"></div>
+      <div id="pengumuman-pagination"></div> 
     </div>
 
   </main>

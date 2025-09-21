@@ -256,10 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = `/berita?id=${id}`;
   });
 
+// --- Seleksi Container ---
 const sejarahContainer = document.querySelector('.sejarah-kolom-satu');
 const visimisiContainer = document.querySelector('.visimisi-kolom-satu');
+const pengumumanContainer = document.querySelector('.pengumuman-kolom-satu');
 
-if (!sejarahContainer || !visimisiContainer) return;
+if (!sejarahContainer || !visimisiContainer || !pengumumanContainer) return;
 
 // --- Fetch Sejarah ---
 fetch(`${LARAVEL_URL}/api/sejarah`)
@@ -297,11 +299,7 @@ fetch(`${LARAVEL_URL}/api/visimisi`)
     data.forEach(item => {
       const div = document.createElement('div');
       div.className = 'visimisi-item';
-      div.style.cssText = `
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 20px;
-      `;
+      div.style.cssText = `display: flex; align-items: flex-start; margin-bottom: 20px;`;
 
       div.innerHTML = `
         <div style="flex: 1; padding-right: 15px;">
@@ -320,6 +318,239 @@ fetch(`${LARAVEL_URL}/api/visimisi`)
     console.error('Gagal memuat visimisi:', err);
     visimisiContainer.innerHTML = '<p style="color:red;">Gagal memuat data VisiMisi.</p>';
   });
+
+  // --- Fetch Pengumuman dengan Pagination ---
+  fetch(`${LARAVEL_URL}/api/pengumuman`)
+    .then(res => res.json())
+    .then(data => {
+      data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      const pengumumanPerPage = 4;
+      let currentPage = 1;
+      const totalPages = Math.ceil(data.length / pengumumanPerPage);
+
+      const renderPage = (page) => {
+        pengumumanContainer.innerHTML = '';
+
+        // --- Header ---
+        const header = document.createElement('div');
+        header.textContent = 'PENGUMUMAN TERBARU';
+        header.style.cssText = `
+          width: 100%;
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 15px;
+          text-align: left;
+        `;
+        pengumumanContainer.appendChild(header);
+
+        // --- Grid Container ---
+        const pengumumanListContainer = document.createElement('div');
+        pengumumanListContainer.style.display = 'grid';
+        pengumumanListContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
+        pengumumanListContainer.style.gap = '10px';
+        pengumumanContainer.appendChild(pengumumanListContainer);
+
+        // Data per halaman
+        const start = (page - 1) * pengumumanPerPage;
+        const end = start + pengumumanPerPage;
+        const pageData = data.slice(start, end);
+
+        pageData.forEach(item => {
+          const createdTime = new Date(item.created_at).getTime();
+          const now = Date.now();
+          const isNew = now - createdTime < 24 * 60 * 60 * 1000;
+
+          const div = document.createElement('div');
+          div.className = 'pengumuman-item card';
+          div.style.cssText = `
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+          `;
+
+          // Hover effect card
+          div.addEventListener('mouseenter', () => {
+            div.style.transform = 'translateY(-5px)';
+            div.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
+          });
+          div.addEventListener('mouseleave', () => {
+            div.style.transform = 'translateY(0)';
+            div.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+          });
+
+          div.innerHTML = `
+            ${isNew ? `<span style="
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              background: #81cd8d;
+              color: white;
+              font-size: 10px;
+              font-weight: bold;
+              padding: 2px 6px;
+              border-radius: 4px;
+              z-index: 10;
+            ">Terbaru</span>` : ''}
+
+            <button class="edit-card" data-id="${item.id}" style="
+              position: absolute;
+              top: 10px;
+              right: 100px;
+              background: #3498db;
+              color: white;
+              border: none;
+              padding: 6px 12px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-weight: bold;
+              font-size: 13px;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+              transition: all 0.2s ease;
+              z-index: 10;
+            ">✏️ Edit</button>
+
+            <button class="delete-card" data-id="${item.id}" style="
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background: #e74c3c;
+              color: white;
+              border: none;
+              padding: 6px 12px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-weight: bold;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+              transition: all 0.2s ease;
+              z-index: 10;
+            ">🗑️ Hapus</button>
+
+            <div style="
+              width: 100%;
+              height: 120px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: #f0f0f0;
+              overflow: hidden;
+            ">
+              ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              ">` : '' }
+            </div>
+
+            <div class="card-content" style="padding: 10px 12px;">
+              <h3 style="font-size: 14px; margin: 5px 0;">${item.title}</h3>
+              <p style="
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 12px;
+                margin: 0 0 6px;
+              ">
+                ${item.content}
+              </p>
+              <p style="font-size: 10px; color: #777; margin: 0 0 8px; white-space: pre-line;">
+                <strong>Upload:</strong> ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}<br>
+                <strong>Oleh:</strong> ${item.author || 'Admin'}
+              </p>
+              <button class="read-more" data-id="${item.id}" style="
+                background: transparent;
+                border: 1px solid #3498db;
+                color: #3498db;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+              ">Selengkapnya</button>
+            </div>
+          `;
+
+          pengumumanListContainer.appendChild(div);
+
+          // Hover effect tombol Selengkapnya
+          const readMoreBtn = div.querySelector('.read-more');
+          readMoreBtn.addEventListener('mouseenter', () => {
+            readMoreBtn.style.background = '#3498db';
+            readMoreBtn.style.color = '#fff';
+            readMoreBtn.style.transform = 'scale(1.05)';
+          });
+          readMoreBtn.addEventListener('mouseleave', () => {
+            readMoreBtn.style.background = 'transparent';
+            readMoreBtn.style.color = '#3498db';
+            readMoreBtn.style.transform = 'scale(1)';
+          });
+
+          // --- Klik card atau Selengkapnya ke halaman detail ---
+          const goToDetail = () => {
+            window.location.href = `/pengumuman?id=${item.id}`;
+          };
+
+          div.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('edit-card') && !e.target.classList.contains('delete-card') && !e.target.classList.contains('read-more')) {
+              goToDetail();
+            }
+          });
+
+          readMoreBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // cegah click card
+            goToDetail();
+          });
+        });
+
+        // --- Pagination Controls ---
+        const pagination = document.createElement('div');
+        pagination.style.cssText = `
+          margin-top: 15px;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          width: 100%;
+        `;
+
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = 'Prev';
+        prevBtn.disabled = page === 1;
+        prevBtn.onclick = () => renderPage(currentPage - 1);
+        pagination.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement('button');
+          pageBtn.textContent = i;
+          pageBtn.style.fontWeight = i === page ? 'bold' : 'normal';
+          pageBtn.onclick = () => renderPage(i);
+          pagination.appendChild(pageBtn);
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = page === totalPages;
+        nextBtn.onclick = () => renderPage(currentPage + 1);
+        pagination.appendChild(nextBtn);
+
+        pengumumanContainer.appendChild(pagination);
+        currentPage = page;
+      };
+
+      renderPage(1);
+    })
+    .catch(err => {
+      console.error('Gagal memuat pengumuman:', err);
+      pengumumanContainer.innerHTML = '<p style="color:red;">Gagal memuat data pengumuman.</p>';
+    });
 
   loadSlides();
 });
