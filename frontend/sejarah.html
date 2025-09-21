@@ -67,6 +67,7 @@
       border-bottom-color: #048a16;
     }
 
+  /* ===== Header ===== */
     header {
       background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);
       color: #fff;
@@ -74,9 +75,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
+
+      /* penting untuk fixed header */
+      position: fixed;
       top: 0;
+      left: 0;
+      width: 100%;
       z-index: 1000;
+
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
