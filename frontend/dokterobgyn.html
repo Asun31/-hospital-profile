@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RSUD Talang Ubi</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -165,6 +166,10 @@
     }
     .dropdown:hover .dropbtn {
       color: #048a16;
+    }
+
+    section#dokterobgyn {
+        padding-top: 80px;
     }
 
     .search-box {
@@ -368,29 +373,211 @@
     }
     .close-btn:hover { color: #000; transform: scale(1.2); }
 
+    /* ===== Footer Utama ===== */
     footer {
       background: #81cd8d;
       color: #fff;
-      text-align: center;
-      padding: 10px 0;
-      width: 100%;
-      flex-shrink: 0; 
+      padding: 40px 20px;
+      font-family: 'Poppins', sans-serif;
     }
-    footer p { font-size: 12px; margin: 5px 0; }
-    .social a {
-      margin: 0 8px;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .social a:hover { color: #048a16; }
 
-    .powered-by {
-      user-select: none;     
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      cursor: default;
+    /* --- Kontainer 4 Kolom --- */
+    footer .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 26px;
+      max-width: 1200px;
+      margin: auto;
+      align-items: stretch;
+    }
+
+    footer .column1,
+    footer .column2,
+    footer .column3,
+    footer .column4 {
+      flex: 1 1 280px;
+      min-width: 280px;
+      max-width: 280px;
+      text-align: left;
+      padding: 10px;
+    }
+
+    /* ===== Kolom 1 ===== */
+    footer .column1 {
+      /* jarak seragam antar elemen anak */
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer .column1 > * {
+      margin-bottom: 12px;
+    }
+
+    footer .column1 .footer-logo {
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 12px 0; /* logo center horizontal */
+    }
+
+    footer .column1 .hospital-description {
+      text-align: justify;     /* teks deskripsi rata kiri-kanan */
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    footer .column1 .social-icons {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    footer .column1 .social-icons a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      color: #222a2d;
+      border-radius: 50%;
+      font-size: 20px;
+      text-decoration: none;
+      padding: 10px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    footer .column1 .social-icons a:hover {
+      background: #ececec;
+      color: #0d47a1;
+    }
+
+    /* ===== Kolom 2 ===== */
+    footer .column2 h4 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    footer .column2 p {
+      font-size: 14px;
+      margin: 5px 0;
+      text-align: justify;
+    }
+
+    footer .column2 i {
+      margin-right: 8px;
+    }
+
+    /* ===== Kolom 3 ===== */
+    footer .column3 h4 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    footer .column3 ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer .column3 ul li {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    footer .column3 ul li a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer .column3 ul li a:hover {
+      color: #048a16;
+    }
+
+    /* ===== Kolom 4 ===== */
+    footer .column4 iframe {
+      width: 100%;
+      max-width: 250px;
+      height: 80%;
+      border: none;
+      border-radius: 6px;
+    }
+
+    /* ===== Bagian Bawah Footer ===== */
+    footer .akhir {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #fff;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    footer .akhir .social {
+      margin-top: 10px;
+    }
+
+    footer .akhir .social a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    footer .akhir .social a:hover {
+      color: #048a16;
+    }
+
+    /* ===== Form Subscribe ===== */
+    footer #subscribeForm input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      margin: 10px 0;
+      background-color: #2e3b40;
+      color: #fff;
+    }
+
+    footer #subscribeForm button {
+      background-color: #048a16;
+      border: none;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    footer #subscribeForm button:hover {
+      background-color: #036f0d;
+    }
+
+    /* ===== Responsif (max-width: 768px) ===== */
+    @media (max-width: 768px) {
+      footer .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer .column1,
+      footer .column2,
+      footer .column3,
+      footer .column4 {
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+
+      footer .column4 iframe {
+        max-width: 100%;
+      }
     }
 
     .powered-by::selection {
@@ -519,16 +706,75 @@
       <a href="javascript:history.back()" class="btn-back">← Kembali</a>
     </main>
 
-   <footer id="contact">
-      <p></p>
-      <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
-      <p class="social">
-        <a href="https://www.facebook.com/godak.lolo.5">Facebook</a> | 
-        <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6">Instagram</a> | 
-        <a href="https://www.instagram.com/gores_sun/">X</a> | 
-        <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3">Youtube</a>
-      </p>
-    </footer>
+    <footer>
+      <div class="footer-container">
+          <!-- Kolom 1: Logo dan Deskripsi -->
+        <div class="column1">
+          <img src="../asset/footer-logo.png" alt="RSUD Talang Ubi" class="footer-logo">
+          
+          <div class="hospital-description">
+            <p>RSUD Talang Ubi Merupakan Rumah Sakit Tipe D Non Pendidikan Beroperasional sebagai Rumah Sakit Pada Tanggal 21 April 2008</p>
+          </div>
+
+          <div>
+            <p>Media Sosial :</p>
+          </div>
+          
+          <div class="social-icons">
+            <a href="https://www.facebook.com/godak.lolo.5" target="_blank"><i class="fa fa-facebook"></i></a>
+            <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3" target="_blank"><i class="fa fa-youtube"></i></a>
+            <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6" target="_blank"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a> 
+          </div>
+        </div>
+
+      <!-- Kolom 2: Kontak -->
+      <div class="column2">
+        <h4>Kontak</h4>
+        <p><i class="fa fa-phone"></i>0811712xxxx</p>
+        <p><i class="fa fa-envelope"></i>rsudtalangubi@palikab.go.id</p>
+        <p><i class="fa fa-map-marker"></i>Jl. Lingkar Handayani Mulya, Handayani Mulya, Kec. Talang Ubi, Kab. Penukal Abab Lematang Ilir, Sumatera Selatan, Indonesia</p>
+      </div>
+
+      <!-- Kolom 3: Navigasi -->
+      <div class="column3">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="/">Beranda</a></li>
+          <li><a href="/sejarah">Sejarah</a></li>
+          <li><a href="/visimisi">Visi & Misi</a></li>
+          <li><a href="/struktur">Struktur</a></li>
+          <li><a href="/berita">Berita</a></li>
+          <li><a href="/pengumuman">Pengumuman</a></li>
+          <li><a href="/penghargaan">Penghargaan</a></li>
+          <li><a href="/spesialis">Daftar & Jadwal Dokter</a></li>
+        </ul>
+      </div>
+
+      <!-- Kolom 4: Berlangganan -->
+    <div class="column4">
+        <h4>Lokasi RSUD</h4>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.217316887326!2d103.85473747496754!3d-3.296294041126685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3a6b0003e71ba1%3A0x16d54136c3e877b8!2sRSUD!5e0!3m2!1sid!2sus!4v1758466168663!5m2!1sid!2sus"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    
+      <!-- Footer -->
+      <div class="akhir">
+        <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
+        <p class="social">
+          <a href="https://www.facebook.com/godak.lolo.5" target="_blank">Facebook</a> | 
+          <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6" target="_blank">Instagram</a> | 
+          <a href="https://www.instagram.com/gores_sun/" target="_blank">X</a> | 
+          <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3" target="_blank">Youtube</a>
+        </p>
+      </div>
+    </div>
+  </footer>
     <script src="dokterobgyn.js"></script>
   </body>
 </html>
