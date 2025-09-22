@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<!-- /**
+ * Created by PhpStorm.
+ * User: asun fadrianto
+ * Date: 07/09/2025
+ * Time: 10.05
+ */ -->
+
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSUD Talang Ubi</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    main {
+      flex: 1; 
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    section {
+      margin-bottom: 60px;
+      scroll-margin-top: 80px;
+    }
+
+   h2.section-title {
+      color: #81cd8d;
+      font-size: 25px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      border-left: 6px solid #81cd8d;
+      height: 30px; 
+      padding-left: 10px;
+      border-bottom: 2px solid #81cd8d; 
+      padding-bottom: 5px; 
+      transition: all 0.3s ease; 
+    }
+
+    h2.section-title:hover {
+      color: #048a16;               
+      border-left-color: #048a16;    
+      border-bottom-color: #048a16;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: linear-gradient(90deg, #ffffff 0%, #ffffff 10%, #81cd8d 40%, #81cd8d 100%);
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      /* penting untuk fixed header */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .welcome-message {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      text-align: left;
+    }
+    .welcome-message span {
+      opacity: 0;
+      display: inline-block;
+      animation: appear 0.3s forwards;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+    .logo-container img {
+      width: 50%;
+      height: auto;
+      object-fit: contain;
+    }
+    .logo-container h1 {
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .menu a:hover {
+      color: #048a16;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 150px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-content a {
+      color: #000;
+      padding: 8px 12px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown:hover .dropbtn {
+      color: #048a16;
+    }
+
+    section#artikel {
+        padding-top: 80px;
+    }
+
+    section#sosmed {
+        padding-top: 80px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+    .search-box input {
+      flex: 0 0 120px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 12px;
+    }
+    .search-box input::placeholder {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background-color: #f5f5f5;
+      display: block;
+    }
+
+    .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 15px;
+    }
+
+    .card-content h3 {
+      width: 100%;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+    }
+
+    .card-content p {
+      width: 100%;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #555;
+      text-align: justify;
+      text-justify: inter-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-content .meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 8px;
+      text-align: justify;
+      text-justify: inter-word;
+      display: block;
+      width: 100%;
+    }
+
+    .card-content .read-more {
+      margin-top: 12px;
+      align-self: flex-start;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: white;
+      background: #81cd8d;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .card-content .read-more:hover {
+      background: #048a16;
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #addCardBtn {
+      background-color: #81cd8d;
+      color: white;
+      font-size: 16px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      margin-bottom: 20px;
+    }
+    #addCardBtn:hover { background-color: #66b370; transform: scale(1.05); }
+    #addCardBtn:focus { outline: none; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+    #addCardBtn:active { background-color: #56a55b; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px;
+    }
+    .modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      width: 280px;
+      padding: 15px 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      position: relative;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .modal input,
+    .modal textarea {
+      width: 100%;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+    .modal input:focus,
+    .modal textarea:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 4px rgba(0,123,255,0.2);
+    }
+    .modal button {
+      padding: 8px 18px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .modal button:hover {
+      background-color: #0056b3;
+      transform: translateY(-1px);
+    }
+    .close-btn {
+      color: #aaa;
+      font-size: 20px;
+      font-weight: bold;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .close-btn:hover { color: #000; transform: scale(1.2); }
+
+    /* ===== Footer Utama ===== */
+    footer {
+      background: #81cd8d;
+      color: #fff;
+      padding: 40px 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* --- Kontainer 4 Kolom --- */
+    footer .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 26px;
+      max-width: 1200px;
+      margin: auto;
+      align-items: stretch;
+    }
+
+    footer .column1,
+    footer .column2,
+    footer .column3,
+    footer .column4 {
+      flex: 1 1 280px;
+      min-width: 280px;
+      max-width: 280px;
+      text-align: left;
+      padding: 10px;
+    }
+
+    /* ===== Kolom 1 ===== */
+    footer .column1 {
+      /* jarak seragam antar elemen anak */
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer .column1 > * {
+      margin-bottom: 12px;
+    }
+
+    footer .column1 .footer-logo {
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 12px 0; /* logo center horizontal */
+    }
+
+    footer .column1 .hospital-description {
+      text-align: justify;     /* teks deskripsi rata kiri-kanan */
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    footer .column1 .social-icons {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    footer .column1 .social-icons a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      color: #222a2d;
+      border-radius: 50%;
+      font-size: 20px;
+      text-decoration: none;
+      padding: 10px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    footer .column1 .social-icons a:hover {
+      background: #ececec;
+      color: #0d47a1;
+    }
+
+    /* ===== Kolom 2 ===== */
+    footer .column2 h4 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    footer .column2 p {
+      font-size: 14px;
+      margin: 5px 0;
+      text-align: justify;
+    }
+
+    footer .column2 i {
+      margin-right: 8px;
+    }
+
+    /* ===== Kolom 3 ===== */
+    footer .column3 h4 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    footer .column3 ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer .column3 ul li {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    footer .column3 ul li a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer .column3 ul li a:hover {
+      color: #048a16;
+    }
+
+    /* ===== Kolom 4 ===== */
+    footer .column4 iframe {
+      width: 100%;
+      max-width: 250px;
+      height: 80%;
+      border: none;
+      border-radius: 6px;
+    }
+
+    /* ===== Bagian Bawah Footer ===== */
+    footer .akhir {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #fff;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    footer .akhir .social {
+      margin-top: 10px;
+    }
+
+    footer .akhir .social a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    footer .akhir .social a:hover {
+      color: #048a16;
+    }
+
+    /* ===== Form Subscribe ===== */
+    footer #subscribeForm input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      margin: 10px 0;
+      background-color: #2e3b40;
+      color: #fff;
+    }
+
+    footer #subscribeForm button {
+      background-color: #048a16;
+      border: none;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    footer #subscribeForm button:hover {
+      background-color: #036f0d;
+    }
+
+    /* ===== Responsif (max-width: 768px) ===== */
+    @media (max-width: 768px) {
+      footer .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer .column1,
+      footer .column2,
+      footer .column3,
+      footer .column4 {
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+
+      footer .column4 iframe {
+        max-width: 100%;
+      }
+    }
+
+    .powered-by::selection {
+      background: none;
+    }
+  </style>
+</head>
+<body>
+    <header>
+      <div class="logo-container">
+        <img src="../asset/logo-rsud.png" alt="Logo RSUD">
+      </div>
+       <nav>
+        <div class="menu">
+          <a href="/home">Beranda</a>
+          <div class="dropdown"><a class="dropbtn">Profile ▾</a>
+            <div class="dropdown-content">
+              <a href="/sejarah">Sejarah</a>
+              <a href="/visimisi">Visi & Misi</a>
+              <a href="/struktur">Struktur</a>
+            </div>
+          </div>
+          <div class="dropdown"><a class="dropbtn">Publikasi ▾</a>
+            <div class="dropdown-content">
+              <a href="/berita">Berita</a>
+              <a href="/artikel">Artikel</a>
+              <a href="/pengumuman">Pengumuman</a>
+              <a href="/penghargaan">Penghargaan</a>
+            </div>
+          </div>
+          <div class="dropdown"><a class="dropbtn">Dokter ▾</a>
+            <div class="dropdown-content">
+              <a style="font-size:15px;" href="spesialis">Daftar & Jadwal<br> Dokter</a>
+            </div>
+          </div>
+          <div class="dropdown"><a class="dropbtn">Fasilitas ▾</a>
+            <div class="dropdown-content">
+              <a href="#rawatjalan">Rawat Jalan</a>
+              <a href="#rawatinap">Rawat Inap</a>
+              <a href="#laboratorium">Laboratorium</a>
+              <a href="#radiologi">Radiologi</a>
+            </div>
+          </div>
+          <div class="dropdown"><a class="dropbtn">Kontak ▾</a>
+            <div class="dropdown-content">
+              <a href="#telphone">Telphone</a>
+              <a href="#whatsapp">Whatsapp</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Cari...">
+      </div>
+      <div class="welcome-message">
+          Admin
+      </div>
+    </header>
+
+    <main>
+      <!-- <section id="artikel">
+        <h2 class="section-title">Artikel</h2>
+        <button id="addartikelBtn">+ Tambah Artikel</button>
+        <div class="cards" id="artikel-artikel_m"></div>
+
+        <div id="artikelModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closeartikelModal">&times;</span>
+            <h3>Tambah Kartu Baru (artikel)</h3>
+            <form id="artikelForm" enctype="multipart/form-data">
+              <label for="artikelImg">Unggah Gambar:</label>
+              <input type="file" id="artikelImg" name="img" accept="image/*" required>
+              
+              <label for="artikelTitle">Judul Kartu:</label>
+              <input type="text" id="artikelTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="artikelContent">Konten Kartu:</label>
+              <textarea id="artikelContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
+        </div>
+      </section> -->
+
+      <section id="sosmed">
+        <h2 class="section-title">Sosmed</h2>
+        <button id="addsosmedBtn">+ Tambah Sosmed</button>
+        <div class="cards" id="sosmed-sosmed_m"></div>
+
+        <div id="sosmedModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn" id="closesosmedModal">&times;</span>
+            <h3>Tambah Kartu Baru (sosmed)</h3>
+            <form id="sosmedForm" enctype="multipart/form-data">
+              
+              <label for="sosmedTitle">Judul Kartu:</label>
+              <input type="text" id="sosmedTitle" name="title" required placeholder="Masukkan judul kartu">
+              
+              <label for="sosmedContent">Konten Kartu:</label>
+              <textarea id="sosmedContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
+
+              <button type="submit">Tambah Kartu</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+   <footer>
+      <div class="footer-container">
+          <!-- Kolom 1: Logo dan Deskripsi -->
+        <div class="column1">
+          <img src="../asset/footer-logo.png" alt="RSUD Talang Ubi" class="footer-logo">
+          
+          <div class="hospital-description">
+            <p>RSUD Talang Ubi Merupakan Rumah Sakit Tipe D Non Pendidikan Beroperasional sebagai Rumah Sakit Pada Tanggal 21 April 2008</p>
+          </div>
+
+          <div>
+            <p>Media Sosial :</p>
+          </div>
+          
+          <div class="social-icons">
+            <a href="https://www.facebook.com/godak.lolo.5" target="_blank"><i class="fa fa-facebook"></i></a>
+            <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3" target="_blank"><i class="fa fa-youtube"></i></a>
+            <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6" target="_blank"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a> 
+          </div>
+        </div>
+
+      <!-- Kolom 2: Kontak -->
+      <div class="column2">
+        <h4>Kontak</h4>
+        <p><i class="fa fa-phone"></i>0811712xxxx</p>
+        <p><i class="fa fa-envelope"></i>rsudtalangubi@palikab.go.id</p>
+        <p><i class="fa fa-map-marker"></i>Jl. Lingkar Handayani Mulya, Handayani Mulya, Kec. Talang Ubi, Kab. Penukal Abab Lematang Ilir, Sumatera Selatan, Indonesia</p>
+      </div>
+
+      <!-- Kolom 3: Navigasi -->
+      <div class="column3">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="/">Beranda</a></li>
+          <li><a href="/sejarah">Sejarah</a></li>
+          <li><a href="/visimisi">Visi & Misi</a></li>
+          <li><a href="/struktur">Struktur</a></li>
+          <li><a href="/berita">Berita</a></li>
+          <li><a href="/artikel">Artikel</a></li>
+          <li><a href="/pengumuman">Pengumuman</a></li>
+          <li><a href="/penghargaan">Penghargaan</a></li>
+          <li><a href="/spesialis">Daftar & Jadwal Dokter</a></li>
+        </ul>
+      </div>
+
+      <!-- Kolom 4: Berlangganan -->
+    <div class="column4">
+        <h4>Lokasi RSUD</h4>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.217316887326!2d103.85473747496754!3d-3.296294041126685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3a6b0003e71ba1%3A0x16d54136c3e877b8!2sRSUD!5e0!3m2!1sid!2sus!4v1758466168663!5m2!1sid!2sus"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    
+      <!-- Footer -->
+      <div class="akhir">
+        <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
+        <p class="social">
+          <a href="https://www.facebook.com/godak.lolo.5" target="_blank">Facebook</a> | 
+          <a href="https://www.instagram.com/asun_ranssee27?igsh=bWd5NjlqazAydmR6" target="_blank">Instagram</a> | 
+          <a href="https://www.instagram.com/gores_sun/" target="_blank">X</a> | 
+          <a href="https://youtube.com/@asunfadrianto27?si=lBBS4pj9zYz23ZM3" target="_blank">Youtube</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+    <script src="artikel.js"></script>
+  </body>
+</html>

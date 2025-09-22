@@ -11,6 +11,8 @@ use App\Http\Controllers\SejarahController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\VisiMisiController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ArtikelController; 
+use App\Http\Controllers\SosmedController; 
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\DaftarDokterController;
@@ -75,6 +77,26 @@ Route::get('/berita/{id}', [BeritaController::class, 'show']);
 Route::post('/berita', [BeritaController::class, 'store']); 
 Route::put('/berita/{id}', [BeritaController::class, 'update']); // ✅ Tambah update
 Route::delete('/berita/{id}', [BeritaController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- Artikel -------------------
+Route::get('/artikel', [ArtikelController::class, 'index']);  
+Route::get('/artikel/{id}', [ArtikelController::class, 'show']);
+Route::post('/artikel', [ArtikelController::class, 'store']); 
+Route::put('/artikel/{id}', [ArtikelController::class, 'update']); // ✅ Tambah update
+Route::delete('/artikel/{id}', [ArtikelController::class, 'destroy']); 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ------------------- Sosmed -------------------
+Route::get('/sosmed', [SosmedController::class, 'index']);  
+Route::get('/sosmed/{id}', [SosmedController::class, 'show']);
+Route::post('/sosmed', [SosmedController::class, 'store']); 
+Route::put('/sosmed/{id}', [SosmedController::class, 'update']); // ✅ Tambah update
+Route::delete('/sosmed/{id}', [SosmedController::class, 'destroy']); 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
