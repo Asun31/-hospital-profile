@@ -121,20 +121,85 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => alert('Error saat menghapus slide'));
   }
 
+  function renderSlide(slide) {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide';
+    slideDiv.dataset.id = slide.id;
+
+    if (slide.id === 'dummy') {
+      // Slide dummy hanya teks
+      slideDiv.style.display = 'flex';
+      slideDiv.style.justifyContent = 'center';
+      slideDiv.style.alignItems = 'center';
+      slideDiv.style.height = '300px'; // sesuaikan tinggi
+      slideDiv.style.background = 'transparent'; // tidak ada gambar
+      slideDiv.style.textAlign = 'center'; // center teks horizontal
+
+      slideDiv.innerHTML = `
+        <h2 style="
+          color:white; 
+          font-size:32px; 
+          text-shadow:1px 1px 5px rgba(0,0,0,0.7); 
+          margin:0; 
+          line-height:1.4;
+        ">
+          ${slide.caption}
+        </h2>
+      `;
+    } else {
+      // Slide normal
+      slideDiv.innerHTML = `
+        <div class="slide-card">
+          <img src="${LARAVEL_URL}/storage/${slide.img}" alt="Slide">
+          <div class="caption">${slide.caption || ''}</div>
+        </div>
+        <div class="card-buttons" style="display:flex; justify-content:center; gap:10px; margin-top:8px;">
+          <button class="edit-btn" data-id="${slide.id}">Edit</button>
+          <button class="delete-btn" data-id="${slide.id}">Hapus</button>
+        </div>
+      `;
+      slideDiv.querySelector('.edit-btn').addEventListener('click', () => openEditModal(slide));
+      slideDiv.querySelector('.delete-btn').addEventListener('click', () => deleteSlide(slide.id));
+    }
+
+    slidesContainer.appendChild(slideDiv);
+  }
+
   function loadSlides() {
     fetch(`${LARAVEL_URL}/api/slides`)
       .then(res => res.json())
       .then(data => {
         slidesContainer.innerHTML = '';
-        data.forEach(slide => renderSlide(slide));
-        const allSlides = getAllSlidesSorted();
-        if(allSlides.length > 0){
+
+        if (!data.length) {
+          // Tambahkan slide dummy hanya teks "Selamat Datang"
+          const dummySlide = {
+            id: 'dummy',
+            caption: 'SELAMAT DATANG<br>RUMAH SAKIT UMUM DAERAH TALANG UBI'
+          };
+          renderSlide(dummySlide);
+          currentSlideId = dummySlide.id;
+        } else {
+          data.forEach(slide => renderSlide(slide));
+          const allSlides = getAllSlidesSorted();
           currentSlideId = allSlides[0].dataset.id;
-          showSlideById(currentSlideId);
         }
+
+        showSlideById(currentSlideId);
         startAutoSlide();
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        // Tetap tampilkan slide dummy hanya teks jika fetch error
+        slidesContainer.innerHTML = '';
+        const dummySlide = {
+          id: 'dummy',
+          caption: 'SELAMAT DATANG<br>RUMAH SAKIT UMUM DAERAH TALANG UBI'
+        };
+        renderSlide(dummySlide);
+        currentSlideId = dummySlide.id;
+        showSlideById(currentSlideId);
+      });
   }
 
   function getAllSlidesSorted() {
