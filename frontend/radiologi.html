@@ -168,7 +168,7 @@
       color: #048a16;
     }
 
-    section#doktergizi {
+    section#radiologi {
         padding-top: 80px;
     }
 
@@ -193,7 +193,7 @@
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
       margin-top: 20px;
       padding: 10px;
@@ -205,8 +205,12 @@
       overflow: hidden;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 15px;
     }
 
     .card:hover {
@@ -215,44 +219,45 @@
     }
 
     .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: contain;
+      width: 80%;
+      max-width: 200px; 
+      height: auto;
+      object-fit: cover; 
       background-color: #f5f5f5;
       display: block;
+      border-radius: 12px;
     }
 
     .card-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 15px;
+      justify-content: flex-start;
+      gap: 8px;
     }
 
     .card-content h3 {
-      width: 100%;
       color: #2e7d32;
-      margin-bottom: 8px;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.4;
       text-align: justify;
-      text-justify: inter-word;
-      display: block;
     }
 
-    .card-content p {
-      width: 100%;
+   .card-content p {
       font-size: 12px;
       line-height: 1.5;
       color: #555;
       text-align: justify;
-      text-justify: inter-word;
-      display: -webkit-box;
+
+      display: -webkit-box;       
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4;
+      -webkit-line-clamp: 4;      
+
+      display: box;            
+      box-orient: vertical;
       line-clamp: 4;
+
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -260,11 +265,6 @@
     .card-content .meta {
       font-size: 12px;
       color: #777;
-      margin-bottom: 8px;
-      text-align: justify;
-      text-justify: inter-word;
-      display: block;
-      width: 100%;
     }
 
     .card-content .read-more {
@@ -279,12 +279,29 @@
       cursor: pointer;
       transition: background 0.3s ease, transform 0.2s ease;
       text-decoration: none;
-      display: inline-block;
     }
 
     .card-content .read-more:hover {
       background: #048a16;
       transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column;
+        align-items: center; 
+      }
+
+      .card img {
+        width: 100%;
+        max-width: none;
+        height: 200px;
+      }
+
+      .card-content {
+        padding-top: 10px;
+        width: 100%;
+      }
     }
 
     button {
@@ -373,7 +390,6 @@
     }
     .close-btn:hover { color: #000; transform: scale(1.2); }
 
-    /* ===== Footer Utama ===== */
     footer {
       background: #81cd8d;
       color: #fff;
@@ -381,7 +397,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* --- Kontainer 4 Kolom --- */
     footer .footer-container {
       display: flex;
       flex-wrap: wrap;
@@ -403,9 +418,7 @@
       padding: 10px;
     }
 
-    /* ===== Kolom 1 ===== */
     footer .column1 {
-      /* jarak seragam antar elemen anak */
       display: flex;
       flex-direction: column;
     }
@@ -419,11 +432,11 @@
       max-width: 100%;
       width: 100%;
       height: auto;
-      margin: 0 auto 12px 0; /* logo center horizontal */
+      margin: 0 auto 12px 0; 
     }
 
     footer .column1 .hospital-description {
-      text-align: justify;     /* teks deskripsi rata kiri-kanan */
+      text-align: justify;     
       font-size: 14px;
       line-height: 1.6;
     }
@@ -453,7 +466,6 @@
       color: #0d47a1;
     }
 
-    /* ===== Kolom 2 ===== */
     footer .column2 h4 {
       font-size: 18px;
       margin-bottom: 12px;
@@ -470,7 +482,6 @@
       margin-right: 8px;
     }
 
-    /* ===== Kolom 3 ===== */
     footer .column3 h4 {
       font-size: 18px;
       margin-bottom: 12px;
@@ -497,7 +508,6 @@
       color: #048a16;
     }
 
-    /* ===== Kolom 4 ===== */
     footer .column4 iframe {
       width: 100%;
       max-width: 250px;
@@ -506,7 +516,6 @@
       border-radius: 6px;
     }
 
-    /* ===== Bagian Bawah Footer ===== */
     footer .akhir {
       text-align: center;
       margin-top: 20px;
@@ -533,7 +542,6 @@
       color: #048a16;
     }
 
-    /* ===== Form Subscribe ===== */
     footer #subscribeForm input {
       width: 100%;
       padding: 10px;
@@ -560,7 +568,6 @@
       background-color: #036f0d;
     }
 
-    /* ===== Responsif (max-width: 768px) ===== */
     @media (max-width: 768px) {
       footer .footer-container {
         flex-direction: column;
@@ -583,45 +590,6 @@
     .powered-by::selection {
       background: none;
     }
-
-    .button-group {
-      display: flex;
-      gap: 10px; /* jarak antar tombol */
-      margin-bottom: 20px;
-      align-items: center; /* vertikal sejajar */
-    }
-
-    .btn-back {
-      padding: 6px 14px; /* lebih kecil */
-      font-size: 13px;
-      background-color: #007bff;
-      color: #fff;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-back:hover {
-      background-color: #0056b3;
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .btn-back:active {
-      background-color: #004085;
-      transform: translateY(0) scale(1);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    /* Sesuaikan tombol tambah kartu agar tetap serasi */
-    #adddoktergiziBtn {
-      padding: 6px 14px;
-      font-size: 13px;
-      border-radius: 6px;
-    }
-
   </style>
 </head>
 <body>
@@ -677,39 +645,34 @@
     </header>
 
     <main>
-      <section id="doktergizi">
-        <h2 class="section-title">Dokter Gizi</h2>
-        <button id="adddoktergiziBtn">+ Tambah Kartu</button>
-        <div class="cards" id="doktergizi-doktergizi_m"></div>
+      <section id="radiologi">
+        <h2 class="section-title">radiologi</h2>
+        <button id="addradiologiBtn">+ Tambah Kartu</button>
+        <div class="cards" id="radiologi-radiologi_m"></div>
 
-        <div id="doktergiziModal" class="modal">
+        <div id="radiologiModal" class="modal">
           <div class="modal-content">
-            <span class="close-btn" id="closedoktergiziModal">&times;</span>
-            <h3>Tambah Kartu Baru<br>(Dokter Gizi)</h3>
-            <form id="doktergiziForm" enctype="multipart/form-data">
-              <label for="doktergiziImg">Unggah Foto Dokter:</label>
-              <input type="file" id="doktergiziImg" name="img" accept="image/*" required>
+            <span class="close-btn" id="closeradiologiModal">&times;</span>
+            <h3>Tambah Kartu Baru (radiologi)</h3>
+            <form id="radiologiForm" enctype="multipart/form-data">
+              <label for="radiologiImg">Unggah Gambar:</label>
+              <input type="file" id="radiologiImg" name="img" accept="image/*" required>
               
-              <label for="doktergiziTitle">Nama Dokter:</label>
-              <input type="text" id="doktergiziTitle" name="title" required placeholder="Masukkan judul kartu">
+              <label for="radiologiTitle">Judul Kartu:</label>
+              <input type="text" id="radiologiTitle" name="title" required placeholder="Masukkan judul kartu">
               
-              <label for="doktergiziContent">Nama RSUD:</label>
-              <textarea id="doktergiziContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
-
-              <label for="doktergiziImg2">Unggah Jadwal Dokter:</label>
-              <input type="file" id="doktergiziImg2" name="img2" accept="image/*">
+              <label for="radiologiContent">Konten Kartu:</label>
+              <textarea id="radiologiContent" name="content" required placeholder="Masukkan konten kartu"></textarea>
 
               <button type="submit">Tambah Kartu</button>
             </form>
           </div>
         </div>
       </section>
-      <a href="javascript:history.back()" class="btn-back">← Kembali</a>
     </main>
 
    <footer>
       <div class="footer-container">
-          <!-- Kolom 1: Logo dan Deskripsi -->
         <div class="column1">
           <img src="../asset/footer-logo.png" alt="RSUD Talang Ubi" class="footer-logo">
           
@@ -730,7 +693,6 @@
           </div>
         </div>
 
-      <!-- Kolom 2: Kontak -->
       <div class="column2">
         <h4>Kontak</h4>
         <p><i class="fa fa-phone"></i>0713-3922-442</p>
@@ -738,10 +700,9 @@
         <p><i class="fa fa-map-marker"></i>Jl. Lingkar Handayani Mulya, Handayani Mulya, Kec. Talang Ubi, Kab. Penukal Abab Lematang Ilir, Sumatera Selatan, Indonesia</p>
       </div>
 
-      <!-- Kolom 3: Navigasi -->
       <div class="column3">
         <h4>Navigasi</h4>
-        <ul>
+       <ul>
           <li><a href="/">Beranda</a></li>
           <li><a href="/sejarah">Sejarah</a></li>
           <li><a href="/visimisi">Visi & Misi</a></li>
@@ -751,14 +712,13 @@
           <li><a href="/pengumuman">Pengumuman</a></li>
           <li><a href="/penghargaan">Penghargaan</a></li>
           <li><a href="/spesialis">Daftar & Jadwal Dokter</a></li>
-          <li><a href="/rawatjalan">Rawat Jalan</a></li>
+          <li><a href="/radiologi">Rawat Jalan</a></li>
           <li><a href="/rawatinap">Rawat Inap</a></li>
-	        <li><a href="/laboratorium">Laboratorium</a></li>
+	        <li><a href="/radiologi">radiologi</a></li>
 	        <li><a href="/radiologi">Radiologi</a></li>
         </ul>
       </div>
 
-      <!-- Kolom 4: Berlangganan -->
     <div class="column4">
         <h4>Lokasi RSUD</h4>
         <iframe
@@ -770,7 +730,6 @@
         </iframe>
       </div>
     
-      <!-- Footer -->
       <div class="akhir">
         <p>&copy; <span class="powered-by">RSUD Talang Ubi Powered by asunfadrianto | All rights reserved.</span></p>
         <p class="social">
@@ -793,6 +752,6 @@
       </div>
     </div>
   </footer>
-    <script src="doktergizi.js"></script>
+    <script src="radiologi.js"></script>
   </body>
 </html>
