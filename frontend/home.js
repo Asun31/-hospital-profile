@@ -260,8 +260,9 @@ document.addEventListener('DOMContentLoaded', () => {
 const sejarahContainer = document.querySelector('.sejarah-kolom-satu');
 const visimisiContainer = document.querySelector('.visimisi-kolom-satu');
 const pengumumanContainer = document.querySelector('.pengumuman-kolom-satu');
+const sosmedContainer = document.querySelector('.sosmed-kolom-satu');
 
-if (!sejarahContainer || !visimisiContainer || !pengumumanContainer) return;
+if (!sejarahContainer || !visimisiContainer || !pengumumanContainer || !sosmedContainer) return;
 
 // --- Fetch Sejarah ---
 fetch(`${LARAVEL_URL}/api/sejarah`)
@@ -551,6 +552,91 @@ fetch(`${LARAVEL_URL}/api/visimisi`)
       console.error('Gagal memuat pengumuman:', err);
       pengumumanContainer.innerHTML = '<p style="color:red;">Gagal memuat data pengumuman.</p>';
     });
+
+   // --- Fetch sosmed ---
+    fetch(`${LARAVEL_URL}/api/sosmed`)
+      .then(res => res.json())
+      .then(data => {
+        if (!sosmedContainer) return;
+
+        // Bersihkan container
+        sosmedContainer.innerHTML = '';
+
+        // Tambahkan header di atas
+        const header = document.createElement('h2');
+        header.textContent = 'SOSIAL MEDIA';
+        header.style.marginBottom = '15px';
+        header.style.fontSize = '18px';
+        header.style.fontWeight = 'bold';
+        sosmedContainer.appendChild(header);
+
+        // Render setiap item
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.dataset.id = item.id;
+          card.style.marginBottom = '20px';
+
+          let ytHTML = '';       // TEMPAT YOUTUBE
+          let otherContent = ''; // TEMPAT INSTAGRAM / TEKS LAIN
+
+          const lines = (item.content || '').split(/\n+/);
+          lines.forEach(line => {
+            line = line.trim();
+            if (!line) return;
+
+            const ytMatch = line.match(/https?:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+            const instaMatch = line.includes('lightwidget.com') || line.includes('instagram.com');
+
+            // ===== Konten YouTube =====
+            if (ytMatch) {
+              const videoId = ytMatch[2];
+              ytHTML += `
+                <div class="youtube-wrapper" style="position:relative; width:32%; padding-bottom:18%; margin:2px; overflow:hidden; max-height:180px;">
+                  <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; max-height:200px;">
+                  </iframe>
+                </div>
+              `;
+            } 
+            // ===== Konten Instagram / LightWidget =====
+            else if (instaMatch) {
+              otherContent += `
+                <div class="instagram-wrapper" style="width:100%; min-height:200px; margin-bottom:5px; overflow:auto;">
+                  ${line}
+                </div>
+              `;
+            } 
+            // ===== Konten teks lain =====
+            else {
+              otherContent += `<p>${line}</p>`;
+            }
+          });
+
+          // Gabungkan konten YouTube dan lainnya
+          let contentHTML = '';
+          if (ytHTML) contentHTML += `<div class="youtube-container" style="display:flex; flex-wrap:wrap;">${ytHTML}</div>`;
+          contentHTML += otherContent;
+
+          card.innerHTML = `
+            <div class="card-content">
+              <h3>${item.title}</h3>
+              <div class="sosmed-iframe" style="width:100%; max-height:350px; min-height:100px; overflow-y:auto;">
+                ${contentHTML}
+              </div>
+              ${item.img ? `<img src="${LARAVEL_URL}/storage/${item.img}" alt="${item.title}" style="width:100%; max-height:300px; object-fit:cover; margin-top:10px; border-radius:6px;">` : ''}
+            </div>
+          `;
+
+          sosmedContainer.appendChild(card);
+
+          if (window.instgrm) window.instgrm.Embeds.process();
+        });
+      })
+      .catch(err => {
+        console.error('Gagal memuat sosmed:', err);
+        if (sosmedContainer) sosmedContainer.innerHTML = '<p style="color:red;">Gagal memuat data sosmed.</p>';
+      });
 
   loadSlides();
 });

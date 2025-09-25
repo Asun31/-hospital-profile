@@ -67,37 +67,83 @@
     #addSlideBtn:hover {background-color: #66b370;transform: scale(1.05);}
 
     /* ===== Slider ===== */
-    .slider { position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 10px; }
-    .slides { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .slide { display: none; flex-direction: column; align-items: center; width: 100%; }
+    .slider {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    /* Wrapper semua slides */
+    .slides {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    /* Setiap slide */
+    .slide {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* Card slide */
     .slide-card {
-          margin-top: 100px;
-          width: 80%;
-          max-width: 80%;
-          position: relative;
-          border-radius: 14px;
-          overflow: hidden;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-          background-color: #fff;
-          /* Rasio 21:9 */
-          padding-top: 35%;
-      }
+        margin-top: 100px;
+        width: 82%;          
+        max-width: 1200px;   
+        height: 500px;       
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        background-color: #fff;
+    }
 
-      .slide-card img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          border-radius: 14px;
-      }
-    
-    .controls {position: absolute;top: 50%;width: 110%;transform: translateY(-50%);pointer-events: auto;z-index: 10;display: flex;justify-content: space-between;padding: 0 10%; }
+    /* Gambar dalam slide */
+    .slide-card img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        border-radius: 14px;
+    }
 
-    .control-btn {background: rgba(0,0,0,0.4); border: none;color: #fff;font-size: 20px;cursor: pointer;padding: 12px 16px;border-radius: 50%;transition: 0.3s;}
+    /* Controls slider */
+    .controls {
+        position: absolute;
+        top: 50%;
+        width: 110%;
+        transform: translateY(-50%);
+        pointer-events: auto;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10%;
+    }
 
-    .control-btn:hover {background: rgba(0,0,0,0.6);}
+    /* Tombol kontrol */
+    .control-btn {
+        background: rgba(0,0,0,0.4);
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    .control-btn:hover {
+        background: rgba(0,0,0,0.6);
+    }
 
     .caption {position: absolute;    bottom: 0;left: 0;width: 100%;padding: 12px 20px;color: #ffffff;font-family: 'Poppins', sans-serif;font-size: 16px;font-weight: 500;text-align: left;box-sizing: border-box;text-shadow: 1px 1px 4px rgba(0,0,0,0.7);border-top-right-radius: 10px;border-top-left-radius: 10px;}
 
@@ -151,7 +197,6 @@
 
     /* ===== Kolom 1 ===== */
     footer .column1 {
-      /* jarak seragam antar elemen anak */
       display: flex;
       flex-direction: column;
     }
@@ -165,11 +210,11 @@
       max-width: 100%;
       width: 100%;
       height: auto;
-      margin: 0 auto 12px 0; /* logo center horizontal */
+      margin: 0 auto 12px 0;
     }
 
     footer .column1 .hospital-description {
-      text-align: justify;     /* teks deskripsi rata kiri-kanan */
+      text-align: justify;     
       font-size: 14px;
       line-height: 1.6;
     }
@@ -442,10 +487,10 @@
     border-radius: 3px;
   }
 
-
   .home-sejarah,
   .home-visimisi,
-  .home-pengumuman {
+  .home-pengumuman,
+  .home-sosmed {
     margin-top: 40px; 
     margin-bottom: 20px; 
     display: flex;
@@ -460,7 +505,8 @@
 
   .sejarah-kolom-satu,
   .visimisi-kolom-satu,
-  .pengumuman-kolom-satu {
+  .pengumuman-kolom-satu,
+  .sosmed-kolom-satu {
     border: 1px solid #81cd8d; 
     flex: 1 1 45%;
     box-sizing: border-box;
@@ -472,7 +518,8 @@
   @media (max-width: 768px) {
     .sejarah-kolom-satu,
     .visimisi-kolom-satu,
-    .pengumuman-kolom-satu {
+    .pengumuman-kolom-satu,
+    .sosmed-kolom-satu {
       width: 100%;
       margin-bottom: 18px;
     }
@@ -515,6 +562,88 @@
     .pengumuman-kolom-satu .pengumuman-item { flex: 0 0 100%; }
   }
 
+  .card iframe {
+    width: 100%;
+    height: 500px; 
+    border: none;
+  }
+
+  /* Konten Card */
+  .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+  }
+
+  .card-content h3 {
+    width: 100%;
+    color: #2e7d32;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: justify;
+    text-justify: inter-word;
+    display: block;
+  }
+
+  .card-content p {
+    width: 100%;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #555;
+    text-align: justify;
+    text-justify: inter-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-content .meta {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 8px;
+    text-align: justify;
+    text-justify: inter-word;
+    display: block;
+    width: 100%;
+  }
+
+  .card-content .read-more {
+    margin-top: 12px;
+    align-self: flex-start;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: white;
+    background: #81cd8d;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .card-content .read-more:hover {
+    background: #048a16;
+    transform: scale(1.05);
+  }
+
+  /* Responsif untuk layar kecil */
+  @media (max-width: 768px) {
+    .card iframe {
+      height: 300px;
+    }
+    .cards {
+      padding: 5px;
+    }
+  }
+
   </style>
 </head>
 
@@ -534,7 +663,7 @@
         <div class="dropdown"><a class="dropbtn">Publikasi ▾</a>
             <div class="dropdown-content">
               <a href="/berita">Berita</a>
-              <a href="/artikel">Artikel</a>
+              <a href="/artikel">Sosial Media</a>
               <a href="/pengumuman">Pengumuman</a>
               <a href="/penghargaan">Penghargaan</a>
             </div>
@@ -656,6 +785,9 @@
       <div id="pengumuman-pagination"></div> 
     </div>
 
+    <div class="home-sosmed">
+      <div class="sosmed-kolom-satu"></div>
+    </div>
   </main>
 
   <footer>

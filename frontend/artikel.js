@@ -231,124 +231,151 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =================== Sosmed Functions ===================
-  const sosmedContainer = document.getElementById('sosmed-sosmed_m');
-  const addsosmedBtn = document.getElementById('addsosmedBtn');
-  const sosmedModal = document.getElementById('sosmedModal');
-  const closesosmedModal = document.getElementById('closesosmedModal');
-  let sosmedFormEl = document.getElementById('sosmedForm');
+    const sosmedContainer = document.getElementById('sosmed-sosmed_m');
+    const addsosmedBtn = document.getElementById('addsosmedBtn');
+    const sosmedModal = document.getElementById('sosmedModal');
+    const closesosmedModal = document.getElementById('closesosmedModal');
+    let sosmedFormEl = document.getElementById('sosmedForm');
 
-  function initSosmed() {
-    fetch(`${LARAVEL_URL}/api/sosmed`)
-      .then(res => res.json())
-      .then(data => {
-        sosmedData = data;
-        renderSosmed();
-      }).catch(err => console.error(err));
-  }
+    function initSosmed() {
+      fetch(`${LARAVEL_URL}/api/sosmed`)
+        .then(res => res.json())
+        .then(data => {
+          sosmedData = data;
+          renderSosmed();
+        }).catch(err => console.error(err));
+    }
 
-  function renderSosmed() {
-    if (!sosmedContainer) return;
-    sosmedContainer.innerHTML = '';
+    function renderSosmed() {
+      if (!sosmedContainer) return;
+      sosmedContainer.innerHTML = '';
 
-    sosmedData.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'card searchable';
-      card.dataset.id = item.id;
-      card.style.cssText = 'margin-top:10px;padding:10px;border:1px solid #ccc;border-radius:8px; display:flex; flex-direction:column;';
+      sosmedData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card searchable';
+        card.dataset.id = item.id;
+        card.style.cssText = 'margin-top:10px;padding:10px;border:1px solid #ccc;border-radius:8px; display:flex; flex-direction:column;';
 
-      card.innerHTML = `
-        <h3 style="font-size:14px; margin:5px 0;">${item.title}</h3>
-        <div class="sosmed-iframe" style="width:100%; overflow:hidden; position:relative;">
-          ${item.content}
-        </div>
-        <div style="margin-top:10px;">
-          <button class="edit-sosmed" data-id="${item.id}" style="margin-right:5px;">✏️ Edit</button>
-          <button class="delete-sosmed" data-id="${item.id}">🗑️ Hapus</button>
-        </div>
-      `;
+        let ytHTML = '';
+        let otherContent = '';
 
-      sosmedContainer.appendChild(card);
+        const lines = item.content.split(/\n+/);
+        lines.forEach(line => {
+          line = line.trim();
+          if (!line) return;
 
-      // ===== Responsive untuk semua iframe di card =====
-      const iframeContainer = card.querySelector('.sosmed-iframe');
-      const iframes = iframeContainer.querySelectorAll('iframe');
+          const ytMatch = line.match(/https?:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+          const instaMatch = line.includes('lightwidget.com') || line.includes('instagram.com');
 
-      iframes.forEach(iframe => {
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = '0';
-        iframe.style.display = 'block';
-        iframe.style.objectFit = 'cover'; 
+          if (ytMatch) {
+            const videoId = ytMatch[2];
+            ytHTML += `
+              <div class="youtube-iframe-wrapper" style="width:32%; padding-bottom:25%; position:relative; margin:2px;">
+                <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen
+                style="position:absolute; width:100%; height:100%; top:0; left:0;"></iframe>
+              </div>
+            `;
+          } else if (instaMatch) {
+            // Instagram / widget iframe tampil full dulu
+            otherContent += `
+              <div class="instagram-wrapper" style="width:100%; position:relative; margin-bottom:5px;">
+                ${line}
+              </div>
+            `;
+          } else {
+            otherContent += `<div style="margin-bottom:5px;">${line}</div>`;
+          }
+        });
 
+        // ===== Pilih class sosmed-iframe =====
+        let iframeClass = 'sosmed-iframe';
+        if (ytHTML) iframeClass += ' youtube-card'; // khusus YouTube
+
+        // Gabungkan YouTube & konten lain
+        let contentHTML = '';
+        if (ytHTML) contentHTML += `<div class="youtube-container" style="display:flex; flex-wrap:wrap;">${ytHTML}</div>`;
+        contentHTML += otherContent;
+
+        // Card dengan scroll vertikal jika tinggi melebihi max-height
+        card.innerHTML = `
+          <h3 style="font-size:14px; margin:5px 0;">${item.title}</h3>
+          <div class="${iframeClass}" style="width:100%; max-height:500px; overflow-y:auto; position:relative;">
+            ${contentHTML}
+          </div>
+          <div style="margin-top:10px;">
+            <button class="edit-sosmed" data-id="${item.id}" style="margin-right:5px;">✏️ Edit</button>
+            <button class="delete-sosmed" data-id="${item.id}">🗑️ Hapus</button>
+          </div>
+        `;
+
+        sosmedContainer.appendChild(card);
+
+        // Proses script Instagram / embeds lain jika ada
+        const scripts = card.querySelectorAll('script');
+        if (scripts.length && window.instgrm) window.instgrm.Embeds.process();
       });
 
-      const scripts = iframeContainer.querySelectorAll('script');
-      if (scripts.length) {
-        if (window.instgrm) window.instgrm.Embeds.process();
-      }
-    });
-
-    // ===== Event Listener Edit/Delete =====
-    sosmedContainer.querySelectorAll('.delete-sosmed').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.dataset.id;
-        if (!confirm("Yakin ingin menghapus sosmed ini?")) return;
-        fetch(`${LARAVEL_URL}/api/sosmed/${id}`, { method: 'DELETE' })
-          .then(() => {
-            sosmedData = sosmedData.filter(s => s.id != id);
-            renderSosmed();
-          }).catch(err => console.error(err));
-      });
-    });
-
-    sosmedContainer.querySelectorAll('.edit-sosmed').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.dataset.id;
-        const item = sosmedData.find(s => s.id == id);
-        if (!item) return;
-        sosmedFormEl.title.value = item.title;
-        sosmedFormEl.content.value = item.content;
-        sosmedModal.style.display = 'block';
-
-        const newForm = sosmedFormEl.cloneNode(true);
-        sosmedFormEl.parentNode.replaceChild(newForm, sosmedFormEl);
-        sosmedFormEl = newForm;
-
-        sosmedFormEl.addEventListener('submit', ev => {
-          ev.preventDefault();
-          fetch(`${LARAVEL_URL}/api/sosmed/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: sosmedFormEl.title.value, content: sosmedFormEl.content.value })
-          }).then(res => res.json())
-            .then(updated => {
-              const idx = sosmedData.findIndex(s => s.id == id);
-              sosmedData[idx] = updated;
+      // ===== Event Listener Edit/Delete =====
+      sosmedContainer.querySelectorAll('.delete-sosmed').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.id;
+          if (!confirm("Yakin ingin menghapus sosmed ini?")) return;
+          fetch(`${LARAVEL_URL}/api/sosmed/${id}`, { method: 'DELETE' })
+            .then(() => {
+              sosmedData = sosmedData.filter(s => s.id != id);
               renderSosmed();
-              sosmedModal.style.display = 'none';
             }).catch(err => console.error(err));
         });
       });
+
+      sosmedContainer.querySelectorAll('.edit-sosmed').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.id;
+          const item = sosmedData.find(s => s.id == id);
+          if (!item) return;
+          sosmedFormEl.title.value = item.title;
+          sosmedFormEl.content.value = item.content;
+          sosmedModal.style.display = 'block';
+
+          const newForm = sosmedFormEl.cloneNode(true);
+          sosmedFormEl.parentNode.replaceChild(newForm, sosmedFormEl);
+          sosmedFormEl = newForm;
+
+          sosmedFormEl.addEventListener('submit', ev => {
+            ev.preventDefault();
+            fetch(`${LARAVEL_URL}/api/sosmed/${id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ title: sosmedFormEl.title.value, content: sosmedFormEl.content.value })
+            }).then(res => res.json())
+              .then(updated => {
+                const idx = sosmedData.findIndex(s => s.id == id);
+                sosmedData[idx] = updated;
+                renderSosmed();
+                sosmedModal.style.display = 'none';
+              }).catch(err => console.error(err));
+          });
+        });
+      });
+    }
+
+    addsosmedBtn?.addEventListener('click', () => sosmedModal.style.display = 'block');
+    closesosmedModal?.addEventListener('click', () => sosmedModal.style.display = 'none');
+    window.addEventListener('click', e => { if (e.target === sosmedModal) sosmedModal.style.display = 'none'; });
+
+    sosmedFormEl?.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch(`${LARAVEL_URL}/api/sosmed`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: sosmedFormEl.title.value, content: sosmedFormEl.content.value })
+      }).then(res => res.json())
+        .then(newItem => {
+          sosmedData.push(newItem);
+          renderSosmed();
+          sosmedModal.style.display = 'none';
+          sosmedFormEl.reset();
+        }).catch(err => console.error(err));
     });
-  }
-
-  addsosmedBtn?.addEventListener('click', () => sosmedModal.style.display = 'block');
-  closesosmedModal?.addEventListener('click', () => sosmedModal.style.display = 'none');
-  window.addEventListener('click', e => { if (e.target === sosmedModal) sosmedModal.style.display = 'none'; });
-
-  sosmedFormEl?.addEventListener('submit', e => {
-    e.preventDefault();
-    fetch(`${LARAVEL_URL}/api/sosmed`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: sosmedFormEl.title.value, content: sosmedFormEl.content.value })
-    }).then(res => res.json())
-      .then(newItem => {
-        sosmedData.push(newItem);
-        renderSosmed();
-        sosmedModal.style.display = 'none';
-        sosmedFormEl.reset();
-      }).catch(err => console.error(err));
-  });
 
 });
