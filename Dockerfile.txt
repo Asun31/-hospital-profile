@@ -1,0 +1,34 @@
+# Gunakan PHP CLI resmi
+FROM php:8.2-cli
+
+# Install dependencies Linux + Node.js
+RUN apt-get update && apt-get install -y \
+    unzip git curl libpq-dev gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /app
+
+# Copy seluruh project
+COPY . .
+
+# Install backend dependencies
+RUN cd backend && composer install --no-dev --optimize-autoloader
+
+# Install frontend dependencies
+RUN cd frontend && npm install
+
+# Make start.sh executable
+RUN chmod +x start.sh
+
+# Set environment variables untuk Railway
+ENV PORT 3000
+ENV BACKEND_PORT 8000
+
+# Jalankan start.sh
+CMD ["bash", "start.sh"]
