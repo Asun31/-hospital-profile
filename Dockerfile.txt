@@ -1,33 +1,21 @@
-# Base image PHP + Node
-FROM php:8.2-cli
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    curl \
-    libpq-dev \
-    nodejs \
-    npm \
-    && apt-get clean
+# PHP + Node
+FROM php:8.2-apache
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set working directory
-WORKDIR /app
+# Install Node
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get install -y nodejs
 
-# Copy seluruh project
-COPY . .
+WORKDIR /var/www/html
 
-# Install backend dependencies
-RUN cd backend && composer install --no-dev --optimize-autoloader
+COPY backend/ ./
+COPY frontend/ ./frontend/
 
-# Install frontend dependencies
-RUN cd frontend && npm install
+RUN composer install --no-dev --optimize-autoloader
+RUN cd frontend && npm install && npm run build
+RUN cp -r frontend/dist/* public/
 
-# Expose port untuk Railway (frontend bisa 3000, backend bisa 8000)
-ENV PORT 3000
-
-# Jalankan start.sh
-CMD ["bash", "start.sh"]
+EXPOSE 80
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
