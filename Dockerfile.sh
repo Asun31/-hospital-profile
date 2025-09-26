@@ -1,14 +1,17 @@
-# Gunakan PHP + Node official image
+# Gunakan PHP official image
 FROM php:8.2-cli
 
-# Install dependencies
+# Install dependencies dasar
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
     libpq-dev \
-    npm \
     && apt-get clean
+
+# Install Node.js (LTS) dan npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

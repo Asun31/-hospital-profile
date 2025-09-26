@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Jalankan Laravel backend di background
+# Jalankan backend Laravel
 cd backend
-php artisan migrate --force
-php -S 0.0.0.0:8000 -t public &
+php artisan serve --host=0.0.0.0 --port=8000 &
 
-# Jalankan frontend (Node + serve)
+# Jalankan frontend
 cd ../frontend
-npx serve -s . -l $PORT
-
+npx serve -p 3000 ./
