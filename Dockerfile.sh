@@ -1,7 +1,7 @@
-# Gunakan PHP official image dengan CLI
+# Gunakan PHP official image
 FROM php:8.2-cli
 
-# Install dependencies dasar + Node.js + npm
+# Install dependencies dasar
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
@@ -14,16 +14,18 @@ RUN apt-get update && apt-get install -y \
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
+# Cek versi node & npm
+RUN node -v
+RUN npm -v
+RUN npx -v
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Pastikan semua executable tersedia di PATH
-ENV PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:${PATH}"
 
 # Set working directory
 WORKDIR /app
 
-# Copy semua file project
+# Copy seluruh project
 COPY . .
 
 # Install backend dependencies
@@ -35,8 +37,8 @@ RUN cd frontend && npm install
 # Pastikan start.sh executable
 RUN chmod +x start.sh
 
-# Expose frontend port
+# Expose port frontend
 ENV PORT 3000
 
-# Jalankan start.sh saat container start
+# Jalankan start.sh
 CMD ["bash", "start.sh"]
