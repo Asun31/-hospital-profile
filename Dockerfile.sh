@@ -1,14 +1,16 @@
 # Gunakan PHP 8.2 CLI official image
 FROM php:8.2-cli
 
-# Install dependencies
+# Install dependencies + Node.js
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
     libpq-dev \
-    npm \
-    nodejs \
+    curl \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && apt-get clean
 
 # Install Composer
@@ -29,8 +31,9 @@ RUN cd frontend && npm install
 # Berikan izin eksekusi start.sh
 RUN chmod +x start.sh
 
-# Expose port dari Railway
+# Expose port Railway
 ENV PORT 3000
+ENV BACKEND_PORT 8000
 
 # Jalankan start.sh
 CMD ["bash", "start.sh"]

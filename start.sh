@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# Atur working directory backend
+# Jalankan backend Laravel
 cd backend || exit
 echo "Starting Laravel backend..."
-# Jalankan server Laravel sesuai PORT environment (Railway)
-php artisan serve --host=0.0.0.0 --port=${BACKEND_PORT:-8000} &
+php artisan serve --host=0.0.0.0 --port=${BACKEND_PORT} &
 
-# Kembali ke root dan masuk frontend
+# Tunggu backend siap (opsional, bisa tambahkan sleep)
+sleep 5
+
+# Jalankan frontend via npm start
 cd ../frontend || exit
 echo "Starting frontend..."
-# Jalankan frontend dengan serve dan port dari Railway
-npx serve -s . -l ${PORT:-3000}
+npm start
