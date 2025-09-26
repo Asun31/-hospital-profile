@@ -1,11 +1,14 @@
-# Gunakan PHP CLI resmi
+# Base image PHP + Node
 FROM php:8.2-cli
 
-# Install dependencies Linux + Node.js
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    unzip git curl libpq-dev gnupg \
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
+    unzip \
+    git \
+    curl \
+    libpq-dev \
+    nodejs \
+    npm \
     && apt-get clean
 
 # Install Composer
@@ -23,12 +26,8 @@ RUN cd backend && composer install --no-dev --optimize-autoloader
 # Install frontend dependencies
 RUN cd frontend && npm install
 
-# Make start.sh executable
-RUN chmod +x start.sh
-
-# Set environment variables untuk Railway
+# Expose port untuk Railway (frontend bisa 3000, backend bisa 8000)
 ENV PORT 3000
-ENV BACKEND_PORT 8000
 
 # Jalankan start.sh
 CMD ["bash", "start.sh"]
